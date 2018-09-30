@@ -34,10 +34,9 @@ public class Continent {
 		  return false;
 	}
 	
-	public boolean Delete_Territory(Territory territory) {
-		Objects.requireNonNull(territory);	
-		  if (territories != null && !territories.isEmpty() && territories.containsKey(territory.name.toLowerCase())) {
-			  territories.remove(territory.name.toLowerCase());		  
+	public boolean Delete_Territory(String territory_name) {
+		  if (territories != null && !territories.isEmpty() && territories.containsKey(territory_name.toLowerCase())) {
+			  territories.remove(territory_name.toLowerCase());		  
 			  return true;
 		  }
 		  return false;

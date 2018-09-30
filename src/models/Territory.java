@@ -38,10 +38,9 @@ public class Territory {
 		  return false;
 	}
 	
-	public boolean Delete_Neighbour(Territory neighbour) {
-		  Objects.requireNonNull(neighbour);	
-		  if (adj != null && !adj.isEmpty() && adj.containsKey(neighbour.name.toLowerCase())) {
-			  adj.remove(neighbour.name.toLowerCase());		  
+	public boolean Delete_Neighbour(String neighbour_name) {
+		  if (adj != null && !adj.isEmpty() && adj.containsKey(neighbour_name.toLowerCase())) {
+			  adj.remove(neighbour_name.toLowerCase());		  
 			  return true;
 		  }
 		  return false;

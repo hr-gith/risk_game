@@ -36,10 +36,9 @@ public class Map {
 		  return false;
 	}
 	
-	public boolean Delete_Territory(Continent continent) {
-		Objects.requireNonNull(continent);	
-		  if (continents != null && !continents.isEmpty() && continents.containsKey(continent.name)) {
-			  continents.remove(continent.name);		  
+	public boolean Delete_Continent(String continent_name) {
+		  if (continents != null && !continents.isEmpty() && continents.containsKey(continent_name.toLowerCase())) {
+			  continents.remove(continent_name.toLowerCase());		  
 			  return true;
 		  }
 		  return false;
@@ -58,7 +57,7 @@ public class Map {
 		
 		//TODO: All continents are connected graph?
 		
-		//TODO: I
+		//TODO: if two territories have the same pos
 		
 		return result;
 	}

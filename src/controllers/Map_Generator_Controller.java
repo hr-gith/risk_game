@@ -28,7 +28,6 @@ public class Map_Generator_Controller {
 			choice = this.view.Display_Menu();
 		}
 		
-		Map map;
 		if (choice == 1) {
 			map = this.io_map_helper.Import_Map(Config.input_file);
 		}else {
