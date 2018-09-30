@@ -1,8 +1,10 @@
 package controllers;
 
+import java.io.IOException;
+
+import models.IO_Map_Helper;
 import models.Map;
 import utilities.Config;
-import utilities.IO_Map_Helper;
 import views.Map_Generator_View;
 
 public class Map_Generator_Controller {
@@ -18,14 +20,13 @@ public class Map_Generator_Controller {
 	}
 	
 	public void start() {
-		int choice = 0;
-		do {
-			if (choice != 1 && choice != 2) 
-				this.view.Display_Message("Error: Enter a valid choice (1,2).");
-			else
-				this.view.Clear_Console();
+		int choice = this.view.Display_Menu();;
+		while(choice != 1 && choice != 2){
+			System.out.println("\n-----------------------------------");			
+			this.view.Display_Message("Error: Enter a valid choice (1,2).");
+			System.out.println("\n-----------------------------------");			
 			choice = this.view.Display_Menu();
-		}while(choice != 1 && choice != 2);
+		}
 		
 		Map map;
 		if (choice == 1) {

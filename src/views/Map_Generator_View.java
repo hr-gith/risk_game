@@ -6,7 +6,7 @@ import models.Continent;
 import models.Map;
 import models.Territory;
 
-public class Map_Generator_View extends General_View {
+public class Map_Generator_View {
 	
 	@SuppressWarnings("resource")
 	public int Display_Menu() {	
@@ -31,6 +31,10 @@ public class Map_Generator_View extends General_View {
 		//TODO: get edges
 		
 		return map;
+	}
+	
+	public void Display_Message(String message) {
+		System.out.println("\n" + message);
 	}
 	
 	public void Display_Map(Map map) {
