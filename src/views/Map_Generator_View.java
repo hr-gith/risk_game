@@ -2,9 +2,9 @@ package views;
 
 import java.util.Scanner;
 
-import models.Continent;
+
 import models.Map;
-import models.Territory;
+
 
 public class Map_Generator_View {
 	
