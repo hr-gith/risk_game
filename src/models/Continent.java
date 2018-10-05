@@ -19,7 +19,7 @@ public class Continent {
 	public Continent(int id, String name) {
 		this.id = id;
 		this.name = name.toLowerCase();
-		this.territories= new HashMap(); 
+		this.territories= new HashMap<>(); 
 	}
 	
 	/**

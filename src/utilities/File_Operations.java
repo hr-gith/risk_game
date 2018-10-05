@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class File_Operations {
     public static ArrayList<String> Read_File(String path){
         ArrayList<String> file_content=new ArrayList<String>();
+        
         try {
             BufferedReader reader=new BufferedReader(new FileReader(path));
             String readLine="";
@@ -17,11 +18,13 @@ public class File_Operations {
                 //characters=readLine.split(" ");
                 //characters.replaceAll("\\s","");
             }
+            reader.close();
         }catch(Exception e){
             e.printStackTrace();
         }
         //System.out.println("File read successfully.");
         return file_content;
+    
     }
     
     public static void Write_File(ArrayList<String> text, String path) {

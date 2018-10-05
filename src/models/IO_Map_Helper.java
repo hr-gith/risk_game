@@ -1,7 +1,7 @@
 package models;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+
 
 import utilities.File_Operations;
 
@@ -26,7 +26,7 @@ public class IO_Map_Helper {
 				String[] continent_info = (map_text.get(i)).split("=");
 				int id = i - line_continents + 2;
 				Continent new_continent = new Continent(id, continent_info[0]);
-				map.continents.put(new_continent.name, new_continent);
+				map.Add_Continent(new_continent);
 			}
 			//get territories
 			//1-add territories
