@@ -19,34 +19,59 @@ public class Map {
 	}
 	    
 	//methods
+	/**
+	 * Checks if map has no continents
+	 * @return
+	 */
 	public boolean IsEmpty() {
 		  return this.continents.isEmpty();
 	}	
 	
-	
-	public boolean Add_Continent(Continent new_Continent) {
-		Objects.requireNonNull(new_Continent);	
+	/**
+	 * Adds a continent to the map
+	 * @param new_Continent
+	 * @return
+	 */
+	public boolean Add_Continent(Continent new_continent) {
+		Objects.requireNonNull(new_continent);	
+		new_continent.name = new_continent.name.toLowerCase();
 		  if (continents == null || continents.isEmpty()) {
 			  continents = new HashMap<>();
 		  }
-		  if (!continents.containsKey(new_Continent.name)) {
-			  continents.put(new_Continent.name, new_Continent);
+		  if (!continents.containsKey(new_continent.name)) {
+			  continents.put(new_continent.name, new_continent);
 			  return true;
 		  }		  
 		  return false;
 	}
 	
+	/**
+	 * Delete a continent and its territories and all their connections from the map
+	 * @param continent_name
+	 * @return
+	 */
 	public boolean Delete_Continent(String continent_name) {
-		  if (continents != null && !continents.isEmpty() && continents.containsKey(continent_name.toLowerCase())) {
-			  continents.remove(continent_name.toLowerCase());		  
-			  return true;
+		continent_name = continent_name.toLowerCase();
+		  if (continents != null && !continents.isEmpty() && continents.containsKey(continent_name)) {
+			  Continent continent = continents.get(continent_name);
+			  if (continent.Delete_Territories()) {
+				  continents.remove(continent_name);		  
+				  return true;
+			  }
 		  }
 		  return false;
 	}
+	
+	/**
+	 * Search a territory name in the map and returns the territory
+	 * @param territory_name
+	 * @return Territory
+	 */
 	public Territory Get_Territory (String territory_name) {
+		territory_name = territory_name.toLowerCase();
 		for (String key : continents.keySet()) {
-			if (continents.get(key).territories.containsKey(territory_name.toLowerCase())) 
-				return continents.get(key).territories.get(territory_name.toLowerCase());		    
+			if (continents.get(key).territories.containsKey(territory_name)) 
+				return continents.get(key).territories.get(territory_name);		    
 		}
 		return null;
 	}

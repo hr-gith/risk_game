@@ -25,7 +25,11 @@ public class Territory {
 		this.adj = new HashMap<>();
 	}
 	
-	//methods	
+	/**
+	 * Adds a connection from the territory to another territory
+	 * @param neighbour
+	 * @return
+	 */
 	public boolean Add_Neighbour(Territory neighbour) {
 		  Objects.requireNonNull(neighbour);	
 		  if (adj == null || adj.isEmpty()) {
@@ -38,15 +42,35 @@ public class Territory {
 		  return false;
 	}
 	
+	/**
+	 * Deletes a connection between the territory and its neighbor
+	 * @param neighbour_name
+	 * @return boolean
+	 */
 	public boolean Delete_Neighbour(String neighbour_name) {
-		  if (adj != null && !adj.isEmpty() && adj.containsKey(neighbour_name.toLowerCase())) {
-			  adj.remove(neighbour_name.toLowerCase());		  
+		neighbour_name = neighbour_name.toLowerCase();
+		  if (adj != null && !adj.isEmpty() && adj.containsKey(neighbour_name)) {
+			  adj.remove(neighbour_name);		  
 			  return true;
 		  }
 		  return false;
 	}
 	
+	/**
+	 * Deletes all the connections from its neighbours
+	 * @return boolean
+	 */
+	public boolean Delete_Neighbours() {
+		boolean result = true;
+		for(Territory neighbour: adj.values()) {
+			result = result && neighbour.Delete_Neighbour(this.name);
+		}
+		return result;
+	}
 	
+	/**
+	 * Two territories are equal only if their names are the same
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (obj.getClass().isInstance(Territory.class)) {
@@ -56,6 +80,9 @@ public class Territory {
 		return false;
 	}
 
+	/**
+	 * Returns territory information as string
+	 */
 	@Override
 	public String toString() {
 		String adj_str = "";
