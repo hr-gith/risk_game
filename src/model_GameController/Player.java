@@ -1,5 +1,11 @@
 package model_GameController;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
+
+import models.Territory;
+
 public class Player {
 	
 	public Integer player_id; 
@@ -7,6 +13,7 @@ public class Player {
 	public String player_name; 
 	State_GamePhase state_game_phase; 
 	
+	public HashMap<String,Territory> owned_territories;
 	
 	
 	
@@ -48,6 +55,20 @@ public class Player {
 		
 		return true; 
 	}
+	
+	public boolean Add_Territory(Territory new_territory) {
+		Objects.requireNonNull(new_territory);	
+		  if (this.owned_territories == null || this.owned_territories.isEmpty()) {
+			  this.owned_territories = new HashMap<>();
+		  }
+		  if (!this.owned_territories.containsKey(new_territory.name.toLowerCase())) {
+			  this.owned_territories.put(new_territory.name.toLowerCase(), new_territory);
+			  			  
+			  return true; 
+		  }		  
+		  return false;
+	}
+	
 	
 	
 	
