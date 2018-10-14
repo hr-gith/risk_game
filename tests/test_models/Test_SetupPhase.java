@@ -1,12 +1,13 @@
-package test_model_GameController;
+package test_models;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 import org.junit.*;
-import static org.junit.Assert.*; 
 
-import model_GameController.Player;
+import models.Player;
+
+import static org.junit.Assert.*;
 
 
 public class Test_SetupPhase {

@@ -1,5 +1,6 @@
-package test_model_GameController;
+package test_models;
 
+import models.Player;
 import models.Territory;
 
 import java.util.ArrayList;
@@ -8,9 +9,7 @@ import java.util.HashMap;
 import java.util.Objects;
 
 import org.junit.*;
-import static org.junit.Assert.*; 
-
-import model_GameController.Player;
+import static org.junit.Assert.*;
 
 
 public class Test_StartupPhase {
