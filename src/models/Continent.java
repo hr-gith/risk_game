@@ -10,15 +10,17 @@ import java.util.Objects;
 public class Continent {
 	public int id;
 	public String name;
+	public int score;
 	public HashMap<String,Territory> territories;
 
 	/**
 	 * constructor
 	 * @param : int Id, String name
 	 */
-	public Continent(int id, String name) {
+	public Continent(int id, String name, int score) {
 		this.id = id;
 		this.name = name.toLowerCase();
+		this.score = score;
 		this.territories= new HashMap<>(); 
 	}
 	
@@ -91,7 +93,7 @@ public class Continent {
 		for(String key: territories.keySet()) {
 			territories_str += "\t" + territories.get(key).toString();
 		}
-		return "Continent [id=" + id + ", name=" + name + ", territories: \n" + territories_str + " \n]\n\n";
+		return "Continent [id =" + id + ", name =" + name + ", score = " + score + ", territories: \n" + territories_str + " \n]\n\n";
 	}
 	
 }

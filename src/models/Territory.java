@@ -73,11 +73,15 @@ public class Territory {
 	 */
 	@Override
 	public boolean equals(Object obj) {
+		boolean result = true;
 		if (obj.getClass().isInstance(Territory.class)) {
 			Territory other = (Territory) obj;
-			return other.name.equals(this.name.toLowerCase());
+			if (other.name.equals(this.name.toLowerCase()))
+				result = false;
+			else if (other.pos_x == this.pos_x && other.pos_y == this.pos_y)
+				return false;						
 		}
-		return false;
+		return result;
 	}
 
 	/**
