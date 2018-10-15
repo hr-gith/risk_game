@@ -50,6 +50,14 @@ public class Map {
 		}
 		return null;
 	}
+	/**
+	 * check if the user_enter continent name is not repetitive
+	 * @param continent_name
+	 * @return continent name or null value
+	 */
+	public Continent Get_Continent (String continent_name) {
+		return continents.get(continent_name);
+	}
 	
 	public boolean Is_Valid_Map() {
 		boolean result = false;

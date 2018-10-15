@@ -7,26 +7,69 @@ import models.Map;
 import models.Territory;
 
 public class Map_Generator_View {
+	Scanner scanner= new Scanner(System.in);
+	Map_Generator_View map_Generator_View;
 	
 	@SuppressWarnings("resource")
+	
 	public int Display_Menu() {	
 		System.out.println("\n\t Map Generator");
 		System.out.println("\n===========================");
 		System.out.println("\n 1. Import From File");
 		System.out.println("\n 2. Design By MySelf");
 		System.out.println("\n\n Please Enter Your Choice(1,2): ");
-		Scanner in = new Scanner(System.in);
-		return in.nextInt();
+		return scanner.nextInt();
+	}
+	public int Display_Menu_Design_Map() {
+		System.out.println("\n\t Create Your Own Map");
+		System.out.println("\n===========================");
+		System.out.println("\n 1.Add Continent");
+		System.out.println("\n 2.Add Territory");
+		System.out.println("\n 3.Add Connection");
+		System.out.println("\n 4.Delete Continent");
+		System.out.println("\n 5.Delete Territory");
+		System.out.println("\n 6.Delete Continent");
+		System.out.println("\n 7.Exit");
+		System.out.println("\n\n Please Enter Your Choice(1 to 7): ");
+
+		return scanner.nextInt();
 	}
 	
 	public Map Display_Map_Designer() {
-		Map map = new Map();
-		Scanner in = new Scanner(System.in);
+		int choice;
 		
-		System.out.println("\n\t Create Your Own Map");
-		System.out.println("\n===========================");
-		System.out.println("\n How many continents does the map have?");
-		int continents_num = in.nextInt();	
+		map_Generator_View=new Map_Generator_View();
+		choice=map_Generator_View.Display_Menu_Design_Map();
+		Map map = new Map();
+		Continent continent;
+		Territory teriitory;
+		
+		switch (choice) {
+		case 1://Add Continent
+			
+			break;
+		case 2://Add Territory
+			
+			break;
+		case 3://Add Connection
+			
+			break;
+		case 4://Delete Continent
+			
+			break;
+		case 5://Delete Territory
+			
+			break;
+		case 6://Delete Connection
+			
+			break;
+		case 7://Exit
+			break;
+
+		default:
+			break;
+		}
+		
 		
 		//TODO: get edges
 		

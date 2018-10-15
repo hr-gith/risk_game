@@ -24,6 +24,23 @@ public class Territory {
 		this.nb_armies = 0;
 		this.adj = new HashMap<>();
 	}
+	/**
+	 * constructor without id
+	 * @param name of territory
+	 * @param pos_x X Position
+	 * @param pos_y Y Position
+	 * @param continent_name
+	 */
+	public Territory(String name, int pos_x, int pos_y, String continent_name) {
+		this.id = 1;
+		this.name = name.toLowerCase();
+		this.pos_x = pos_x;
+		this.pos_y = pos_y;
+		this.continent_name = continent_name;
+		this.owner_id = 0;
+		this.nb_armies = 0;
+		this.adj = new HashMap<>();
+	}
 	
 	
 	

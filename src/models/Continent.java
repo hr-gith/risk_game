@@ -21,6 +21,15 @@ public class Continent {
 		this.name = name.toLowerCase();
 		this.territories= new HashMap(); 
 	}
+	/**
+	 * constructor
+	 * @param name of continent
+	 */
+	public Continent( String name) {
+		this.id = 1;
+		this.name = name.toLowerCase();
+		this.territories= new HashMap(); 
+	}
 	
 	public boolean Add_Territory(Territory new_territory) {
 		Objects.requireNonNull(new_territory);	
