@@ -85,6 +85,14 @@ public class Map {
 		}
 		return null;
 	}
+	/**
+	 * check if the user_enter continent name is not repetitive
+	 * @param continent_name
+	 * @return continent name or null value
+	 */
+	public Continent Get_Continent (String continent_name) {
+		return continents.get(continent_name);
+	}
 	
 	/**
 	 * @return list of all territories existed on the map
