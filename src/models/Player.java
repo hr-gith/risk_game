@@ -29,7 +29,7 @@ public class Player {
 	
 	
 	
-	public Boolean reinforceArmy(){
+	public Boolean Add_Army(){
 		
 		
 		
@@ -53,6 +53,10 @@ public class Player {
 		
 		return true; 
 	}
+	
+	
+	
+	
 	
 	public boolean Add_Territory(Territory new_territory) {
 		Objects.requireNonNull(new_territory);	

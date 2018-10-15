@@ -1,18 +1,17 @@
 package test_models;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
-import org.junit.*;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import models.Player;
 
-import static org.junit.Assert.*;
+public class Test_Game_Model {
 
-
-public class Test_SetupPhase {
-	
-	
 	static Integer number_of_players = 5; 
 	static ArrayList<Player> player_list = new ArrayList<Player>();; 
 	ArrayList<Player> shuffled_player_list; 
@@ -60,6 +59,5 @@ public class Test_SetupPhase {
 	assertEquals(false, shuffled_player_list.equals(player_list));
 	
 	}
-	
 	
 }

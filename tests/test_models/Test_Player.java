@@ -1,18 +1,14 @@
 package test_models;
 
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import models.Player;
 import models.Territory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Objects;
-
-import org.junit.*;
-import static org.junit.Assert.*;
-
-
-public class Test_StartupPhase {
+public class Test_Player {
 	
 	static Player testPlayer = new Player(0); 
 	static Integer number_territories = 14; 
@@ -34,7 +30,7 @@ public class Test_StartupPhase {
 		 number_armies = testPlayer.owned_territories.size() / 3; 
 	}
 	
-//	@Ignore
+
 	@Test
 	public void test_Armies_Assigned(){
 		
@@ -68,5 +64,4 @@ public class Test_StartupPhase {
 	
 	
 
-	
 }
