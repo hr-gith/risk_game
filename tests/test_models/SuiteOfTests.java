@@ -15,7 +15,7 @@ import org.junit.runners.*;
 	
 	@Suite.SuiteClasses({ Test_Player.class})
 
-public class Test_Suite{
+public class SuiteOfTests{
 	
 	
 	
