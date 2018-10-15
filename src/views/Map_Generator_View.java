@@ -37,6 +37,10 @@ public class Map_Generator_View {
 	
 	public Map Display_Map_Designer() {
 		int choice;
+		boolean result = false;
+		String addMore=null;
+		String continentName;
+		String territoryName;
 		
 		map_Generator_View=new Map_Generator_View();
 		choice=map_Generator_View.Display_Menu_Design_Map();
@@ -46,6 +50,21 @@ public class Map_Generator_View {
 		
 		switch (choice) {
 		case 1://Add Continent
+			do {
+				System.out.println("\n enter continent name: ");
+				continentName=scanner.nextLine();
+				if(map.Get_Continent(continentName).equals("null")) {
+					continent=new Continent(continentName);
+					result=map.Add_Continent(continent);
+				}
+				if(result) {
+					System.out.println("\n\t Continent is added successfully");
+					System.out.println("\n===========================");
+					System.out.println("\n Do you want to add another continent(y,n): ");
+					addMore=scanner.nextLine().toLowerCase();
+				}
+				
+			} while (addMore.equals("y"));
 			
 			break;
 		case 2://Add Territory
