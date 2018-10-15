@@ -103,20 +103,21 @@ public class Map {
 	 * @return true if it is valid otherwise returns false
 	 */
 	public boolean Is_Valid() {
-		HashSet<Territory> map_territories = this.Get_Territories();
 		//Is a connected graph?
-		int territories_count = map_territories.size();
-		if (territories_count != DFS().size())
-			return false;
+		HashMap<String, Boolean> visited_territories = DFS();
+		 for (String territory : visited_territories.keySet())
+			 if (!visited_territories.get(territory))
+				 return false;
 		
 		//Are all continents connected graphs?
 		for (Continent con : continents.values()) {
-			territories_count = con.territories.size();
-			if (territories_count != DFS(con).size())
-				return false;
+			visited_territories = DFS(con);
+			for (String territory : visited_territories.keySet())
+				 if (!visited_territories.get(territory))
+					 return false;
 		}
 		
-		//If two territories have the same pos? => has been checked while importing a map in IO_Map_Helper	
+		//If two territories have same positions? => has been checked while importing a map in IO_Map_Helper	
 		return true;
 	}
 	

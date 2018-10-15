@@ -1,12 +1,17 @@
 package views;
 
+import java.util.HashMap;
 import java.util.Scanner;
 
 import models.Continent;
 import models.Map;
 import models.Territory;
 
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -45,7 +50,7 @@ public class Map_Generator_View extends JPanel{
 	}
 	
 	public void Display_Map(Map map) {
-		if (map.IsEmpty()) return;
+		if (map == null || map.IsEmpty()) return;
 		System.out.println(map.toString());
 		this.map = map;
 		Draw_Map();
@@ -54,24 +59,47 @@ public class Map_Generator_View extends JPanel{
 	public void Draw_Map() {
 		JFrame jFrame = new JFrame();
         jFrame.add(this);
-        jFrame.setSize(800, 800);
+        jFrame.setSize(1000, 1000);
         jFrame.setVisible(true);
 	}
 	
 	@Override
     public void paintComponent(Graphics g) {        
-        //g.drawOval(5, 5, 25, 25);
+        Color[] colors = {Color.blue, Color.green, Color.red, Color.pink, Color.yellow, Color.orange};
+        HashMap<String, Color> player_color = new HashMap<>(); 
+        int current_color = 0;
 		for(Continent continent: map.continents.values()) {
 			for(Territory territory : continent.territories.values()) {
-				g.drawRect(territory.pos_x, territory.pos_y, 60, 20);
-				for(Territory neighbour : territory.adj.values()) {
-					//g.drawLine(territory.pos_x, territory.pos_y, neighbour.pos_x, neighbour.pos_y);
-					g.drawString(territory.name, territory.pos_x+2, territory.pos_y+15);
+				if (player_color.containsKey(territory.owner_name) )
+					g.setColor(player_color.get(territory.owner_name));				
+				else {
+					player_color.put(territory.owner_name, colors[current_color]);
+					g.setColor(colors[current_color]);
+					current_color++;
+				}
+				g.drawOval(territory.pos_x - 30, territory.pos_y - 15, 60, 30);
+				g.drawString(territory.name, territory.pos_x - 28, territory.pos_y + 2);
+				g.drawString(Integer.toString(territory.nb_armies), territory.pos_x - 10, territory.pos_y+12);
+				//draw connections
+				for(Territory neighbour : territory.adj.values()) {			
+					g.setColor(Color.BLACK);
+					g.drawLine(territory.pos_x, territory.pos_y + 15, neighbour.pos_x, neighbour.pos_y + 15);
 				}
 			}
 			
 		}
+		
     }
+	/*@Override
+	public void paint(Graphics g)
+	{
+	    super.paintComponent(g);
+	    Graphics2D g2D = (Graphics2D) g;
+	    AffineTransform affT = g2D.getTransform();
+	    g2D.scale( 2, 2);
+	    super.paint(g);
+	    g2D.setTransform(affT);
+	} */
 	
 }
 

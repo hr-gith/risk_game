@@ -9,7 +9,7 @@ public class Territory {
 	public int pos_x;
 	public int pos_y;
 	public String continent_name;
-	public int owner_id;
+	public String owner_name;
 	public int nb_armies;
     public HashMap<String, Territory> adj;
 
@@ -20,7 +20,7 @@ public class Territory {
 		this.pos_x = pos_x;
 		this.pos_y = pos_y;
 		this.continent_name = continent_name;
-		this.owner_id = 0;
+		this.owner_name = "";
 		this.nb_armies = 0;
 		this.adj = new HashMap<>();
 	}
@@ -95,7 +95,7 @@ public class Territory {
 		
 		return "[name=" + name +
 				", pos = (" + pos_x + " , " + pos_y + 
-				"), owner_id=" + owner_id +
+				"), owner=" + owner_name +
 				", continent =" + continent_name +
 				", nb_armies=" + nb_armies +
 				", adj= (" + adj_str + ") ]\n";

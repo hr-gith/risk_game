@@ -34,5 +34,6 @@ public class Map_Generator_Controller {
 		}	
 			
 		this.view.Display_Map(map);
+		this.io_map_helper.Export_Map(map);
 	}
 }

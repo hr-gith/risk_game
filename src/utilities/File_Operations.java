@@ -7,6 +7,11 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 
 public class File_Operations {
+	/**
+	 * reads from a file and return its lines
+	 * @param path which is the address of file
+	 * @return  lines in the file
+	 */
     public static ArrayList<String> Read_File(String path){
         ArrayList<String> file_content=new ArrayList<String>();
         
@@ -15,8 +20,6 @@ public class File_Operations {
             String readLine="";
             while ((readLine = reader.readLine()) != null) {
             	file_content.add(readLine);
-                //characters=readLine.split(" ");
-                //characters.replaceAll("\\s","");
             }
             reader.close();
         }catch(Exception e){
@@ -27,11 +30,17 @@ public class File_Operations {
     
     }
     
+    /**
+     * write list of string in a file
+     * if a file exists, it overwrite it
+     * @param text which presents lines 
+     * @param path which is the address of file
+     */
     public static void Write_File(ArrayList<String> text, String path) {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(Config.output_file,true));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(Config.output_file,false));
             for(String line: text)
-            	writer.write(line);
+            	writer.write(line+"\n");
             writer.close();
         }catch (Exception e){
             e.printStackTrace();
