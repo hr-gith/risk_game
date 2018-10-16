@@ -21,7 +21,7 @@ import javax.swing.JPanel;
  *
  */
 public class Map_Generator_View extends JPanel {
-	Scanner scanner = new Scanner(System.in);
+	Scanner scanner;
 	Map_Generator_View map_Generator_View;
 
 	private Map map;
@@ -29,12 +29,13 @@ public class Map_Generator_View extends JPanel {
 	@SuppressWarnings("resource")
 
 	/**
-	 * 
-	 * @return
+	 * main display menu
+	 * @return user choice
 	 */
 	public int Display_Menu() {
+		scanner=new Scanner(System.in);
 		System.out.println("\n\t Map Generator");
-		System.out.println("\n===========================");
+		System.out.println("\n==================================");
 		System.out.println("\n 1. Import From File");
 		System.out.println("\n 2. Design By MySelf");
 		System.out.println("\n\n Please Enter Your Choice(1,2): ");
@@ -42,13 +43,14 @@ public class Map_Generator_View extends JPanel {
 	}
 
 	/**
-	 * 
-	 * @return
+	 * display menu for designing map
+	 * @return user choice 
 	 */
 
 	public int Display_Menu_Design_Map() {
+		scanner=new Scanner(System.in);
 		System.out.println("\n\t Create Your Own Map");
-		System.out.println("\n===========================");
+		System.out.println("\n==================================");
 		System.out.println("\n 1.Add Continent");
 		System.out.println("\n 2.Add Territory");
 		System.out.println("\n 3.Add Connection");
@@ -57,20 +59,21 @@ public class Map_Generator_View extends JPanel {
 		System.out.println("\n 6.Delete Continent");
 		System.out.println("\n 7.Exit");
 		System.out.println("\n\n Please Enter Your Choice(1 to 7): ");
+		int result= Integer.valueOf(scanner.nextLine()) ;
 
-		return scanner.nextInt();
+		return result;
 	}
 
 	/**
-	 * 
-	 * @return
+	 * designing map by user
+	 * @return user design map
 	 */
 	public Map Display_Map_Designer() {
+		scanner=new Scanner(System.in);
 		int choice;
 		boolean result = false;
 		String addMore = null;
 		String addMoreNeighbour = null;
-		String userRespond = null;
 		String continentName;
 		String territoryName;
 		String territoryNeihbour;
@@ -79,29 +82,30 @@ public class Map_Generator_View extends JPanel {
 
 		map_Generator_View = new Map_Generator_View();
 		choice = map_Generator_View.Display_Menu_Design_Map();
-		Map map = new Map();
+		map = new Map();
 		Continent continent = null;
 		Territory territory = null;
 
 		switch (choice) {
 		case 1:// Add Continent
 			do {
-				System.out.println("\n enter continent name: ");
+				System.out.println("\n Enter continent name: ");
 				continentName = scanner.nextLine();
+				
 				Continent gettingContinent = map.Get_Continent(continentName);
 
 				if (gettingContinent == null) {
 					continent = new Continent(continentName);
 					result = map.Add_Continent(continent);
 					if (result) {
-						System.out.println("\n\t Continent is added successfully");
-						System.out.println("\n===========================");
+						System.out.println("\n\t 'Continent is added successfully'");
+						System.out.println("\n==================================");
 						System.out.println("\n Do you want to add another continent(y,n): ");
 						addMore = scanner.nextLine().toLowerCase();
 					}
 				} else {
-					System.out.println("\n\t Continent existed!");
-					System.out.println("\n===========================");
+					System.out.println("\n\t 'Continent existed!'");
+					System.out.println("\n==================================");
 					System.out.println("\n Do you want to add another continent(y,n): ");
 					addMore = scanner.nextLine().toLowerCase();
 				}
@@ -112,13 +116,14 @@ public class Map_Generator_View extends JPanel {
 
 		case 2:// Add Territory
 			do {
-				System.out.println("\n enter territory name: ");
+				System.out.println("\n Enter territory name: ");
 				territoryName = scanner.nextLine();
-				System.out.println("\n enter territory X position: ");
+				
+				System.out.println("\n Enter territory X position: ");
 				xPosition = scanner.nextInt();
-				System.out.println("\n enter territory Y position: ");
+				System.out.println("\n Enter territory Y position: ");
 				yPosition = scanner.nextInt();
-				System.out.println("\n enter crresponding continent: ");
+				System.out.println("\n Enter corresponding continent: ");
 				continentName = scanner.nextLine();
 				
 				Continent gettingContinent = map.Get_Continent(continentName);
@@ -127,15 +132,15 @@ public class Map_Generator_View extends JPanel {
 					territory = new Territory(territoryName, xPosition, yPosition, continentName);
 					result = gettingContinent.Add_Territory(territory);
 					if (result) {
-						System.out.println("\n\t territory is added successfully");
-						System.out.println("\n===========================");
+						System.out.println("\n\t 'Territory is added successfully'");
+						System.out.println("\n==================================");
 						System.out.println("\n Do you want to add another territory(y,n): ");
 						addMore = scanner.nextLine().toLowerCase();
 					}
 
 				} else {
-					System.out.println("\n\t the continent does not exist!");
-					System.out.println("\n===========================");
+					System.out.println("\n\t 'The continent does not exist!'");
+					System.out.println("\n==================================");
 					System.out.println("\n Do you want to add territory (y,n): ");
 					addMore = scanner.nextLine().toLowerCase();
 				
@@ -146,34 +151,34 @@ public class Map_Generator_View extends JPanel {
 
 		case 3:// Add Connection
 			do {
-				System.out.println("\n\t enter territory name: ");
+				System.out.println("\n Enter territory name: ");
 				territoryName = scanner.nextLine();
 				Territory gettingTerritory = map.Get_Territory(territoryName);
 
 				if (gettingTerritory != null) {
 					do {
-						System.out.println("\n enter the neighbour name: ");
+						System.out.println("\n Enter the neighbour name: ");
 						territoryNeihbour = scanner.nextLine();
 						Territory gettingTerritoryNeighbour = map.Get_Territory(territoryNeihbour);
 						if (gettingTerritoryNeighbour != null) {
 							result = gettingTerritory.Add_Neighbour(gettingTerritoryNeighbour);
 							if (result) {
-								System.out.println("\n\t connection is added successfully");
-								System.out.println("\n===========================");
+								System.out.println("\n\t 'Connection is added successfully'");
+								System.out.println("\n==================================");
 								System.out.println("\n Do you want to add another connection to territory (y,n): ");
 								addMoreNeighbour = scanner.nextLine().toLowerCase();
 							}
 
 						} else {
-							System.out.println("\n\t Neighbour is not found!");
-							System.out.println("\n===========================");
+							System.out.println("\n\t 'Neighbour is not found!'");
+							System.out.println("\n==================================");
 							System.out.println("\n Do you want to add another connection to territory (y,n): ");
 							addMoreNeighbour = scanner.nextLine().toLowerCase();
 						}
 					} while (addMoreNeighbour.equals("y"));
 				} else {
-					System.out.println("\n\t Territory is not found!");
-					System.out.println("\n===========================");
+					System.out.println("\n\t 'Territory is not found!'");
+					System.out.println("\n==================================");
 					System.out.println("\n Do you want to select another territory (y,n): ");
 					addMore = scanner.nextLine().toLowerCase();
 				}
