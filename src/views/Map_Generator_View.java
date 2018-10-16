@@ -88,13 +88,19 @@ public class Map_Generator_View extends JPanel {
 			do {
 				System.out.println("\n enter continent name: ");
 				continentName = scanner.nextLine();
+				Continent gettingContinent = map.Get_Continent(continentName);
 
-				if (map.Get_Continent(continentName) == null) {
+				if (gettingContinent == null) {
 					continent = new Continent(continentName);
 					result = map.Add_Continent(continent);
-				}
-				if (result) {
-					System.out.println("\n\t Continent is added successfully");
+					if (result) {
+						System.out.println("\n\t Continent is added successfully");
+						System.out.println("\n===========================");
+						System.out.println("\n Do you want to add another continent(y,n): ");
+						addMore = scanner.nextLine().toLowerCase();
+					}
+				} else {
+					System.out.println("\n\t Continent existed!");
 					System.out.println("\n===========================");
 					System.out.println("\n Do you want to add another continent(y,n): ");
 					addMore = scanner.nextLine().toLowerCase();
@@ -103,7 +109,7 @@ public class Map_Generator_View extends JPanel {
 			} while (addMore.equals("y"));
 
 			break;
-			
+
 		case 2:// Add Territory
 			do {
 				System.out.println("\n enter territory name: ");
@@ -114,10 +120,11 @@ public class Map_Generator_View extends JPanel {
 				yPosition = scanner.nextInt();
 				System.out.println("\n enter crresponding continent: ");
 				continentName = scanner.nextLine();
+				
+				Continent gettingContinent = map.Get_Continent(continentName);
 
-				if (map.Get_Continent(continentName) != null) {
+				if (gettingContinent != null) {
 					territory = new Territory(territoryName, xPosition, yPosition, continentName);
-					Continent gettingContinent = map.Get_Continent(continentName);
 					result = gettingContinent.Add_Territory(territory);
 					if (result) {
 						System.out.println("\n\t territory is added successfully");
@@ -126,14 +133,17 @@ public class Map_Generator_View extends JPanel {
 						addMore = scanner.nextLine().toLowerCase();
 					}
 
-				} else if (map.Get_Continent(continentName) == null) {
-					System.out.println("\n the continent does not exist!");
-					break;
+				} else {
+					System.out.println("\n\t the continent does not exist!");
+					System.out.println("\n===========================");
+					System.out.println("\n Do you want to add territory (y,n): ");
+					addMore = scanner.nextLine().toLowerCase();
+				
 				}
 			} while (addMore.equals("y"));
 
 			break;
-			
+
 		case 3:// Add Connection
 			do {
 				System.out.println("\n\t enter territory name: ");
@@ -154,14 +164,14 @@ public class Map_Generator_View extends JPanel {
 								addMoreNeighbour = scanner.nextLine().toLowerCase();
 							}
 
-						}else {
+						} else {
 							System.out.println("\n\t Neighbour is not found!");
 							System.out.println("\n===========================");
 							System.out.println("\n Do you want to add another connection to territory (y,n): ");
 							addMoreNeighbour = scanner.nextLine().toLowerCase();
 						}
 					} while (addMoreNeighbour.equals("y"));
-				}else {
+				} else {
 					System.out.println("\n\t Territory is not found!");
 					System.out.println("\n===========================");
 					System.out.println("\n Do you want to select another territory (y,n): ");
@@ -170,20 +180,19 @@ public class Map_Generator_View extends JPanel {
 
 			} while (addMore.equals("y"));
 			break;
-			
+
 		case 4:// Delete Continent
-			
 
 			break;
-			
+
 		case 5:// Delete Territory
 
 			break;
-			
+
 		case 6:// Delete Connection
 
 			break;
-			
+
 		case 7:// Exit
 			break;
 
