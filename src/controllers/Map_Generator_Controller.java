@@ -1,6 +1,5 @@
 package controllers;
 
-import java.io.IOException;
 
 import models.IO_Map_Helper;
 import models.Map;
@@ -32,8 +31,17 @@ public class Map_Generator_Controller {
 			map = this.io_map_helper.Import_Map(Config.input_file);
 		}else {
 			map = this.view.Display_Map_Designer();
-		}	
-			
+		}				
 		this.view.Display_Map(map);
+		if (map.Is_Valid())
+			this.view.Display_Message("The map is valid");
+		else
+			this.view.Display_Message("Error: The map is not valid");
+		if (map.Exist_Path(map.Get_Territories(), "territory1", "territory5"))
+			this.view.Display_Message("path exist");
+		else
+			this.view.Display_Message("Error: path does not exist");
+		
+		this.io_map_helper.Export_Map(map);
 	}
 }
