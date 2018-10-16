@@ -2,6 +2,7 @@ package models;
 
 import java.util.HashMap;
 import java.util.Objects;
+import models.Territory;
 
 /**
  * Continent Class is a model 
