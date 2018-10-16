@@ -91,7 +91,6 @@ public class Map_Generator_View extends JPanel {
 			do {
 				System.out.println("\n Enter continent name: ");
 				continentName = scanner.nextLine();
-				
 				Continent gettingContinent = map.Get_Continent(continentName);
 
 				if (gettingContinent == null) {
@@ -111,7 +110,7 @@ public class Map_Generator_View extends JPanel {
 				}
 
 			} while (addMore.equals("y"));
-
+			map_Generator_View.Display_Menu_Design_Map();
 			break;
 
 		case 2:// Add Territory
@@ -146,7 +145,7 @@ public class Map_Generator_View extends JPanel {
 				
 				}
 			} while (addMore.equals("y"));
-
+			map_Generator_View.Display_Menu_Design_Map();
 			break;
 
 		case 3:// Add Connection
@@ -184,10 +183,31 @@ public class Map_Generator_View extends JPanel {
 				}
 
 			} while (addMore.equals("y"));
+			map_Generator_View.Display_Menu_Design_Map();
 			break;
 
 		case 4:// Delete Continent
-
+			do {
+				System.out.println("\n\t Deleting the continent!");
+				System.out.println("\n==================================");
+				System.out.println("\n Enter the continent name: ");
+				continentName = scanner.nextLine();
+				Continent gettingContinent = map.Get_Continent(continentName);
+				if(gettingContinent == null) {
+					System.out.println("\n\t Continent does not exist at all!");
+					System.out.println("\n==================================");
+					System.out.println("\n Do you want to delete another continent (y,n): ");
+					addMore = scanner.nextLine().toLowerCase();
+				}else {
+					map.Delete_Continent(continentName);
+					System.out.println("\n\t Continent was successfully deleted!");
+					System.out.println("\n==================================");
+					System.out.println("\n Do you want to delete another continent (y,n): ");
+					addMore = scanner.nextLine().toLowerCase();
+				}
+				
+			} while (addMore.equals("y"));
+			map_Generator_View.Display_Menu_Design_Map();
 			break;
 
 		case 5:// Delete Territory
