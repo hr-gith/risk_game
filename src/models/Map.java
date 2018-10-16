@@ -112,20 +112,21 @@ public class Map {
 	 */
 	public boolean Is_Valid() {
 		//Is a connected graph?
-		HashMap<String, Boolean> visited_territories = DFS();
+		HashMap<String, Boolean> visited_territories = DFS(this.Get_Territories());
 		 for (String territory : visited_territories.keySet())
 			 if (!visited_territories.get(territory))
 				 return false;
 		
 		//Are all continents connected graphs?
 		for (Continent con : continents.values()) {
-			visited_territories = DFS(con);
+			HashSet<Territory> territories = new HashSet<Territory>( con.territories.values());
+			visited_territories = DFS(territories);
 			for (String territory : visited_territories.keySet())
 				 if (!visited_territories.get(territory))
 					 return false;
 		}
 		
-		//If two territories have same positions? => has been checked while importing a map in IO_Map_Helper	
+		//If two territories have same positions or the same names? => has been checked while importing a map in IO_Map_Helper	
 		return true;
 	}
 	
@@ -144,13 +145,14 @@ public class Map {
 		}
 	}
 	
+	
 	/**
-	 * Apply Depth First Search (DFS) on a map starting from its first territory of the map
+	 * Apply Depth First Search (DFS) on a set of territory 
+	 * @param continent 
 	 * @return list of visited territories 
 	 */
-	private HashMap<String, Boolean> DFS() {
+	private HashMap<String, Boolean> DFS(HashSet<Territory> territories) {
 		HashMap<String, Boolean> visited = new HashMap<>();
-		HashSet<Territory> territories = this.Get_Territories();
 		Optional<Territory> first =  territories.stream().findFirst();
 		if(first.isPresent()){
 		    Territory root = first.get();			    
@@ -159,30 +161,37 @@ public class Map {
 				visited.put(territory.name, false);
 			}
 			DFS_Graph(root, visited);
-		} 
-		
+		} 		
 		return visited;
 	}
 	
 	/**
-	 * Apply Depth First Search (DFS) on a continent starting from its first territory 
-	 * @param continent 
-	 * @return list of visited territories 
+	 * Checks if any path exists between to territory in a specific list of territories
+	 * @param territories which is list of territories we look for a path
+	 * @param from_name which is the first territory
+	 * @param to_name which is the second territory
+	 * @return
 	 */
-	private HashMap<String, Boolean> DFS(Continent continent) {
-		HashMap<String, Boolean> visited = new HashMap<>();
-		HashSet<Territory> territories = (HashSet<Territory>) continent.territories.values();
-		Optional<Territory> first =  territories.stream().findFirst();
-		if(first.isPresent()){
-		    Territory root = first.get();			    
-		    //set visited to false for all territories
-		    for (Territory territory: territories ) {
-				visited.put(territory.name, false);
-			}
-			DFS_Graph(root, visited);
-		} 
+	public Boolean Exist_Path(HashSet<Territory> territories, String from_name, String to_name) {
+		Territory root = null;
+		Territory to = null;
+		for (Territory territory: territories ) {
+			if (territory.name.equals(from_name.toLowerCase()))
+				root = territory;
+			if (territory.name.equals(to_name.toLowerCase()))
+				to = territory;
+		}
+		if (root == null || to == null) return false;
 		
-		return visited;
+		HashMap<String, Boolean> visited = new HashMap<>();
+	    //set visited to false for all territories
+	    for (Territory territory: territories ) {
+			visited.put(territory.name, false);
+		}
+		DFS_Graph(root, visited);
+		if (visited.get(to.name))
+			return true;
+		return false;
 	}
 
 	@Override

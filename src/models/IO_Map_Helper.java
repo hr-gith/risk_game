@@ -88,8 +88,10 @@ public class IO_Map_Helper {
 					Territory territory = map.Get_Territory(territory_info[0]);
 					for (int j = 4; j < territory_info.length; j++) {
 						Territory neighbour = map.Get_Territory(territory_info[j]);
-						if (neighbour != null)
+						if (neighbour != null) {
 							territory.Add_Neighbour(neighbour);
+							neighbour.Add_Neighbour(territory);//makes the map non-directional
+						}
 						else
 							//Error: file does not respect Conquest rules
 							return null;
