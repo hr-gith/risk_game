@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 public class Map_Generator_View extends JPanel {
 	Scanner scanner;
 	public Map map = Map.Get_Map();
+	boolean valid_result=false;
 
 	@SuppressWarnings("resource")
 	/**
@@ -61,7 +62,8 @@ public class Map_Generator_View extends JPanel {
 		System.out.println("\n 5.Delete Territory");
 		System.out.println("\n 6.Delete Neighbour");
 		System.out.println("\n 7.Display Map");
-		System.out.println("\n 8.Exit");
+		System.out.println("\n 8.Validate Map");
+		System.out.println("\n 9.Exit");
 		System.out.println("\n\n Please Enter Your Choice(1 to 7): ");
 		int result = Integer.valueOf(scanner.nextLine());
 
@@ -107,7 +109,16 @@ public class Map_Generator_View extends JPanel {
 			case 7: // Display Map
 				Display_Map(this.map);
 				break;
-			case 8:// Exit!
+			case 8:// Validate Map
+				if(!map.Is_Valid()) {
+					System.out.println("\n==================================");
+					System.out.println("\n\t Error!The map is not valid");
+				}else {
+					System.out.println("\n==================================");
+					System.out.println("\n\t The map is valid");
+				}
+				break;
+			case 9:// Exit!
 				break;
 
 			default:
@@ -116,7 +127,7 @@ public class Map_Generator_View extends JPanel {
 				break;
 			}
 			
-		} while (choice != 8);
+		} while (choice != 9);
 
 	}
 
@@ -125,18 +136,18 @@ public class Map_Generator_View extends JPanel {
 	 */
 	public void Add_Continent_Map_Menu() {
 		scanner = new Scanner(System.in);
-		String continentName;
+		String continent_name;
 		Continent continent;
 		boolean result = false;
 		String addMore = "n";
 
 		do {
 			System.out.println("\n Enter continent name: ");
-			continentName = scanner.nextLine();
-			Continent gettingContinent = map.Get_Continent(continentName);
+			continent_name = scanner.nextLine();
+			Continent gettingContinent = map.Get_Continent(continent_name);
 
 			if (gettingContinent == null) {
-				continent = new Continent(continentName);
+				continent = new Continent(continent_name);
 				result = map.Add_Continent(continent);
 				if (result) {
 					System.out.println("\n\t 'Continent is added successfully'");
@@ -161,26 +172,26 @@ public class Map_Generator_View extends JPanel {
 	public void Add_Territory_Map_Menu() {
 		scanner = new Scanner(System.in);
 		Territory territory;
-		String territoryName;
-		String continentName;
+		String territory_name;
+		String continent_name;
 		boolean result = false;
 		String addMore = "n";
 		int xPosition;
 		int yPosition;
 		do {
 			System.out.println("\n Enter related continent: ");
-			continentName = scanner.nextLine();
-			Continent gettingContinent = map.Get_Continent(continentName);	
+			continent_name = scanner.nextLine();
+			Continent gettingContinent = map.Get_Continent(continent_name);	
 
 			if (gettingContinent != null) {
 				System.out.println("\n Enter territory name: ");
-				territoryName = scanner.nextLine();
+				territory_name = scanner.nextLine();
 				System.out.println("\n Enter territory X position: ");
 				xPosition =Integer.valueOf(scanner.nextLine()) ;
 				System.out.println("\n Enter territory Y position: ");
 				yPosition = Integer.valueOf(scanner.nextLine()) ;
 				
-				territory = new Territory(territoryName, xPosition, yPosition, continentName);
+				territory = new Territory(territory_name, xPosition, yPosition, continent_name);
 				result = gettingContinent.Add_Territory(territory);
 				if (result) {
 					System.out.println("\n\t 'Territory is added successfully'");
@@ -210,30 +221,30 @@ public class Map_Generator_View extends JPanel {
 	 */
 	public void Add_Neighbour_Map_Menu() {
 		scanner = new Scanner(System.in);
-		String addMoreNeighbour = "n";
-		String territoryNeihbour;
-		String territoryName;
+		String add_more_neighbour = "n";
+		String territory_neihbour;
+		String territory_name;
 		boolean result = false;
-		String addMore = "n";
+		String add_more = "n";
 		do {
 			System.out.println("\n Enter territory name: ");
-			territoryName = scanner.nextLine();
-			Territory gettingTerritory = map.Get_Territory(territoryName);
+			territory_name = scanner.nextLine();
+			Territory getting_territory = map.Get_Territory(territory_name);
 
-			if (gettingTerritory != null) {
+			if (getting_territory != null) {
 				do {
 					System.out.println("\n Enter the neighbour name: ");
-					territoryNeihbour = scanner.nextLine();
-					Territory gettingTerritoryNeighbour = map.Get_Territory(territoryNeihbour);
-					if (gettingTerritoryNeighbour != null) {
-						result = gettingTerritory.Add_Neighbour(gettingTerritoryNeighbour);
+					territory_neihbour = scanner.nextLine();
+					Territory getting_territory_neighbour = map.Get_Territory(territory_neihbour);
+					if (getting_territory_neighbour != null) {
+						result = getting_territory.Add_Neighbour(getting_territory_neighbour);
 						if (result) {
-							result = gettingTerritoryNeighbour.Add_Neighbour(gettingTerritory);
+							result = getting_territory_neighbour.Add_Neighbour(getting_territory);
 							if (result) {
 								System.out.println("\n\t 'Neighbour is added successfully'");
 								System.out.println("\n==================================");
 								System.out.println("\n Do you want to add another neighbour to the territory (y,n): ");
-								addMoreNeighbour = scanner.nextLine().toLowerCase();
+								add_more_neighbour = scanner.nextLine().toLowerCase();
 							}
 							else {
 								System.out.println("\n\t 'Could not add connection properly!'");
@@ -242,17 +253,17 @@ public class Map_Generator_View extends JPanel {
 							System.out.println("\n\t 'Neighbour does not found!'");
 							System.out.println("\n==================================");
 							System.out.println("\n Do you want to add another neighbour to the territory (y,n): ");
-							addMoreNeighbour = scanner.nextLine().toLowerCase();
+							add_more_neighbour = scanner.nextLine().toLowerCase();
 						}
 					}
-				} while (addMoreNeighbour.equals("y"));
+				} while (add_more_neighbour.equals("y"));
 			} else {
 				System.out.println("\n\t 'Territory does not found!'");				
 			}
 			System.out.println("\n==================================");
 			System.out.println("\n Do you want to add neighbours to another territory (y,n): ");
-			addMore = scanner.nextLine().toLowerCase();
-		} while (addMore.equals("y"));
+			add_more = scanner.nextLine().toLowerCase();
+		} while (add_more.equals("y"));
 	}
 
 	/**
@@ -260,28 +271,28 @@ public class Map_Generator_View extends JPanel {
 	 */
 	public void Delete_Continent_Map_Menu() {
 		scanner = new Scanner(System.in);
-		String deleteMore;
-		String continentName;
+		String delete_more;
+		String continent_name;
 		do {
 			System.out.println("\n\t Deleting the continent!");
 			System.out.println("\n==================================");
 			System.out.println("\n Enter the continent name: ");
-			continentName = scanner.nextLine();
-			Continent gettingContinent = map.Get_Continent(continentName);
-			if (gettingContinent == null) {
+			continent_name = scanner.nextLine();
+			Continent getting_continent = map.Get_Continent(continent_name);
+			if (getting_continent == null) {
 				System.out.println("\n\t Continent does not exist at all!");
 				System.out.println("\n==================================");
 				System.out.println("\n Do you want to delete another continent (y,n): ");
-				deleteMore = scanner.nextLine().toLowerCase();
+				delete_more = scanner.nextLine().toLowerCase();
 			} else {
-				map.Delete_Continent(continentName);
+				map.Delete_Continent(continent_name);
 				System.out.println("\n\t Continent was successfully deleted!");
 				System.out.println("\n==================================");
 				System.out.println("\n Do you want to delete another continent (y,n): ");
-				deleteMore = scanner.nextLine().toLowerCase();
+				delete_more = scanner.nextLine().toLowerCase();
 			}
 
-		} while (deleteMore.equals("y"));
+		} while (delete_more.equals("y"));
 	}
 
 	/**
@@ -289,22 +300,22 @@ public class Map_Generator_View extends JPanel {
 	 */
 	public void Delete_Territory_Map_Menu() {
 		scanner = new Scanner(System.in);
-		String territoryName;
-		String deleteMore ="n";
+		String territory_name;
+		String delete_more ="n";
 		boolean result = false;
 
 		do {
 			System.out.println("\n Enter territory name: ");
-			territoryName = scanner.nextLine();
-			Territory gettingTerritory = map.Get_Territory(territoryName);
-			if (gettingTerritory != null) {
-				Continent gettingContinent = map.Get_Continent(gettingTerritory.continent_name);
-				result = gettingContinent.Delete_Territory(territoryName);
+			territory_name = scanner.nextLine();
+			Territory getting_territory = map.Get_Territory(territory_name);
+			if (getting_territory != null) {
+				Continent getting_continent = map.Get_Continent(getting_territory.continent_name);
+				result = getting_continent.Delete_Territory(territory_name);
 				if (result) {
 					System.out.println("\n\t Territory and its connection(s) was successfully deleted!");
 					System.out.println("\n==================================");
 					System.out.println("\n Do you want to delete another territory (y,n): ");
-					deleteMore = scanner.nextLine().toLowerCase();
+					delete_more = scanner.nextLine().toLowerCase();
 				}
 				
 			}
@@ -312,10 +323,10 @@ public class Map_Generator_View extends JPanel {
 				System.out.println("\n\t 'Territory does not found!'");
 				System.out.println("\n==================================");
 				System.out.println("\n Do you want to select another territory (y,n): ");
-				deleteMore = scanner.nextLine().toLowerCase();
+				delete_more = scanner.nextLine().toLowerCase();
 			}			
 
-		} while (deleteMore.equals("y"));
+		} while (delete_more.equals("y"));
 	}
 
 	/**
@@ -323,29 +334,29 @@ public class Map_Generator_View extends JPanel {
 	 */
 	public void Delete_Neighbour_Map_Menu() {
 		scanner = new Scanner(System.in);
-		String territoryName;
+		String territory_name;
 		String neighbour_name;
-		String deleteNeighbour;
-		String deleteMore = "n";
+		String delete_neighbour;
+		String delete_more = "n";
 		boolean result = false;
 
 		do {
 			System.out.println("\n Enter territory name: ");
-			territoryName = scanner.nextLine();
-			Territory gettingTerritory = map.Get_Territory(territoryName);
+			territory_name = scanner.nextLine();
+			Territory getting_territory = map.Get_Territory(territory_name);
 
 			System.out.println("\n Do you want delete neighbour(s) (one , all): ");
-			deleteNeighbour = scanner.nextLine().toLowerCase();
+			delete_neighbour = scanner.nextLine().toLowerCase();
 
-			if (deleteNeighbour.equals("one")) {
+			if (delete_neighbour.equals("one")) {
 				System.out.println("\n Enter neighbour name: ");
 				neighbour_name = scanner.nextLine();
 				//delete from gettingTerritory
-				result = gettingTerritory.Delete_Neighbour(neighbour_name);
+				result = getting_territory.Delete_Neighbour(neighbour_name);
 				if (result) {
 					//delete from gettingNeighbour
 					Territory getting_neighbour = map.Get_Territory(neighbour_name);
-					result = getting_neighbour.Delete_Neighbour(territoryName);
+					result = getting_neighbour.Delete_Neighbour(territory_name);
 					if (result) {
 						System.out.println("\n\t Neighbour is successfully deleted!");
 						System.out.println("\n==================================");
@@ -360,16 +371,16 @@ public class Map_Generator_View extends JPanel {
 					System.out.println("\n==================================");
 				}
 
-			} else if(deleteNeighbour.equals("all")) {
-				result = gettingTerritory.Delete_Neighbours();
+			} else if(delete_neighbour.equals("all")) {
+				result = getting_territory.Delete_Neighbours();
 				if (result) {
 					System.out.println("\n\t All neighbours are successfully deleted!");
 					System.out.println("\n==================================");
 				}
 			}
 			System.out.println("\n Do you want to delete another neighbour (y,n): ");
-			deleteMore = scanner.nextLine().toLowerCase();
-		} while (deleteMore.equals("y"));
+			delete_more = scanner.nextLine().toLowerCase();
+		} while (delete_more.equals("y"));
 	}
 
 	/**
