@@ -75,12 +75,14 @@ public class Territory {
 	}
 	
 	/**
-	 * Deletes all the connections from its neighbours
+	 * Deletes all the connections to its neighbours 
+	 * Also, Deletes connection to this territory in its neighbour 
 	 * @return boolean
 	 */
 	public boolean Delete_Neighbours() {
 		boolean result = true;
 		for(Territory neighbour: adj.values()) {
+			this.Delete_Neighbour(neighbour.name);
 			result = result && neighbour.Delete_Neighbour(this.name);
 		}
 		return result;
