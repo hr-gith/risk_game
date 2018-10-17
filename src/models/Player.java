@@ -25,9 +25,16 @@ public class Player {
 		this(player_id, "Player " + player_id);  
 	}
 
-	
-	
-	
+	/**
+	 * This method calculates number of initial armies for each player to be used in the STARTUP phase
+	 * @return return number of initial armies as an integer
+	 */
+	public static int Calc_Initial_Armies() {
+		int initial_armies=15;
+		//TODO the logic based on number of players and territories
+		// logic should be mentioned in Documentations
+		return initial_armies;
+	} 
 	
 	public Boolean Add_Army(){
 		
@@ -54,10 +61,6 @@ public class Player {
 		return true; 
 	}
 	
-	
-	
-	
-	
 	public boolean Add_Territory(Territory new_territory) {
 		Objects.requireNonNull(new_territory);	
 		  if (this.owned_territories == null || this.owned_territories.isEmpty()) {
@@ -70,9 +73,6 @@ public class Player {
 		  }		  
 		  return false;
 	}
-	
-	
-	
 	
 	
 }
