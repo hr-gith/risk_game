@@ -73,7 +73,6 @@ public class Map_Generator_View extends JPanel {
 	/**
 	 * designing map by user
 	 * 
-	 * @return user design map
 	 */
 	public void Display_Map_Designer() {
 		scanner = new Scanner(System.in);
