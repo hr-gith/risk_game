@@ -18,11 +18,12 @@ public class Map_Generator_Controller {
 		this.io_map_helper = new IO_Map_Helper();
 	}
 	
-	public void start() {
-		int choice = this.view.Display_Menu();;
-		while(choice != 1 && choice != 2){
+	public boolean start() {
+		//generating map from file or by user design
+		int choice = this.view.Display_Menu();
+		while(choice != 1 && choice != 2 && choice != 3){
 			System.out.println("\n-----------------------------------");			
-			this.view.Display_Message("Error: Enter a valid choice (1,2).");
+			this.view.Display_Message("Error: Enter a valid choice (1-3).");
 			System.out.println("\n-----------------------------------");			
 			choice = this.view.Display_Menu();
 		}
@@ -33,19 +34,15 @@ public class Map_Generator_Controller {
 			this.view.Display_Map_Designer();
 			map = view.map;
 		}				
-		else
-			
-			//TODO;exit
+		else if (choice == 3){			
+			System.exit(0);
+		}
+		
+		//display finalized map
 		this.view.Display_Map(map);
 		if (map.Is_Valid())
-			this.view.Display_Message("The map is valid");
+			return true;
 		else
-			this.view.Display_Message("Error: The map is not valid");
-		if (map.Exist_Path(map.Get_Territories(), "territory1", "territory5"))
-			this.view.Display_Message("path exist");
-		else
-			this.view.Display_Message("Error: path does not exist");
-		
-		this.io_map_helper.Export_Map(map);
+			return false;
 	}
 }

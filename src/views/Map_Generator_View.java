@@ -9,11 +9,11 @@ import models.Territory;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import controllers.Map_Generator_Controller;
 
 /**
  * 
@@ -22,10 +22,10 @@ import javax.swing.JPanel;
  */
 public class Map_Generator_View extends JPanel {
 	Scanner scanner;
+	public Map_Generator_Controller controller;
 	public Map map = Map.Get_Map();
 	boolean valid_result=false;
 
-	@SuppressWarnings("resource")
 	/**
 	 * Display main menu
 	 * 
@@ -63,7 +63,8 @@ public class Map_Generator_View extends JPanel {
 		System.out.println("\n 6.Delete Neighbour");
 		System.out.println("\n 7.Display Map");
 		System.out.println("\n 8.Validate Map");
-		System.out.println("\n 9.Exit");
+		System.out.println("\n 9.Save Map in a file");
+		System.out.println("\n 10.Exit");
 		System.out.println("\n\n Please Enter Your Choice(1 to 7): ");
 		int result = Integer.valueOf(scanner.nextLine());
 
@@ -111,14 +112,21 @@ public class Map_Generator_View extends JPanel {
 			case 8:// Validate Map
 				if(!map.Is_Valid()) {
 					System.out.println("\n==================================");
-					System.out.println("\n\t Error!The map is not valid");
+					System.out.println("\n\t Error!The map is not valid.");
 				}else {
 					System.out.println("\n==================================");
-					System.out.println("\n\t The map is valid");
+					System.out.println("\n\t The map is valid.");
 				}
 				break;
-			case 9:// Exit!
+			case 9://Save map
+				System.out.println("\n==================================");
+				if (controller.io_map_helper.Export_Map(map))
+					System.out.println("\n your map is successfully saved.");
+				else
+					System.out.println("\n Error occured while saving map in a file.");
 				break;
+			case 10:// Exit!
+					break;
 
 			default:
 				System.out.println("\n==================================");
@@ -126,7 +134,7 @@ public class Map_Generator_View extends JPanel {
 				break;
 			}
 			
-		} while (choice != 9);
+		} while (choice != 10);
 
 	}
 
@@ -138,30 +146,30 @@ public class Map_Generator_View extends JPanel {
 		String continent_name;
 		Continent continent;
 		boolean result = false;
-		String addMore = "n";
+		String add_more = "n";
 
 		do {
 			System.out.println("\n Enter continent name: ");
 			continent_name = scanner.nextLine();
-			Continent gettingContinent = map.Get_Continent(continent_name);
+			Continent getting_continent = map.Get_Continent(continent_name);
 
-			if (gettingContinent == null) {
+			if (getting_continent == null) {
 				continent = new Continent(continent_name,1);
 				result = map.Add_Continent(continent);
 				if (result) {
 					System.out.println("\n\t 'Continent is added successfully'");
 					System.out.println("\n==================================");
 					System.out.println("\n Do you want to add another continent(y,n): ");
-					addMore = scanner.nextLine().toLowerCase();
+					add_more = scanner.nextLine().toLowerCase();
 				} else {
 					System.out.println("\n\t 'Continent existed!'");
 					System.out.println("\n==================================");
 					System.out.println("\n Do you want to add another continent(y,n): ");
-					addMore = scanner.nextLine().toLowerCase();
+					add_more = scanner.nextLine().toLowerCase();
 				}
 			}
 
-		} while (addMore.equals("y"));
+		} while (add_more.equals("y"));
 
 	}
 
@@ -174,45 +182,45 @@ public class Map_Generator_View extends JPanel {
 		String territory_name;
 		String continent_name;
 		boolean result = false;
-		String addMore = "n";
-		int xPosition;
-		int yPosition;
+		String add_more = "n";
+		int x_position;
+		int y_position;
 		do {
 			System.out.println("\n Enter related continent: ");
 			continent_name = scanner.nextLine();
-			Continent gettingContinent = map.Get_Continent(continent_name);	
+			Continent getting_continent = map.Get_Continent(continent_name);	
 
-			if (gettingContinent != null) {
+			if (getting_continent != null) {
 				System.out.println("\n Enter territory name: ");
 				territory_name = scanner.nextLine();
 				System.out.println("\n Enter territory X position: ");
-				xPosition =Integer.valueOf(scanner.nextLine()) ;
+				x_position =Integer.valueOf(scanner.nextLine()) ;
 				System.out.println("\n Enter territory Y position: ");
-				yPosition = Integer.valueOf(scanner.nextLine()) ;
+				y_position = Integer.valueOf(scanner.nextLine()) ;
 				
-				territory = new Territory(territory_name, xPosition, yPosition, continent_name);
-				result = gettingContinent.Add_Territory(territory);
+				territory = new Territory(territory_name, x_position, y_position, continent_name);
+				result = getting_continent.Add_Territory(territory);
 				if (result) {
 					System.out.println("\n\t 'Territory is added successfully'");
 					System.out.println("\n==================================");
 					System.out.println("\n Do you want to add another territory(y,n)? ");
-					addMore = scanner.nextLine().toLowerCase();
+					add_more = scanner.nextLine().toLowerCase();
 				} else {
 					
 					System.out.println("\n\t The Territory exists!");
 					System.out.println("\n==================================");
 					System.out.println("\n Do you want to try again (y,n)? ");
-					addMore = scanner.nextLine().toLowerCase();	
+					add_more = scanner.nextLine().toLowerCase();	
 				}
 			}
 			else {
 				System.out.println("\n\t 'The continent does not exist!'");
 				System.out.println("\n==================================");
 				System.out.println("\n Do you want to try again (y,n)? ");
-				addMore = scanner.nextLine().toLowerCase();
+				add_more = scanner.nextLine().toLowerCase();
 			}
 			
-		} while (addMore.equals("y"));
+		} while (add_more.equals("y"));
 	}
 
 	/**

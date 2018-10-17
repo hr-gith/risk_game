@@ -1,9 +1,4 @@
-package test_models;
-import test_models.*; 
-
-
-//
-import org.junit.runner.notification.Failure;
+package models;
 
 
 import org.junit.runner.*; 
