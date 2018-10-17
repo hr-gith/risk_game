@@ -14,7 +14,7 @@ public class Map_Generator_Controller {
 	 
 	public  Map_Generator_Controller() {
 		this.view = new Map_Generator_View();
-		this.map = new Map();
+		this.map =Map.Get_Map();
 		this.io_map_helper = new IO_Map_Helper();
 	}
 	
@@ -29,9 +29,13 @@ public class Map_Generator_Controller {
 		
 		if (choice == 1) {
 			map = this.io_map_helper.Import_Map(Config.input_file);
-		}else {
-			map = this.view.Display_Map_Designer();
+		}else if (choice == 2) {
+			this.view.Display_Map_Designer();
+			map = view.map;
 		}				
+		else
+			
+			//TODO;exit
 		this.view.Display_Map(map);
 		if (map.Is_Valid())
 			this.view.Display_Message("The map is valid");

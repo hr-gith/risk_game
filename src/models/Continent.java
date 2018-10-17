@@ -28,7 +28,6 @@ public class Continent {
 	 * @param name of continent
 	 */
 	public Continent( String name) {
-		this.id = 1;
 		this.name = name.toLowerCase();
 		this.territories= new HashMap(); 
 	}

@@ -15,11 +15,11 @@ public class Map {
 	public HashMap<String,Continent> continents;
     
     //constructors
-    public Map() {
+    private Map() {
     	continents = new HashMap<>();
     }
     
-	public Map(String image, boolean wrap, String scroll, String author, boolean warn,HashMap<String,Continent> continents) {
+	private Map(String image, boolean wrap, String scroll, String author, boolean warn,HashMap<String,Continent> continents) {
 		this.image = image;
 		this.wrap = wrap;
 		this.scroll = scroll;
@@ -27,13 +27,29 @@ public class Map {
 		this.warn = warn;
 		this.continents = continents;
 	}
+	
+	/**
+	 * Singleton Pattern
+	 * @author Leila
+	 *
+	 */
+	
+	private static class MapUniqueInstanceHolder{
+		private static final Map THE_UNIQUE_MAP= new Map();
+	}
+	/**
+	 * 
+	 * @return unique map instance
+	 */
+	public static Map Get_Map() {
+		return MapUniqueInstanceHolder.THE_UNIQUE_MAP;
+	}
 	    
-	//methods
 	/**
 	 * Checks if map has no continents
 	 * @return
 	 */
-	public boolean IsEmpty() {
+	public boolean Is_Empty() {
 		  return this.continents.isEmpty();
 	}	
 	
@@ -91,7 +107,7 @@ public class Map {
 	 * @return continent name or null value
 	 */
 	public Continent Get_Continent (String continent_name) {
-		return continents.get(continent_name);
+		return continents.get(continent_name.toLowerCase());
 	}
 	
 	/**
