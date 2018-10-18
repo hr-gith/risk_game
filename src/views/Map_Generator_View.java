@@ -16,11 +16,10 @@ import javax.swing.JPanel;
 import controllers.Map_Generator_Controller;
 
 /**
- * 
- * @author Leila
- *
+ * class related to the map generator view
  */
 public class Map_Generator_View extends JPanel {
+	
 	Scanner scanner;
 	public Map_Generator_Controller controller;
 	public Map map = Map.Get_Map();
@@ -28,8 +27,6 @@ public class Map_Generator_View extends JPanel {
 
 	/**
 	 * Display main menu
-	 * 
-	 * @return
 	 */
 
 	public int Display_Menu() {
@@ -45,8 +42,7 @@ public class Map_Generator_View extends JPanel {
 	}
 
 	/**
-	 * Display design main menu
-	 * 
+	 * Display menu for design map
 	 * @return choice
 	 */
 
@@ -72,8 +68,7 @@ public class Map_Generator_View extends JPanel {
 	}
 
 	/**
-	 * designing map by user
-	 * 
+	 * Designing map by user
 	 */
 	public void Display_Map_Designer() {
 		scanner = new Scanner(System.in);
@@ -126,6 +121,7 @@ public class Map_Generator_View extends JPanel {
 					System.out.println("\n Error occured while saving map in a file.");
 				break;
 			case 10:// Exit!
+				System.exit(0);
 					break;
 
 			default:

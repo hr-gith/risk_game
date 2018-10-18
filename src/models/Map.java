@@ -113,14 +113,14 @@ public class Map {
 	/**
 	 * @return list of all territories existed on the map
 	 */
-	public HashSet<Territory> Get_Territories() {
-		HashSet<Territory> territories = new HashSet<>();
+	public HashMap<String,Territory> Get_Territories() {
+		HashMap<String, Territory> territories = new HashMap<>();
 		for (String key : continents.keySet()) {
 			for ( Territory territory : continents.get(key).territories.values()) 
-				territories.add(territory);
+				territories.put(territory.name, territory);
 		}
 		return territories;
-	}
+}
 	
 	/**
 	 * checks if a map is valid based on RISK game rules
@@ -128,14 +128,15 @@ public class Map {
 	 */
 	public boolean Is_Valid() {
 		//Is a connected graph?
-		HashMap<String, Boolean> visited_territories = DFS(this.Get_Territories());
+		HashSet<Territory> territories = (HashSet<Territory>)this.Get_Territories().values();
+		HashMap<String, Boolean> visited_territories = DFS(territories);
 		 for (String territory : visited_territories.keySet())
 			 if (!visited_territories.get(territory))
 				 return false;
 		
 		//Are all continents connected graphs?
 		for (Continent con : continents.values()) {
-			HashSet<Territory> territories = new HashSet<Territory>( con.territories.values());
+			territories = new HashSet<Territory>( con.territories.values());
 			visited_territories = DFS(territories);
 			for (String territory : visited_territories.keySet())
 				 if (!visited_territories.get(territory))
@@ -144,7 +145,7 @@ public class Map {
 		
 		//If two territories have same positions or the same names? => has been checked while importing a map in IO_Map_Helper	
 		return true;
-	}
+}
 	
 	/**
 	 * part of Depth first search on a graph
