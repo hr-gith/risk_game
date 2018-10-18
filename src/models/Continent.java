@@ -32,7 +32,7 @@ public class Continent {
 		this.id = 1;
 		this.score = score;
 		this.name = name.toLowerCase();
-		this.territories= new HashMap(); 
+		this.territories= new HashMap<>(); 
 	}
 	
 	/**

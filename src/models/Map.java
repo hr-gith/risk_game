@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
+
 
 public class Map {
 	public String image;
@@ -14,10 +14,21 @@ public class Map {
 	public boolean warn;
 	public HashMap<String,Continent> continents;
     
-    //constructors
+    /**
+     * constructor
+     */
     private Map() {
     	continents = new HashMap<>();
     }
+    /**
+     * constructor
+     * @param image
+     * @param wrap
+     * @param scroll
+     * @param author
+     * @param warn
+     * @param continents
+     */
     
 	private Map(String image, boolean wrap, String scroll, String author, boolean warn,HashMap<String,Continent> continents) {
 		this.image = image;
@@ -30,8 +41,6 @@ public class Map {
 	
 	/**
 	 * Singleton Pattern
-	 * @author Leila
-	 *
 	 */
 	
 	private static class MapUniqueInstanceHolder{
