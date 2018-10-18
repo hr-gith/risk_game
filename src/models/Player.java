@@ -2,7 +2,9 @@ package models;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Objects;
+
 
 public class Player {
 	
@@ -10,56 +12,79 @@ public class Player {
 	
 	public String player_name; 
 	State_GamePhase state_game_phase; 
+	State_GamePhase old_state_game_phase; 
 	
 	public HashMap<String,Territory> owned_territories;
-	
+
+	public Integer reinforcements;
 	
 	
 	public Player(Integer player_id, String player_name){
 		this.player_id = player_id; 
 		this.player_name = player_name;  
-		this.state_game_phase = State_GamePhase.STARTUP; 
+		this.state_game_phase = State_GamePhase.SETUP; 
+		this.old_state_game_phase = State_GamePhase.SETUP; 
 	}
 	
 	public Player(Integer player_id){
 		this(player_id, "Player " + player_id);  
 	}
 
-	/**
-	 * This method calculates number of initial armies for each player to be used in the STARTUP phase
-	 * @return return number of initial armies as an integer
-	 */
-	public static int Calc_Initial_Armies() {
-		int initial_armies=15;
-		//TODO the logic based on number of players and territories
-		// logic should be mentioned in Documentations
-		return initial_armies;
-	} 
 	
-	public Boolean Add_Army(){
+	
+	public void Number_Territory_Reinforcements(){
+		
+		 this.reinforcements = this.owned_territories.size() / 3; 
 		
 		
+	}
+	
+	public void Number_StartUp_Reinforcements(){
 		
-		return true; 
+		// hadi input start up reinforcement logic
+		
+		
 	}
 	
 	
-	public Boolean attackTerritory(Territory attacking, Territory defending){
-		//is the territory adjacent
-		//is there more than one army in the territory 
+	
+	public Boolean Add_Army(String territory_key){
 		
+		if(owned_territories.containsKey(territory_key) && this.reinforcements > 0){
 		
-		
-		
-		return true; 
+			this.owned_territories.get(territory_key).nb_armies++; 
+			
+			this.reinforcements--; 
+			
+			return true;
+		} 
+	
+		else{
+			return false; 
+		}
 	}
 	
-	public Boolean fortifyTerritory(Territory from, Territory to, Integer number_of_units){
+	
+	
+	public Boolean Move_Army(Territory from, Territory to, Integer number_of_units){
 		//is there a connection between the two points? 
-		// do I leave at least one unit in the territory 
+		// do I leave at least one unit in the territory  
 		
-		return true; 
+		if(this.ownsBothTerritories(from, to) && this.areConnectedTerritories(from.name, to.name) && this.hasEnoughTroopsForMove(from, number_of_units )){
+			
+			to.nb_armies = to.nb_armies + number_of_units; 
+			from.nb_armies = from.nb_armies - number_of_units; 
+			
+			return true; 
+			
+		} 
+		else{
+			return false; 
+		}
+	
+		
 	}
+	
 	
 	public boolean Add_Territory(Territory new_territory) {
 		Objects.requireNonNull(new_territory);	
@@ -72,6 +97,51 @@ public class Player {
 			  return true; 
 		  }		  
 		  return false;
+	}
+	
+	
+	public boolean Delete_Territory(String territory_name) {
+		Objects.requireNonNull(territory_name);	
+		
+		  if (this.owned_territories != null && !this.owned_territories.isEmpty() && this.owned_territories.containsKey(territory_name.toLowerCase())) {
+			  this.owned_territories.remove(territory_name.toLowerCase());		  
+			  return true;
+		  }
+		  return false;
+	}
+	
+	
+	// Test Logic
+	
+	private Boolean ownsBothTerritories(Territory t1, Territory t2){
+		
+		if(this.owned_territories.containsKey(t1) && this.owned_territories.containsKey(t2)){
+			return true; 
+		}
+		else {
+			return false; 
+		}
+		
+	}
+	
+	private Boolean areConnectedTerritories(String t1, String t2){
+		
+		// for Hadi to complete with Hamideh
+		
+		HashSet<Territory> territories = new HashSet<>();
+		//Needs testing
+			for ( Territory territory : owned_territories.values()) 
+				territories.add(territory);
+	
+		return Game_Model.map_generator.map.Exist_Path(territories, t1 , t2);
+		
+		
+	}
+	
+	private Boolean hasEnoughTroopsForMove(Territory t1, Integer troops ){
+		
+		return (t1.nb_armies > troops); 
+		
 	}
 	
 	

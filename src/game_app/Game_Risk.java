@@ -1,14 +1,20 @@
 package game_app;
 
-import controllers.Map_Generator_Controller;
+import models.Game_Model;
 
 public class Game_Risk {
 	
 	public static void main(String[] args) {
-		Map_Generator_Controller map_generator = new Map_Generator_Controller();
-		map_generator.start();
-
+	
+		Game_Model.Game_Setup(); 
+		
+		while(Game_Model.isStillFighting()){
+		Game_Model.Game_Loop(); 
+		}
 		
 	}
+	
+	
+	
 
 }
