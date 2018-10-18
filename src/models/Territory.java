@@ -21,7 +21,7 @@ public class Territory {
 		this.pos_y = pos_y;
 		this.continent_name = continent_name;
 		this.owner_name = "";
-		this.nb_armies = 0;
+		this.nb_armies = 1;
 		this.adj = new HashMap<>();
 	}
 	/**
@@ -75,14 +75,12 @@ public class Territory {
 	}
 	
 	/**
-	 * Deletes all the connections to its neighbours 
-	 * Also, Deletes connection to this territory in its neighbour 
+	 * Deletes all the connections from its neighbours
 	 * @return boolean
 	 */
 	public boolean Delete_Neighbours() {
 		boolean result = true;
 		for(Territory neighbour: adj.values()) {
-			this.Delete_Neighbour(neighbour.name);
 			result = result && neighbour.Delete_Neighbour(this.name);
 		}
 		return result;

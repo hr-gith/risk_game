@@ -16,22 +16,20 @@ import javax.swing.JPanel;
 import controllers.Map_Generator_Controller;
 
 /**
- * Generating map with user input 
+ * 
+ * @author Leila
+ *
  */
 public class Map_Generator_View extends JPanel {
-	
-	/**
-	 * generating version ID
-	 */
-	private static final long serialVersionUID = 1L;
-	
 	Scanner scanner;
 	public Map_Generator_Controller controller;
 	public Map map = Map.Get_Map();
 	boolean valid_result=false;
 
 	/**
-	 * Display main menu for user design map
+	 * Display main menu
+	 * 
+	 * @return
 	 */
 
 	public int Display_Menu() {
@@ -47,7 +45,9 @@ public class Map_Generator_View extends JPanel {
 	}
 
 	/**
-	 * Display design menu
+	 * Display design main menu
+	 * 
+	 * @return choice
 	 */
 
 	public int Display_Menu_Design_Map() {
@@ -65,14 +65,14 @@ public class Map_Generator_View extends JPanel {
 		System.out.println("\n 8.Validate Map");
 		System.out.println("\n 9.Save Map in a file");
 		System.out.println("\n 10.Exit");
-		System.out.println("\n\n Please Enter Your Choice(1 to 10): ");
+		System.out.println("\n\n Please Enter Your Choice(1 to 7): ");
 		int result = Integer.valueOf(scanner.nextLine());
 
 		return result;
 	}
 
 	/**
-	 * designing map for user by calling Add or Delete functions
+	 * designing map by user
 	 * 
 	 */
 	public void Display_Map_Designer() {
@@ -126,12 +126,11 @@ public class Map_Generator_View extends JPanel {
 					System.out.println("\n Error occured while saving map in a file.");
 				break;
 			case 10:// Exit!
-				System.exit(0);
 					break;
 
 			default:
 				System.out.println("\n==================================");
-				System.out.println("\n\t Error! Please Enter Your Choice(1 to 10)");
+				System.out.println("\n\t Error! Please Enter Your Choice(1 to 7)");
 				break;
 			}
 			
@@ -303,7 +302,7 @@ public class Map_Generator_View extends JPanel {
 		} while (delete_more.equals("y"));
 	}
 
-	/**n
+	/**
 	 * Delete the specify territory from the user design map
 	 */
 	public void Delete_Territory_Map_Menu() {

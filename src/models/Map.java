@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
-
+import java.util.Set;
 
 public class Map {
 	public String image;
@@ -14,21 +14,10 @@ public class Map {
 	public boolean warn;
 	public HashMap<String,Continent> continents;
     
-    /**
-     * constructor
-     */
+    //constructors
     private Map() {
     	continents = new HashMap<>();
     }
-    /**
-     * constructor
-     * @param image
-     * @param wrap
-     * @param scroll
-     * @param author
-     * @param warn
-     * @param continents
-     */
     
 	private Map(String image, boolean wrap, String scroll, String author, boolean warn,HashMap<String,Continent> continents) {
 		this.image = image;
@@ -41,6 +30,8 @@ public class Map {
 	
 	/**
 	 * Singleton Pattern
+	 * @author Leila
+	 *
 	 */
 	
 	private static class MapUniqueInstanceHolder{
@@ -122,11 +113,11 @@ public class Map {
 	/**
 	 * @return list of all territories existed on the map
 	 */
-	public HashMap<String,Territory> Get_Territories() {
-		HashMap<String, Territory> territories = new HashMap<>();
+	public HashSet<Territory> Get_Territories() {
+		HashSet<Territory> territories = new HashSet<>();
 		for (String key : continents.keySet()) {
 			for ( Territory territory : continents.get(key).territories.values()) 
-				territories.put(territory.name, territory);
+				territories.add(territory);
 		}
 		return territories;
 	}
@@ -137,15 +128,14 @@ public class Map {
 	 */
 	public boolean Is_Valid() {
 		//Is a connected graph?
-		HashSet<Territory> territories = (HashSet<Territory>)this.Get_Territories().values();
-		HashMap<String, Boolean> visited_territories = DFS(territories);
+		HashMap<String, Boolean> visited_territories = DFS(this.Get_Territories());
 		 for (String territory : visited_territories.keySet())
 			 if (!visited_territories.get(territory))
 				 return false;
 		
 		//Are all continents connected graphs?
 		for (Continent con : continents.values()) {
-			territories = new HashSet<Territory>( con.territories.values());
+			HashSet<Territory> territories = new HashSet<Territory>( con.territories.values());
 			visited_territories = DFS(territories);
 			for (String territory : visited_territories.keySet())
 				 if (!visited_territories.get(territory))
@@ -198,16 +188,21 @@ public class Map {
 	 * @param to_name which is the second territory
 	 * @return
 	 */
-	public Boolean Exist_Path(HashMap<String , Territory> territories, String from_name, String to_name) {
-		Territory root = territories.get(from_name.toLowerCase());
-		Territory to = territories.get(to_name.toLowerCase());
-				
+	public Boolean Exist_Path(HashSet<Territory> territories, String from_name, String to_name) {
+		Territory root = null;
+		Territory to = null;
+		for (Territory territory: territories ) {
+			if (territory.name.equals(from_name.toLowerCase()))
+				root = territory;
+			if (territory.name.equals(to_name.toLowerCase()))
+				to = territory;
+		}
 		if (root == null || to == null) return false;
 		
 		HashMap<String, Boolean> visited = new HashMap<>();
 	    //set visited to false for all territories
-	    for (String territory_name: territories.keySet() ) {
-			visited.put(territory_name, false);
+	    for (Territory territory: territories ) {
+			visited.put(territory.name, false);
 		}
 		DFS_Graph(root, visited);
 		if (visited.get(to.name))
