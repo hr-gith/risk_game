@@ -6,6 +6,7 @@ import views.Game_View;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 
 
@@ -22,7 +23,7 @@ public class Game_Model {
 
     static Game_View game_view;
 
-    static HashSet<Territory> game_territories;
+    static HashMap<String,Territory> game_territories;
 
     static ArrayList<Player> player_list;
     static ArrayList<Player> active_player_list;
@@ -314,7 +315,7 @@ public class Game_Model {
         int index = 0;
 
 
-        for (Territory tmp : game_territories) {
+        for (Territory tmp :(HashSet<Territory>) game_territories.values()) {
 
 
             if (index < (game_territories.size() - (game_territories.size() % Game_Model.number_of_players))) {
