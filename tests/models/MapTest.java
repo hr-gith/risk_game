@@ -1,7 +1,5 @@
 package models;
 
-import static org.junit.Assert.fail;
-
 import java.util.HashMap;
 import org.junit.Assert;
 import org.junit.Test;
@@ -14,6 +12,8 @@ public class MapTest {
 	Map map = Map.Get_Map();
 	Continent new_continent;
 	Territory new_territory;
+	Territory new_territory_neighbour_1;
+	Territory new_territory_neighbour_2;
 	
 	/**
 	 * test if the is empty
@@ -21,7 +21,9 @@ public class MapTest {
 
 	@Test
 	public void testIs_Empty() {
-		fail("Not yet implemented");
+		new_continent = new Continent("new_continent_name", 1);
+		boolean result = map.Add_Continent(new_continent);
+		Assert.assertFalse(result);
 	}
 	/**
 	 * test add continent
@@ -100,15 +102,48 @@ public class MapTest {
 
 	@Test
 	public void testIs_Valid() {
-		fail("Not yet implemented");
+         new_continent = new Continent("new_continent_name" , 1);
+         map.Add_Continent(new_continent);
+		
+		new_territory = new Territory("new_territory_name_1",120,300,"new_continent_name");
+		new_continent.Add_Territory(new_territory);
+		
+		new_territory_neighbour_1 = new Territory("new_territory_name_2",320,432,"new_continent_name");
+		new_continent.Add_Territory(new_territory_neighbour_1);
+		
+		new_territory_neighbour_2 = new Territory("new_territory_name_3",350,470,"new_continent_name");
+		new_continent.Add_Territory(new_territory_neighbour_2);
+		
+		new_territory.Add_Neighbour(new_territory_neighbour_1);
+		new_territory.Add_Neighbour(new_territory_neighbour_2);
+		new_territory_neighbour_1.Add_Neighbour(new_territory_neighbour_2);
+		
+		map.Is_Valid();
+		
 	}
 	/**
 	 * test Exist_Path
 	 */
 
-	@Test
-	public void testExist_Path() {
-		fail("Not yet implemented");
-	}
+//	@Test
+//	public void testExist_Path() {
+//		new_continent = new Continent("new_continent_name" , 1);
+//        map.Add_Continent(new_continent);
+//		
+//		new_territory = new Territory("new_territory_name_1",120,300,"new_continent_name");
+//		new_continent.Add_Territory(new_territory);
+//		
+//		new_territory_neighbour_1 = new Territory("new_territory_name_2",320,432,"new_continent_name");
+//		new_continent.Add_Territory(new_territory_neighbour_1);
+//		
+//		new_territory_neighbour_2 = new Territory("new_territory_name_3",350,470,"new_continent_name");
+//		new_continent.Add_Territory(new_territory_neighbour_2);
+//		
+//		new_territory.Add_Neighbour(new_territory_neighbour_1);
+//		new_territory.Add_Neighbour(new_territory_neighbour_2);
+//		new_territory_neighbour_1.Add_Neighbour(new_territory_neighbour_2);
+//		
+//		map.Exist_Path(new_continent.territories, "new_territory_name_1","new_territory_name_3"):
+//	}
 
 }
