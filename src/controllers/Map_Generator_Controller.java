@@ -6,17 +6,32 @@ import models.Map;
 import utilities.Config;
 import views.Map_Generator_View;
 
+/**
+ * Map_Generator_Controller class is a controller
+ * 
+ *
+ */
+
 public class Map_Generator_Controller {
 	
 	public Map_Generator_View view;
 	public Map map;
 	public IO_Map_Helper io_map_helper;
+	
+	/**
+	 * Constructor
+	 */
 	 
 	public  Map_Generator_Controller() {
 		this.view = new Map_Generator_View();
 		this.map =Map.Get_Map();
 		this.io_map_helper = new IO_Map_Helper();
 	}
+	
+	/**
+	 * start method that generate map from file or user design
+	 * @return boolean
+	 */
 	
 	public boolean start() {
 		//generating map from file or by user design

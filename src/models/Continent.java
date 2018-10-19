@@ -25,7 +25,7 @@ public class Continent {
 		this.territories= new HashMap<>(); 
 	}
 	/**
-	 * constructor
+	 * constructor without Id
 	 * @param name of continent
 	 */
 	public Continent( String name, int score) {
@@ -85,6 +85,7 @@ public class Continent {
 
 	/**
 	 * Two continents are equal only if their names are the same
+	 * @return boolean
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -97,6 +98,7 @@ public class Continent {
 
 	/**
 	 * Returns continent information as string
+	 * @return string
 	 */
 	@Override
 	public String toString() {

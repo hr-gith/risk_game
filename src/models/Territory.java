@@ -3,6 +3,11 @@ package models;
 import java.util.HashMap;
 import java.util.Objects;
 
+/**
+ * Territory class is a model
+ *to store and present information about a territory and neighbour of a map
+ */
+
 public class Territory {
 	public int id;
 	public String name;
@@ -13,7 +18,14 @@ public class Territory {
 	public int nb_armies;
     public HashMap<String, Territory> adj;
 
-	//constructors
+	/**
+	 * Constructor
+	 * @param id
+	 * @param name
+	 * @param pos_x
+	 * @param pos_y
+	 * @param continent_name
+	 */
 	public Territory(int id, String name, int pos_x, int pos_y, String continent_name) {
 		this.id = id;
 		this.name = name.toLowerCase();
@@ -44,9 +56,9 @@ public class Territory {
 	
 	
 	/**
-	 * Adds a connection from the territory to another territory
+	 * Add a connection from the territory to another territory
 	 * @param neighbour
-	 * @return
+	 * @return boolean
 	 */
 	public boolean Add_Neighbour(Territory neighbour) {
 		  Objects.requireNonNull(neighbour);	
@@ -88,6 +100,7 @@ public class Territory {
 	
 	/**
 	 * Two territories are equal only if their names are the same
+	 * @return boolean
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -103,7 +116,8 @@ public class Territory {
 	}
 
 	/**
-	 * Returns territory information as string
+	 * toString method
+	 * @Returns territory information as string
 	 */
 	@Override
 	public String toString() {

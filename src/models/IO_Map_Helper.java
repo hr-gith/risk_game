@@ -1,12 +1,13 @@
 package models;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Optional;
-
 import utilities.Config;
 import utilities.File_Operations;
+
+/**
+ * IO_Map_Helper class is a model
+ * To import and export map file
+ */
 
 public class IO_Map_Helper {
 
