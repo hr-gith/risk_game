@@ -21,7 +21,6 @@ import controllers.Map_Generator_Controller;
 public class Map_Generator_View extends JPanel {
 	
 	Scanner scanner;
-	public Map_Generator_Controller controller;
 	public Map map = Map.Get_Map();
 	boolean valid_result=false;
 
@@ -34,10 +33,14 @@ public class Map_Generator_View extends JPanel {
 		System.out.println("\n==================================");
 		System.out.println("\n\t Map Generator");
 		System.out.println("\n==================================");
-		System.out.println("\n 1. Import From File");
-		System.out.println("\n 2. Design By MySelf");
-		System.out.println("\n 3. Exit ");
-		System.out.println("\n\n Please Enter Your Choice(1-3): ");
+		System.out.println("\n 1. Import Map From File");
+		System.out.println("\n 2. Design a New Map");
+		System.out.println("\n 3. Edit The Map");
+		System.out.println("\n 4. Save The Map");
+		System.out.println("\n 5. Display The Map");
+		System.out.println("\n 6. Start Game");
+		System.out.println("\n 7. Exit ");
+		System.out.println("\n\n Please Enter Your Choice(1-7): ");
 		return scanner.nextInt();
 	}
 
@@ -59,9 +62,8 @@ public class Map_Generator_View extends JPanel {
 		System.out.println("\n 6.Delete Neighbour");
 		System.out.println("\n 7.Display Map");
 		System.out.println("\n 8.Validate Map");
-		System.out.println("\n 9.Save Map in a file");
-		System.out.println("\n 10.Exit");
-		System.out.println("\n\n Please Enter Your Choice(1 to 10): ");
+		System.out.println("\n 9.Exit");
+		System.out.println("\n\n Please Enter Your Choice(1 to 9): ");
 		int result = Integer.valueOf(scanner.nextLine());
 
 		return result;
@@ -112,25 +114,16 @@ public class Map_Generator_View extends JPanel {
 					System.out.println("\n==================================");
 					System.out.println("\n\t The map is valid.");
 				}
-				break;
-			case 9://Save map
-				System.out.println("\n==================================");
-				if (controller.io_map_helper.Export_Map(map))
-					System.out.println("\n your map is successfully saved.");
-				else
-					System.out.println("\n Error occured while saving map in a file.");
-				break;
-			case 10:// Exit!
-				System.exit(0);
+				break;			
+			case 9:// Exit!
 					break;
-
 			default:
 				System.out.println("\n==================================");
-				System.out.println("\n\t Error! Please Enter Your Choice(1 to 7)");
+				System.out.println("\n\t Error! Please Enter Your Choice(1 to 9)");
 				break;
 			}
 			
-		} while (choice != 10);
+		} while (choice != 9);
 
 	}
 

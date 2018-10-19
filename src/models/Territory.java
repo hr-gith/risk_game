@@ -65,7 +65,7 @@ public class Territory {
 		  if (adj == null || adj.isEmpty()) {
 			  adj = new HashMap<>();
 		  }
-		  if (!adj.containsKey(neighbour.name.toLowerCase())) {
+		  if (!neighbour.name.toLowerCase().equals(this.name) && !adj.containsKey(neighbour.name.toLowerCase())) {
 			  adj.put(neighbour.name.toLowerCase(), neighbour);
 			  return true;
 		  }		  

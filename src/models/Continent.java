@@ -1,6 +1,7 @@
 package models;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import models.Territory;
@@ -85,6 +86,23 @@ public class Continent {
 		}
 		return result;
 	} 
+	
+	/**
+	 * finds player who owns all the territories in the continent
+	 * 
+	 * @return name of owner or "" if the continent have more than one owner or no owner
+	 */
+	public String Get_Owner() {
+		HashSet<String> owners = new HashSet<String>();
+		for(Territory territory : territories.values()) {
+			if (!owners.contains(territory.owner_name))
+				owners.add(territory.owner_name);
+		}
+		if (owners.size() == 1)
+			return owners.toArray(new String[1])[0];
+		else 
+			return "";
+	}
 
 	/**
 	 * Two continents are equal only if their names are the same
