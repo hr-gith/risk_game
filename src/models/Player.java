@@ -48,7 +48,7 @@ public class Player {
 	
 	public void Number_Territory_Reinforcements(){
 		
-		 this.reinforcements = this.owned_territories.size() / 3; 
+		 this.reinforcements = 3 + this.owned_territories.size() / 3; 
 		
 		
 	}
