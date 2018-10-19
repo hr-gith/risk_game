@@ -7,12 +7,15 @@ import views.Game_View;
 import java.util.*;
 import java.util.Map;
 
+import java.util.Scanner;
+
 /**
  * Game_Model Class is a model 
  * Controls the flow of the game logic for the entire game
  */
 public class Game_Model {
 
+	static Scanner scanner = new Scanner(System.in);
 
     static Integer number_of_players;
     static ArrayList<String> name_of_players;
@@ -49,6 +52,8 @@ public class Game_Model {
         game_view.Display_Menu_Players();
 
         //GAME CONTROLLER INPUT //PROMPT number of players instead of hard coding
+        
+        
 
         number_of_players = game_controller.Get_Num_Players();
         name_of_players = game_controller.Get_Name_Players();
@@ -69,22 +74,23 @@ public class Game_Model {
         game_territories = map_generator.map.Get_Territories();
 
         Assign_Territories();
-        for (Player p : player_list) {
-            if (p.owned_territories != null && p.owned_territories.size() > 0) {
-                Boolean want_to_replace = Boolean.TRUE;
-                while (want_to_replace) {
-                    want_to_replace = game_view.Display_Menu_Replace_army(p);
-                    String territory_name = game_controller.Get_Replace_To_Territory();
-                    Territory territory = map_generator.map.Get_Territory(territory_name);
-                    if (territory != null) {
-                        territory.nb_armies += game_controller.Get_Replace_Number_Of_Move_Armies();
-                    } else {
-                        System.out.println("the input territory is invalid");
-                    }
-                }
-
-            }
-        }
+        
+//        for (Player p : player_list) {
+//            if (p.owned_territories != null && p.owned_territories.size() > 0) {
+//                Boolean want_to_replace = Boolean.TRUE;
+//                while (want_to_replace) {
+//                    want_to_replace = game_view.Display_Menu_Replace_army(p);
+//                    String territory_name = game_controller.Get_Replace_To_Territory();
+//                    Territory territory = map_generator.map.Get_Territory(territory_name);
+//                    if (territory != null) {
+//                        territory.nb_armies += game_controller.Get_Replace_Number_Of_Move_Armies();
+//                    } else {
+//                        System.out.println("the input territory is invalid");
+//                    }
+//                }
+//
+//            }
+//        }
 
 
         for (Player p : active_player_list) {
@@ -143,16 +149,24 @@ public class Game_Model {
 
                     current_player.old_state_game_phase = State_GamePhase.STARTUP;
                     // does player have armies to place?
-
+                    	
+                    System.out.println("Number of armies to place");
+                    System.out.println(current_player.reinforcements); 
 
                     if (current_player.reinforcements > 0) {
                         // GAME CONTROLLER OUTPUT
                         Print_State_Once(current_player, "Place army on territory");
+                        
+                        System.out.println("Fortification =>player : " + current_player.player_name + " has countries :" + current_player.owned_territories.keySet().toString());
+
 
                         // //GAME CONTROLLER INPUT  //prompt active player to place an army on a territory
+                        System.out.println("Input territory name");
+                        
+                        String t_in = scanner.nextLine(); 
 
                         //replace argument in below with game controller input
-                        current_player.Add_Army(current_player.owned_territories.keySet().iterator().next());
+                        current_player.Add_Army(t_in);
 
 
                         // update active player
@@ -176,6 +190,8 @@ public class Game_Model {
                     if (current_player.old_state_game_phase != State_GamePhase.STARTUP)
                         current_player.Number_Territory_Reinforcements();
 
+                    
+                    
                     current_player.old_state_game_phase = State_GamePhase.REINFORCEMENT;
 
 
@@ -250,17 +266,46 @@ public class Game_Model {
 
                     current_player.old_state_game_phase = State_GamePhase.FORTIFICATION;
 
-                    game_view.Display_Menu_Fortification(current_player);
+//                    game_view.Display_Menu_Fortification(current_player);
+                    
 
                     //Test if any units to fortify
                     if (Units_To_Move(current_player)) {
 
                         Print_State_Once(current_player, "Enter Fortifications");
+                        
+                        System.out.println("Do you want to move any units? (yes/no)");
+                        String answer = scanner.nextLine(); 
+                        
+                        if(answer.equals("yes")){
+                        	 //PROMPT prompt user for troop movements
+                            System.out.println("Input territory 1");
+                            String t_1 = scanner.nextLine(); 
+                            
+                            
+                            System.out.println("Input territory 2");
+                            String t_2 = scanner.nextLine(); 
+                            //todo elham test it
+                            
+                            System.out.println("Input number of armies to move"); 
+                            
+                            String t_3 = scanner.nextLine(); 
+                            
+                            
+                            current_player.Move_Army(current_player.owned_territories.get(t_1), current_player.owned_territories.get(t_2), Integer.valueOf(t_3)); 
+//                            current_player.Move_Army(map_generator.map.Get_Territory(game_controller.Get_From_Territory()), map_generator.map.Get_Territory(game_controller.Get_To_Territory()), game_controller.Get_Number_of_move_armies());
+                        
+                            game_view.Display_Menu_Reinforcements(current_player);
+                            
+                        }else{
+                        	  current_player_order = (current_player_order + 1) % Game_Model.number_of_players;
+                              player_flag = true;
+                        	
+                        	
+                        }
+                        
 
-                        //PROMPT prompt user for troop movements
-                        //todo elham test it
-                        current_player.Move_Army(map_generator.map.Get_Territory(game_controller.Get_From_Territory()), map_generator.map.Get_Territory(game_controller.Get_To_Territory()), game_controller.Get_Number_of_move_armies());
-
+                       
                     } else {
 
 

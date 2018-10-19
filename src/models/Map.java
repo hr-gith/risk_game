@@ -22,6 +22,11 @@ public class Map {
     //constructors
     private Map() {
     	continents = new HashMap<>();
+    	this.image = "image";
+		this.wrap = true;
+		this.scroll = "scroll";
+		this.author = "author";
+		this.warn = false;
     }
     
 	private Map(String image, boolean wrap, String scroll, String author, boolean warn,HashMap<String,Continent> continents) {
