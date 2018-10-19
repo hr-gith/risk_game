@@ -131,7 +131,15 @@ public class Map {
 				territories.put(territory.name, territory);
 		}
 		return territories;
-}
+	}
+	
+	/**
+	 * assigns score to each continent
+	 */
+	public void Set_Continents_Score() {
+		for (Continent continent: continents.values())
+			continent.Calculate_Score();
+	}
 	
 	/**
 	 * checks if a map is valid based on RISK game rules

@@ -143,7 +143,7 @@ public class Map_Generator_View extends JPanel {
 			Continent getting_continent = map.Get_Continent(continent_name);
 
 			if (getting_continent == null) {
-				continent = new Continent(continent_name,1);
+				continent = new Continent(continent_name,0);
 				result = map.Add_Continent(continent);
 				if (result) {
 					System.out.println("\n\t 'Continent is added successfully'");

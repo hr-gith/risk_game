@@ -74,8 +74,10 @@ public class Map_Generator_Controller {
 		
 		//display finalized map
 		this.view.Display_Map(map);
-		if (map.Is_Valid())
+		if (map.Is_Valid()) {
+			map.Set_Continents_Score();
 			return true;
+		}
 		else
 			return false;
 	}
