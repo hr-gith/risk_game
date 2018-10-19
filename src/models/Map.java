@@ -88,6 +88,7 @@ public class Map {
 	 * @param continent_name
 	 * @return
 	 */
+	
 	public boolean Delete_Continent(String continent_name) {
 		continent_name = continent_name.toLowerCase();
 		  if (continents != null && !continents.isEmpty() && continents.containsKey(continent_name)) {
