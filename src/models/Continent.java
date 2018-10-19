@@ -87,6 +87,20 @@ public class Continent {
 		}
 		return result;
 	} 
+	
+	/**
+	 * calculates score based on the number of territories in the continent
+	 */
+	public void Calculate_Score() {
+		if (this.score == 0) {
+			if (territories.size() == 0)
+				this.score = 0;
+			else if (territories.size() < 4) 
+				this.score = 2;
+			else
+				this.score = territories.size() / 2;
+		}
+	}
 
 	/**
 	 * Two continents are equal only if their names are the same
