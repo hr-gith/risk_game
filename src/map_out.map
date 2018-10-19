@@ -1,0 +1,17 @@
+[Map]
+image=test.bmp
+wrap=false
+scroll=vertical
+author=iceworm72
+warn=false
+[Continents]
+con1=5
+con2=6
+[Territories]
+territory1,50,50,con1,territory2
+territory4,200,200,con1,territory5,territory3
+territory3,150,150,con1,territory4,territory2
+territory2,100,100,con1,territory1,territory3
+territory7,350,350,con2,territory6
+territory6,300,300,con2,territory7,territory5
+territory5,250,250,con2,territory6,territory4

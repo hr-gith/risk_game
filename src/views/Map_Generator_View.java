@@ -19,14 +19,13 @@ import controllers.Map_Generator_Controller;
  * class related to the map generator view
  */
 public class Map_Generator_View extends JPanel {
-
+	
 	Scanner scanner;
-	public Map_Generator_Controller controller;
 	public Map map = Map.Get_Map();
 	boolean valid_result=false;
 
 	/**
-	 * Display main menu
+	 * Display main menu for map generator
 	 */
 
 	public int Display_Menu() {
@@ -34,15 +33,19 @@ public class Map_Generator_View extends JPanel {
 		System.out.println("\n==================================");
 		System.out.println("\n\t Map Generator");
 		System.out.println("\n==================================");
-		System.out.println("\n 1. Import From File");
-		System.out.println("\n 2. Design By MySelf");
-		System.out.println("\n 3. Exit ");
-		System.out.println("\n\n Please Enter Your Choice(1-3): ");
+		System.out.println("\n 1. Import Map From File");
+		System.out.println("\n 2. Design a New Map");
+		System.out.println("\n 3. Edit The Map");
+		System.out.println("\n 4. Save The Map");
+		System.out.println("\n 5. Display The Map");
+		System.out.println("\n 6. Start Game");
+		System.out.println("\n 7. Exit ");
+		System.out.println("\n\n Please Enter Your Choice(1-7): ");
 		return scanner.nextInt();
 	}
 
 	/**
-	 * Display menu for design map
+	 * Display menu for design map by user input
 	 * @return choice
 	 */
 
@@ -59,16 +62,15 @@ public class Map_Generator_View extends JPanel {
 		System.out.println("\n 6.Delete Neighbour");
 		System.out.println("\n 7.Display Map");
 		System.out.println("\n 8.Validate Map");
-		System.out.println("\n 9.Save Map in a file");
-		System.out.println("\n 10.Exit");
-		System.out.println("\n\n Please Enter Your Choice(1 to 7): ");
+		System.out.println("\n 9.Exit");
+		System.out.println("\n\n Please Enter Your Choice(1 to 9): ");
 		int result = Integer.valueOf(scanner.nextLine());
 
 		return result;
 	}
 
 	/**
-	 * Designing map by user
+	 * Creating different object of map
 	 */
 	public void Display_Map_Designer() {
 		scanner = new Scanner(System.in);
@@ -112,25 +114,16 @@ public class Map_Generator_View extends JPanel {
 					System.out.println("\n==================================");
 					System.out.println("\n\t The map is valid.");
 				}
-				break;
-			case 9://Save map
-				System.out.println("\n==================================");
-				if (controller.io_map_helper.Export_Map(map))
-					System.out.println("\n your map is successfully saved.");
-				else
-					System.out.println("\n Error occured while saving map in a file.");
-				break;
-			case 10:// Exit!
-				System.exit(0);
+				break;			
+			case 9:// Exit!
 					break;
-
 			default:
 				System.out.println("\n==================================");
-				System.out.println("\n\t Error! Please Enter Your Choice(1 to 7)");
+				System.out.println("\n\t Error! Please Enter Your Choice(1 to 9)");
 				break;
 			}
-
-		} while (choice != 10);
+			
+		} while (choice != 9);
 
 	}
 
@@ -150,7 +143,7 @@ public class Map_Generator_View extends JPanel {
 			Continent getting_continent = map.Get_Continent(continent_name);
 
 			if (getting_continent == null) {
-				continent = new Continent(continent_name,1);
+				continent = new Continent(continent_name,0);
 				result = map.Add_Continent(continent);
 				if (result) {
 					System.out.println("\n\t 'Continent is added successfully'");
@@ -184,7 +177,7 @@ public class Map_Generator_View extends JPanel {
 		do {
 			System.out.println("\n Enter related continent: ");
 			continent_name = scanner.nextLine();
-			Continent getting_continent = map.Get_Continent(continent_name);
+			Continent getting_continent = map.Get_Continent(continent_name);	
 
 			if (getting_continent != null) {
 				System.out.println("\n Enter territory name: ");
@@ -193,7 +186,7 @@ public class Map_Generator_View extends JPanel {
 				x_position =Integer.valueOf(scanner.nextLine()) ;
 				System.out.println("\n Enter territory Y position: ");
 				y_position = Integer.valueOf(scanner.nextLine()) ;
-
+				
 				territory = new Territory(territory_name, x_position, y_position, continent_name);
 				result = getting_continent.Add_Territory(territory);
 				if (result) {
@@ -202,11 +195,11 @@ public class Map_Generator_View extends JPanel {
 					System.out.println("\n Do you want to add another territory(y,n)? ");
 					add_more = scanner.nextLine().toLowerCase();
 				} else {
-
+					
 					System.out.println("\n\t The Territory exists!");
 					System.out.println("\n==================================");
 					System.out.println("\n Do you want to try again (y,n)? ");
-					add_more = scanner.nextLine().toLowerCase();
+					add_more = scanner.nextLine().toLowerCase();	
 				}
 			}
 			else {
@@ -215,7 +208,7 @@ public class Map_Generator_View extends JPanel {
 				System.out.println("\n Do you want to try again (y,n)? ");
 				add_more = scanner.nextLine().toLowerCase();
 			}
-
+			
 		} while (add_more.equals("y"));
 	}
 
@@ -261,7 +254,7 @@ public class Map_Generator_View extends JPanel {
 					}
 				} while (add_more_neighbour.equals("y"));
 			} else {
-				System.out.println("\n\t 'Territory does not found!'");
+				System.out.println("\n\t 'Territory does not found!'");				
 			}
 			System.out.println("\n==================================");
 			System.out.println("\n Do you want to add neighbours to another territory (y,n): ");
@@ -320,14 +313,14 @@ public class Map_Generator_View extends JPanel {
 					System.out.println("\n Do you want to delete another territory (y,n): ");
 					delete_more = scanner.nextLine().toLowerCase();
 				}
-
+				
 			}
 			else {
 				System.out.println("\n\t 'Territory does not found!'");
 				System.out.println("\n==================================");
 				System.out.println("\n Do you want to select another territory (y,n): ");
 				delete_more = scanner.nextLine().toLowerCase();
-			}
+			}			
 
 		} while (delete_more.equals("y"));
 	}
@@ -387,7 +380,7 @@ public class Map_Generator_View extends JPanel {
 }
 
 	/**
-	 *
+	 * Display any massage
 	 * @param message
 	 */
 
@@ -396,7 +389,7 @@ public class Map_Generator_View extends JPanel {
 	}
 
 	/**
-	 *
+	 * Display map
 	 * @param map
 	 */
 
@@ -409,7 +402,7 @@ public class Map_Generator_View extends JPanel {
 	}
 
 	/**
-	 *
+	 * draw map
 	 */
 
 	public void Draw_Map() {
@@ -419,9 +412,6 @@ public class Map_Generator_View extends JPanel {
 		jFrame.setVisible(true);
 	}
 
-	/**
-	 *
-	 */
 
 	@Override
 	public void paintComponent(Graphics g) {

@@ -11,10 +11,9 @@ Con2=6
 
 [Territories]
 territory1,50,50,con1,territory2
-territory2,100,100,con1,territory3
-territory3,150,150,con1,territory4
-territory4,200,200,con1,territory5
-territory5,250,250,con2,territory6
-territory6,300,300,con2,territory7
-territory7,350,350,con2
-
+territory2,170,170,con1,territory3
+territory3,290,300,con1,territory4
+territory4,530,180,con1,territory5
+territory5,150,450,con2,territory6
+territory6,600,400,con2,territory7
+territory7,750,250,con2

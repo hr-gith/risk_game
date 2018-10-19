@@ -6,6 +6,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 
+/**
+ * To read from file or write to file
+ */
+
 public class File_Operations {
 	/**
 	 * reads from a file and return its lines
