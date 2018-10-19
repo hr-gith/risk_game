@@ -2,6 +2,7 @@ package models;
 
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Set;
 import models.Territory;
 
 /**
@@ -57,13 +58,13 @@ public class Continent {
 	/**
 	 * Deletes a territory and its connection from the continent
 	 * @param territory_name
-	 * @return
+	 * @return boolean
 	 */
 	public boolean Delete_Territory(String territory_name) {
 		territory_name = territory_name.toLowerCase();
 		  if (territories != null && !territories.isEmpty() && territories.containsKey(territory_name)) {
 			  Territory territory = territories.get(territory_name);
-			  if (territory.Delete_Neighbours()) {			  
+			  if (territory != null &&  territory.Delete_Neighbours()) {			  
 				  territories.remove(territory_name);		  
 				  return true;
 			  }
@@ -77,15 +78,16 @@ public class Continent {
 	 */
 	public boolean Delete_Territories() {
 		boolean result = true;
-		for(String territory: territories.keySet()) {
-			result = result && Delete_Territory(territory);
+		Set<String> territories_name = territories.keySet();
+		String[] arr = territories_name.toArray(new String[territories_name.size()]);
+		for (int i = 0; i < territories_name.size(); i ++) {
+			result = result && Delete_Territory(arr[i]);
 		}
 		return result;
 	} 
 
 	/**
 	 * Two continents are equal only if their names are the same
-	 * @return boolean
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -98,7 +100,6 @@ public class Continent {
 
 	/**
 	 * Returns continent information as string
-	 * @return string
 	 */
 	@Override
 	public String toString() {

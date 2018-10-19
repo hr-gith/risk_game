@@ -6,10 +6,9 @@ import models.Map;
 import utilities.Config;
 import views.Map_Generator_View;
 
+
 /**
- * Map_Generator_Controller class is a controller
- * 
- *
+ * Map generator controller for starting getting map from file or by user design
  */
 
 public class Map_Generator_Controller {
@@ -17,10 +16,6 @@ public class Map_Generator_Controller {
 	public Map_Generator_View view;
 	public Map map;
 	public IO_Map_Helper io_map_helper;
-	
-	/**
-	 * Constructor
-	 */
 	 
 	public  Map_Generator_Controller() {
 		this.view = new Map_Generator_View();
@@ -29,7 +24,7 @@ public class Map_Generator_Controller {
 	}
 	
 	/**
-	 * start method that generate map from file or user design
+	 * start phase of read or designing map
 	 * @return boolean
 	 */
 	

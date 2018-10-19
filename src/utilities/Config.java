@@ -1,7 +1,5 @@
 package utilities;
-
 /**
- * Config class is utility
  * Keeps all the static values required in the project
  */
 public class Config {

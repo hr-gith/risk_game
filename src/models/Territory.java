@@ -2,12 +2,12 @@ package models;
 
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Set;
 
 /**
- * Territory class is a model
- *to store and present information about a territory and neighbour of a map
+ * Territory class is model
+ * to store and present information about a territory and neighbour of a map
  */
-
 public class Territory {
 	public int id;
 	public String name;
@@ -19,7 +19,7 @@ public class Territory {
     public HashMap<String, Territory> adj;
 
 	/**
-	 * Constructor
+	 * Constructor with Id
 	 * @param id
 	 * @param name
 	 * @param pos_x
@@ -56,7 +56,7 @@ public class Territory {
 	
 	
 	/**
-	 * Add a connection from the territory to another territory
+	 * Adds a connection from the territory to another territory
 	 * @param neighbour
 	 * @return boolean
 	 */
@@ -91,16 +91,17 @@ public class Territory {
 	 * @return boolean
 	 */
 	public boolean Delete_Neighbours() {
-		boolean result = true;
-		for(Territory neighbour: adj.values()) {
+		boolean result = true;		
+		Set<String> neighbours_name = adj.keySet();
+		for (String neighbour_name : neighbours_name) {			
+			Territory neighbour = adj.get(neighbour_name);
 			result = result && neighbour.Delete_Neighbour(this.name);
 		}
-		return result;
+		return result;		
 	}
 	
 	/**
 	 * Two territories are equal only if their names are the same
-	 * @return boolean
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -116,8 +117,7 @@ public class Territory {
 	}
 
 	/**
-	 * toString method
-	 * @Returns territory information as string
+	 * Returns territory information as string
 	 */
 	@Override
 	public String toString() {

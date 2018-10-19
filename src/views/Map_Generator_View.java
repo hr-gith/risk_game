@@ -16,8 +16,7 @@ import javax.swing.JPanel;
 import controllers.Map_Generator_Controller;
 
 /**
- * Map_Generator_View class is view
- * Take map design information from the user
+ * class related to the map generator view
  */
 public class Map_Generator_View extends JPanel {
 	
@@ -27,7 +26,7 @@ public class Map_Generator_View extends JPanel {
 	boolean valid_result=false;
 
 	/**
-	 * Display main menu
+	 * Display main menu for map generator
 	 */
 
 	public int Display_Menu() {
@@ -43,7 +42,7 @@ public class Map_Generator_View extends JPanel {
 	}
 
 	/**
-	 * Display menu for design map
+	 * Display menu for design map by user input
 	 * @return choice
 	 */
 
@@ -69,7 +68,7 @@ public class Map_Generator_View extends JPanel {
 	}
 
 	/**
-	 * Designing map by user
+	 * Creating different object of map
 	 */
 	public void Display_Map_Designer() {
 		scanner = new Scanner(System.in);
@@ -122,6 +121,7 @@ public class Map_Generator_View extends JPanel {
 					System.out.println("\n Error occured while saving map in a file.");
 				break;
 			case 10:// Exit!
+				System.exit(0);
 					break;
 
 			default:
@@ -387,7 +387,7 @@ public class Map_Generator_View extends JPanel {
 }
 
 	/**
-	 * Display any message 
+	 * Display any massage
 	 * @param message
 	 */
 
@@ -396,7 +396,7 @@ public class Map_Generator_View extends JPanel {
 	}
 
 	/**
-	 * Display map in a text
+	 * Display map
 	 * @param map
 	 */
 
@@ -409,7 +409,7 @@ public class Map_Generator_View extends JPanel {
 	}
 
 	/**
-	 * Draw map for user
+	 * draw map
 	 */
 
 	public void Draw_Map() {
@@ -447,6 +447,10 @@ public class Map_Generator_View extends JPanel {
 		}
 
 	}
-	
+	/*
+	 * @Override public void paint(Graphics g) { super.paintComponent(g); Graphics2D
+	 * g2D = (Graphics2D) g; AffineTransform affT = g2D.getTransform(); g2D.scale(
+	 * 2, 2); super.paint(g); g2D.setTransform(affT); }
+	 */
 
 }

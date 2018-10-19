@@ -5,8 +5,7 @@ import utilities.Config;
 import utilities.File_Operations;
 
 /**
- * IO_Map_Helper class is a model
- * To import and export map file
+ * To import map from file or export user design map
  */
 
 public class IO_Map_Helper {

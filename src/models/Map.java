@@ -6,8 +6,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * Map class is a model
- * To hold all continents and territories and neighours
+ * create map object 
  */
 public class Map {
 	public String image;
@@ -18,7 +17,7 @@ public class Map {
 	public HashMap<String,Continent> continents;
     
     /**
-     * Constructor without any parameters
+     * Constructor
      */
     private Map() {
     	continents = new HashMap<>();
@@ -33,6 +32,7 @@ public class Map {
      * @param warn
      * @param continents
      */
+    
 	private Map(String image, boolean wrap, String scroll, String author, boolean warn,HashMap<String,Continent> continents) {
 		this.image = image;
 		this.wrap = wrap;
@@ -49,7 +49,6 @@ public class Map {
 	private static class MapUniqueInstanceHolder{
 		private static final Map THE_UNIQUE_MAP= new Map();
 	}
-	
 	/**
 	 * @return unique map instance
 	 */
@@ -59,7 +58,7 @@ public class Map {
 	    
 	/**
 	 * Checks if map has no continents
-	 * @return
+	 * @return boolean
 	 */
 	public boolean Is_Empty() {
 		  return this.continents.isEmpty();
@@ -68,7 +67,7 @@ public class Map {
 	/**
 	 * Adds a continent to the map
 	 * @param new_Continent
-	 * @return
+	 * @return boolean
 	 */
 	public boolean Add_Continent(Continent new_continent) {
 		Objects.requireNonNull(new_continent);	
@@ -86,9 +85,8 @@ public class Map {
 	/**
 	 * Delete a continent and its territories and all their connections from the map
 	 * @param continent_name
-	 * @return
+	 * @return boolean
 	 */
-	
 	public boolean Delete_Continent(String continent_name) {
 		continent_name = continent_name.toLowerCase();
 		  if (continents != null && !continents.isEmpty() && continents.containsKey(continent_name)) {
@@ -141,7 +139,8 @@ public class Map {
 	 */
 	public boolean Is_Valid() {
 		//Is a connected graph?
-		HashSet<Territory> territories = (HashSet<Territory>)this.Get_Territories().values();
+		HashSet<Territory> territories = new HashSet<Territory>(this.Get_Territories().values());
+		//HashSet<Territory> territories = (HashSet<Territory>)this.Get_Territories().values();
 		HashMap<String, Boolean> visited_territories = DFS(territories);
 		 for (String territory : visited_territories.keySet())
 			 if (!visited_territories.get(territory))
@@ -223,11 +222,6 @@ public class Map {
 			return true;
 		return false;
 	}
-	
-	/**
-	 * toString method
-	 * @Returns map information as string
-	 */
 
 	@Override
 	public String toString() {
