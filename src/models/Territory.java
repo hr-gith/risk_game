@@ -1,7 +1,14 @@
 package models;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+
+/**
+ * Territory Class is a model 
+ * A data class maintaining the state of a given territory 
+ */
 
 public class Territory {
 	public int id;
@@ -9,7 +16,7 @@ public class Territory {
 	public int pos_x;
 	public int pos_y;
 	public String continent_name;
-	public int owner_id;
+	public String owner_name;
 	public int nb_armies;
     public HashMap<String, Territory> adj;
 
@@ -20,14 +27,34 @@ public class Territory {
 		this.pos_x = pos_x;
 		this.pos_y = pos_y;
 		this.continent_name = continent_name;
-		this.owner_id = 0;
+		this.owner_name = "";
+		this.nb_armies = 1;
+		this.adj = new HashMap<>();
+	}
+	/**
+	 * constructor without id
+	 * @param name of territory
+	 * @param pos_x X Position
+	 * @param pos_y Y Position
+	 * @param continent_name
+	 */
+	public Territory(String name, int pos_x, int pos_y, String continent_name) {
+		this.id = 1;
+		this.name = name.toLowerCase();
+		this.pos_x = pos_x;
+		this.pos_y = pos_y;
+		this.continent_name = continent_name;
+		this.owner_name = "";
 		this.nb_armies = 0;
 		this.adj = new HashMap<>();
 	}
 	
 	
-	
-	//methods	
+	/**
+	 * Adds a connection from the territory to another territory
+	 * @param neighbour
+	 * @return
+	 */
 	public boolean Add_Neighbour(Territory neighbour) {
 		  Objects.requireNonNull(neighbour);	
 		  if (adj == null || adj.isEmpty()) {
@@ -40,24 +67,53 @@ public class Territory {
 		  return false;
 	}
 	
+	/**
+	 * Deletes a connection between the territory and its neighbor
+	 * @param neighbour_name
+	 * @return boolean
+	 */
 	public boolean Delete_Neighbour(String neighbour_name) {
-		  if (adj != null && !adj.isEmpty() && adj.containsKey(neighbour_name.toLowerCase())) {
-			  adj.remove(neighbour_name.toLowerCase());		  
+		neighbour_name = neighbour_name.toLowerCase();
+		  if (adj != null && !adj.isEmpty() && adj.containsKey(neighbour_name)) {
+			  adj.remove(neighbour_name);		  
 			  return true;
 		  }
 		  return false;
 	}
 	
+	/**
+	 * Deletes all the connections from its neighbours
+	 * @return boolean
+	 */
+	public boolean Delete_Neighbours() {
+		boolean result = true;		
+		Set<String> neighbours_name = adj.keySet();
+		for (String neighbour_name : neighbours_name) {			
+			Territory neighbour = adj.get(neighbour_name);
+			result = result && neighbour.Delete_Neighbour(this.name);
+		}
+		return result;		
+	}
 	
+	/**
+	 * Two territories are equal only if their names are the same
+	 */
 	@Override
 	public boolean equals(Object obj) {
+		boolean result = true;
 		if (obj.getClass().isInstance(Territory.class)) {
 			Territory other = (Territory) obj;
-			return other.name.equals(this.name.toLowerCase());
+			if (other.name.equals(this.name.toLowerCase()))
+				result = false;
+			else if (other.pos_x == this.pos_x && other.pos_y == this.pos_y)
+				return false;						
 		}
-		return false;
+		return result;
 	}
 
+	/**
+	 * Returns territory information as string
+	 */
 	@Override
 	public String toString() {
 		String adj_str = "";
@@ -66,7 +122,7 @@ public class Territory {
 		
 		return "[name=" + name +
 				", pos = (" + pos_x + " , " + pos_y + 
-				"), owner_id=" + owner_id +
+				"), owner=" + owner_name +
 				", continent =" + continent_name +
 				", nb_armies=" + nb_armies +
 				", adj= (" + adj_str + ") ]\n";
