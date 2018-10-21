@@ -9,6 +9,8 @@ import models.Territory;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -440,10 +442,15 @@ public class Map_Generator_View extends JPanel {
 		}
 
 	}
-	/*
-	 * @Override public void paint(Graphics g) { super.paintComponent(g); Graphics2D
-	 * g2D = (Graphics2D) g; AffineTransform affT = g2D.getTransform(); g2D.scale(
-	 * 2, 2); super.paint(g); g2D.setTransform(affT); }
-	 */
+	@Override
+	public void paint(Graphics g)
+	{
+	    super.paintComponent(g);
+	    Graphics2D g2D = (Graphics2D) g;
+	    AffineTransform affT = g2D.getTransform();
+	    g2D.scale( 2, 2);
+	    super.paint(g);
+	    g2D.setTransform(affT);
+	} 
 
 }
