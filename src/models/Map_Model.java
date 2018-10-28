@@ -19,7 +19,9 @@ public class Map_Model {
 	public boolean warn;
 	public HashMap<String,Continent> continents;
     
-    //constructors
+    /**constructors
+     * 
+     */
     private Map_Model() {
     	continents = new HashMap<>();
     	this.image = "image";
