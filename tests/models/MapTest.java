@@ -1,6 +1,8 @@
 package models;
 
 import java.util.HashMap;
+import java.util.HashSet;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -125,25 +127,26 @@ public class MapTest {
 	 * test Exist_Path
 	 */
 
-//	@Test
-//	public void testExist_Path() {
-//		new_continent = new Continent("new_continent_name" , 1);
-//        map.Add_Continent(new_continent);
-//		
-//		new_territory = new Territory("new_territory_name_1",120,300,"new_continent_name");
-//		new_continent.Add_Territory(new_territory);
-//		
-//		new_territory_neighbour_1 = new Territory("new_territory_name_2",320,432,"new_continent_name");
-//		new_continent.Add_Territory(new_territory_neighbour_1);
-//		
-//		new_territory_neighbour_2 = new Territory("new_territory_name_3",350,470,"new_continent_name");
-//		new_continent.Add_Territory(new_territory_neighbour_2);
-//		
-//		new_territory.Add_Neighbour(new_territory_neighbour_1);
-//		new_territory.Add_Neighbour(new_territory_neighbour_2);
-//		new_territory_neighbour_1.Add_Neighbour(new_territory_neighbour_2);
-//		
-//		map.Exist_Path(new_continent.territories, "new_territory_name_1","new_territory_name_3"):
-//	}
+	@Test
+	public void testExist_Path() {
+		new_continent = new Continent("new_continent_name" , 1);
+        map.Add_Continent(new_continent);
+		
+		new_territory = new Territory("new_territory_name_1",120,300,"new_continent_name");
+		new_continent.Add_Territory(new_territory);
+		
+		new_territory_neighbour_1 = new Territory("new_territory_name_2",320,432,"new_continent_name");
+		new_continent.Add_Territory(new_territory_neighbour_1);
+		
+		new_territory_neighbour_2 = new Territory("new_territory_name_3",350,470,"new_continent_name");
+		new_continent.Add_Territory(new_territory_neighbour_2);
+		
+		new_territory.Add_Neighbour(new_territory_neighbour_1);
+		new_territory.Add_Neighbour(new_territory_neighbour_2);
+		new_territory_neighbour_1.Add_Neighbour(new_territory_neighbour_2);
+		HashSet<Territory> territories=new HashSet<Territory>(new_continent.territories.values());
+		
+		map.Exist_Path(territories, "new_territory_name_1","new_territory_name_3");
+	}
 
 }

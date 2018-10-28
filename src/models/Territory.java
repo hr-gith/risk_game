@@ -1,13 +1,15 @@
 package models;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 /**
- * Territory class is model
- * to store and present information about a territory and neighbour of a map
+ * Territory Class is a model 
+ * A data class maintaining the state of a given territory 
  */
+
 public class Territory {
 	public int id;
 	public String name;

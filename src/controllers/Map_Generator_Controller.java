@@ -43,7 +43,7 @@ public class Map_Generator_Controller {
 			switch(choice){
 				case 1:	//import from file		
 					map = this.io_map_helper.Import_Map(Config.input_file);
-					if (map.Is_Empty())
+					if (map == null || map.Is_Empty())
 						this.view.Display_Message("Map is not valid based on the game rules.");
 					else
 						this.view.Display_Message("Map is imported successfully.");
@@ -57,14 +57,16 @@ public class Map_Generator_Controller {
 					map = view.map;	
 					break;
 				case 4://Save map in a file					
-					if (io_map_helper.Export_Map(map))
+					if (map != null && io_map_helper.Export_Map(map))
 						this.view.Display_Message("\n your map is successfully saved.");
 					else
 						this.view.Display_Message("\n Error occured while saving map in a file.");
 					break;			
 				case 5://Display map
-					this.view.Display_Map(map);
-					this.view.Draw_Map();
+					if (map != null) {
+						this.view.Display_Map(map);
+						this.view.Draw_Map();
+					}
 					break;
 				case 7:			
 					System.exit(0);				

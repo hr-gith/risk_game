@@ -1,0 +1,10 @@
+[Map]
+image=image
+wrap=true
+scroll=scroll
+author=author
+warn=false
+[Continents]
+con=0
+[Territories]
+te1,100,200,con

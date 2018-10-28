@@ -4,10 +4,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 /**
- * create map object 
+ * Map Class is a model 
+ * Map is a data class that maintains the game map structure
  */
+
 public class Map {
 	public String image;
 	public boolean wrap;
@@ -16,22 +19,15 @@ public class Map {
 	public boolean warn;
 	public HashMap<String,Continent> continents;
     
-    /**
-     * Constructor
-     */
+    //constructors
     private Map() {
     	continents = new HashMap<>();
+    	this.image = "image";
+		this.wrap = true;
+		this.scroll = "scroll";
+		this.author = "author";
+		this.warn = false;
     }
-    
-    /**
-     * Constructor
-     * @param image
-     * @param wrap
-     * @param scroll
-     * @param author
-     * @param warn
-     * @param continents
-     */
     
 	private Map(String image, boolean wrap, String scroll, String author, boolean warn,HashMap<String,Continent> continents) {
 		this.image = image;
@@ -44,12 +40,15 @@ public class Map {
 	
 	/**
 	 * Singleton Pattern
+	 * @author Leila
+	 *
 	 */
 	
 	private static class MapUniqueInstanceHolder{
 		private static final Map THE_UNIQUE_MAP= new Map();
 	}
 	/**
+	 * 
 	 * @return unique map instance
 	 */
 	public static Map Get_Map() {
@@ -58,7 +57,7 @@ public class Map {
 	    
 	/**
 	 * Checks if map has no continents
-	 * @return boolean
+	 * @return
 	 */
 	public boolean Is_Empty() {
 		  return this.continents.isEmpty();
@@ -67,7 +66,7 @@ public class Map {
 	/**
 	 * Adds a continent to the map
 	 * @param new_Continent
-	 * @return boolean
+	 * @return
 	 */
 	public boolean Add_Continent(Continent new_continent) {
 		Objects.requireNonNull(new_continent);	
@@ -85,7 +84,7 @@ public class Map {
 	/**
 	 * Delete a continent and its territories and all their connections from the map
 	 * @param continent_name
-	 * @return boolean
+	 * @return
 	 */
 	public boolean Delete_Continent(String continent_name) {
 		continent_name = continent_name.toLowerCase();

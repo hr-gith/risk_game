@@ -88,6 +88,7 @@ public class Continent {
 	} 
 	
 	/**
+<<<<<<< HEAD
 	 * finds player who owns all the territories in the continent
 	 * 
 	 * @return name of owner or "" if the continent have more than one owner or no owner
@@ -105,6 +106,8 @@ public class Continent {
 	}
 	
 	/**
+=======
+>>>>>>> refs/remotes/origin/ColinTemp
 	 * calculates score based on the number of territories in the continent
 	 */
 	public void Calculate_Score() {
