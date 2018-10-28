@@ -11,7 +11,7 @@ import java.util.Set;
  * Map is a data class that maintains the game map structure
  */
 
-public class Map {
+public class Map_Model {
 	public String image;
 	public boolean wrap;
 	public String scroll;
@@ -20,7 +20,7 @@ public class Map {
 	public HashMap<String,Continent> continents;
     
     //constructors
-    private Map() {
+    private Map_Model() {
     	continents = new HashMap<>();
     	this.image = "image";
 		this.wrap = true;
@@ -29,7 +29,7 @@ public class Map {
 		this.warn = false;
     }
     
-	private Map(String image, boolean wrap, String scroll, String author, boolean warn,HashMap<String,Continent> continents) {
+	private Map_Model(String image, boolean wrap, String scroll, String author, boolean warn,HashMap<String,Continent> continents) {
 		this.image = image;
 		this.wrap = wrap;
 		this.scroll = scroll;
@@ -45,13 +45,13 @@ public class Map {
 	 */
 	
 	private static class MapUniqueInstanceHolder{
-		private static final Map THE_UNIQUE_MAP= new Map();
+		private static final Map_Model THE_UNIQUE_MAP= new Map_Model();
 	}
 	/**
 	 * 
 	 * @return unique map instance
 	 */
-	public static Map Get_Map() {
+	public static Map_Model Get_Map() {
 		return MapUniqueInstanceHolder.THE_UNIQUE_MAP;
 	}
 	    

@@ -32,7 +32,7 @@ public class Test_Game_Model {
 		
 		for(int i = 0; i<number_of_players; i++){
 			
-			System.out.println(player_list.get(i).player_id); 
+			System.out.println(player_list.get(i).id); 
 		}
 		
 		
@@ -52,7 +52,7 @@ public class Test_Game_Model {
 		
 	for(int i = 0; i<number_of_players; i++){
 			
-			System.out.println(shuffled_player_list.get(i).player_id); 
+			System.out.println(shuffled_player_list.get(i).id); 
 		}
 	
 	
