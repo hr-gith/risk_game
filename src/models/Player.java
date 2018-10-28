@@ -11,15 +11,15 @@ import java.util.Objects;
  */
 public class Player {
 	
-	public Integer player_id; 
-	
-	public String player_name; 
-	State_GamePhase state_game_phase; 
-	State_GamePhase old_state_game_phase; 
-	
+	public Integer id; 	
+	public String name; 
+	public State_Player current_state;
+	public State_Game current_state_game; 
+	public State_Game old_state_game; 
+	public boolean alive;	
 	public HashMap<String,Territory> owned_territories;
-
 	public Integer reinforcements;
+	
 	
 	/** 
 	 * Constructor for the Player object. The player object controls all the actions a player may make in the game. 
@@ -27,64 +27,186 @@ public class Player {
 	 * @param String The player's name 
 	 */
 	
-	public Player(Integer player_id, String player_name){
-		this.player_id = player_id; 
-		this.player_name = player_name;  
-		this.state_game_phase = State_GamePhase.SETUP; 
-		this.old_state_game_phase = State_GamePhase.SETUP; 
+	public Player(Integer id, String name){
+		this.id = id; 
+		this.name = name;  
+		this.current_state = State_Player.WAITING;
+		this.current_state_game = State_Game.SETUP; 
+		this.old_state_game = State_Game.SETUP; 
+	}
+	
+	public Player(String name){
+		this.id = 0; 
+		this.name = name;  
+		this.current_state = State_Player.WAITING;
+		this.current_state_game = State_Game.SETUP; 
+		this.old_state_game = State_Game.SETUP; 
 	}
 	
 	/** 
 	 * An overloaded constructor object that automatically assigns a player name corresponding to "Player" + player_id
 	 * @param Integer The player's game id  
 	 */
-	public Player(Integer player_id){
-		this(player_id, "Player " + player_id);  
+	public Player(Integer id){
+		this(id, "Player " + id);  
 	}
+	
+	public boolean Startup_Reinforcement() {
+		Set_Number_StartUp_Reinforcements();
+        current_state_game = State_Game.STARTUP;
+        alive = true;
+		if (reinforcements > 0) {
+        	Assign_Min_Army_To_Territories();
+        	return true;
+		}
+		else
+			return false;
+	}
+	
+	public boolean Reinforcement() {
+		current_state = State_Player.PLAYING;
+        old_state_game = State_Game.REINFORCEMENT;
+    	if (old_state_game != State_Game.STARTUP)  
+            Set_Number_Territory_Reinforcements();          
+    	else
+    		return false;
+        return true;
+	}
+  
+	public boolean Assign_Min_Army_To_Territories() {
+		if (reinforcements >= owned_territories.size()) {
+			for(Territory t: owned_territories.values())
+	    		t.nb_armies = 1;
+	        reinforcements -= owned_territories.size();
+	        return true;
+        }
+		return false;
+	}
+	
+	public boolean Assign_Army_To_Territories(HashMap<String, Integer> territories_armies) {
+        if (this.reinforcements > 0) {
+        	for (String territory_name : territories_armies.keySet()) {
+        		 if(!this.Add_Army_To_Territory(territory_name, territories_armies.get(territory_name)))   		
+        			return false;  		
+        	}
+        }
+        else
+        	return false;
+		
+        current_state_game = State_Game.ATTACKING;
+        return true;
 
-	/** 
-	 * Calculates the number of resulting reinforcements based on the number of owned territories 
-	 */
-	
-	public void Number_Territory_Reinforcements(){
-		
-		 this.reinforcements = 3 + this.owned_territories.size() / 3; 
-		
-		
-	}
-	
-	/** 
-	 * Calculates the number of resulting units to start the game for each player
-	 */
-	
-	public void Number_StartUp_Reinforcements(){
-		
-		// hadi input start up reinforcement logic
-		this.reinforcements = this.owned_territories.size(); 
-		
-	}
+        //check if card set can be used
+        //if so ask if user wants to play cards
+
+        //take input
+        //y-> add armies to reinforcement list, decrement cards, increase cards played
+
+        //if reinforcement list is empty
+        //n-> prompt user to place troops
+        //take input and update troop positions
+        // update map
+        //y -> notify user they are finished fortifying and are now ready to attack
+        // transition to attack phase
+
+    }
 	
 	/** 
 	 * Adds an army to a territory during the setup and reinforcement phase
 	 * @param String the name of the territory to add the army
 	 * @return A boolean corresponding to if the army placement is valid
-	 */
-	
-	public Boolean Add_Army(String territory_key){
-		
-		if(owned_territories.containsKey(territory_key) && this.reinforcements > 0){
-		
-			this.owned_territories.get(territory_key).nb_armies++; 
-			
-			this.reinforcements--; 
-			
+	 */	
+	public Boolean Add_Army_To_Territory(String territory_key, int nb_new_armies ){		
+		if(owned_territories.containsKey(territory_key) && this.reinforcements >= nb_new_armies){		
+			this.owned_territories.get(territory_key).nb_armies += nb_new_armies; 			
+			this.reinforcements -= nb_new_armies; 			
 			return true;
-		} 
-	
+		} 	
 		else{
 			return false; 
 		}
+	}	
+	public Boolean Add_Army_To_Territory(String territory_key ){		
+		return Add_Army_To_Territory(territory_key, 1);
+	}	
+	
+	
+    public void Attack() {
+        old_state_game = State_Game.ATTACKING;
+        //check if user satisfies any territories to attack from
+        //y-> update map with potential attackers
+        //prompt attack move
+        // call attack method
+        // update army counts and army locations on map
+        // if defeated Player
+        //increment cards
+        //move to reinforcement phase
+
+        //or  end attack phase
+        // increment cards if conquered
+        //set phase to fortification
+
+
+        //n-> notify user they are finished attacking and are now ready to fortify
+        // increment cards if conquered
+        //set phase to fortification
+
+        current_state_game = State_Game.FORTIFICATION;
+
+    }
+    
+    public boolean Fortification(String from, String to, int nb_armies) {
+        old_state_game = State_Game.FORTIFICATION;
+        // game_view.Display_Menu_Fortification(current_player);        
+
+        //Test if any units to fortify
+        if (Has_Units_To_Move()) {
+    		if (!Move_Army(from, to, nb_armies))
+    			return false;                 
+        } 
+        else {
+        	return false;
+        }
+
+    	//current_player_order = (current_player_order + 1) % Game_Model.number_of_players;
+        //player_flag = true;
+    	current_state = State_Player.WAITING;  
+        //current_player_order = (current_player_order + 1) % Game_Model.number_of_players;
+        //player_flag = true;
+    	current_state_game = State_Game.REINFORCEMENT;//for the next player//??????????????????????
+    	return true;
+    }
+    
+    /** 
+	 * Checks whether a player has at least any units that are capable of moving territories
+	 * @param Player The current game player
+	 * @return A boolean value representing whether the player is capable of moving any units
+	 */
+    
+    public Boolean Has_Units_To_Move() {
+        for (String key : owned_territories.keySet()) {
+            if (owned_territories.get(key).nb_armies > 1)
+                return true;
+        }
+        return false;
+    }
+	
+
+	/** 
+	 * Calculates the number of resulting reinforcements based on the number of owned territories 
+	 */	
+	public void Set_Number_Territory_Reinforcements(){		
+		 this.reinforcements = 3 + this.owned_territories.size() / 3; 	
 	}
+	
+	/** 
+	 * Calculates the number of resulting units to start the game for each player
+	 */	
+	public void Set_Number_StartUp_Reinforcements(){		
+		// hadi input start up reinforcement logic
+		this.reinforcements = this.owned_territories.size() * 2; 		
+	}
+	
 	
 	
 	/** 
@@ -95,23 +217,20 @@ public class Player {
 	 * @return A boolean corresponding to if the army movement is valid
 	 */
 	
-	public Boolean Move_Army(Territory from, Territory to, Integer number_of_units){
-		//is there a connection between the two points? 
-		// do I leave at least one unit in the territory  
-		
-		if(this.ownsBothTerritories(from, to) && this.areConnectedTerritories(from.name, to.name) && this.hasEnoughTroopsForMove(from, number_of_units )){
+	public Boolean Move_Army(String from, String to, int number_of_units){
+		Territory from_territory = this.owned_territories.get(from);
+		Territory to_territory = this.owned_territories.get(to);
+		if (from_territory != null && to_territory != null && !from_territory.equals(to_territory) && !from_territory.owner_name.equals(to_territory.owner_name)) {
+			//TODO: check if there is a path 
 			
-			to.nb_armies = to.nb_armies + number_of_units; 
-			from.nb_armies = from.nb_armies - number_of_units; 
+			if (Has_Enough_Army_To_Move(from_territory, number_of_units )) {
+				this.Add_Army_To_Territory(to, number_of_units);
+				this.Add_Army_To_Territory(from, (number_of_units * -1));
+				return true;
+			}			
+		}			
+		return false; 
 			
-			return true; 
-			
-		} 
-		else{
-			return false; 
-		}
-	
-		
 	}
 	
 	
@@ -152,26 +271,6 @@ public class Player {
 	}
 	
 	
-	// Test Logic
-	
-	/** 
-	 * A test to determine whether a player owns two territories
-	 * @param Territory A territory
-	 * @param Territory A different territory
-	 * @return A boolean corresponding to if the player owns both territories
-	 */
-	
-	private Boolean ownsBothTerritories(Territory t1, Territory t2){
-		
-		if(this.owned_territories.containsKey(t1) && this.owned_territories.containsKey(t2)){
-			return true; 
-		}
-		else {
-			return false; 
-		}
-		
-	}
-	
 	/** 
 	 * A test to determine whether two territories are connected. 
 	 * @param String A name of a territory
@@ -182,14 +281,15 @@ public class Player {
 	private Boolean areConnectedTerritories(String t1, String t2){
 		
 		// for Hadi to complete with Hamideh
-		
+		/*
 		HashSet<Territory> territories = new HashSet<>();
 		//Needs testing
 			for ( Territory territory : owned_territories.values()) 
 				territories.add(territory);
 	
 		return Game_Model.map_generator.map.Exist_Path(territories, t1 , t2);
-		
+		*/
+		return true;
 		
 	}
 	
@@ -199,10 +299,8 @@ public class Player {
 	 * @param Integer The number of troops to be moved 
 	 * @return A boolean corresponding to if the territory has troops capable of moving
 	 */
-	private Boolean hasEnoughTroopsForMove(Territory t1, Integer troops ){
-		
-		return (t1.nb_armies > troops); 
-		
+	private Boolean Has_Enough_Army_To_Move(Territory t1, Integer number_of_armies ){		
+		return (t1.nb_armies > number_of_armies); 		
 	}
 	
 	

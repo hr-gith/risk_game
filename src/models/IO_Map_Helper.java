@@ -19,11 +19,11 @@ public class IO_Map_Helper {
 	 * @param path address of a .map file
 	 * @return the generated map
 	 */
-		public Map Import_Map(String path) {
-			Map map = null;
+		public Map_Model Import_Map(String path) {
+			Map_Model map = null;
 			ArrayList<String> map_text = File_Operations.Read_File(path);
 			if (map_text.isEmpty()) return map;
-			map =Map.Get_Map();
+			map =Map_Model.Get_Map();
 			
 			int line_map = map_text.indexOf("[Map]");
 			int line_continents = map_text.indexOf("[Continents]");
@@ -109,7 +109,7 @@ public class IO_Map_Helper {
 		 * @param map
 		 * @return true if map is written successfully on a file
 		 */
-		public boolean Export_Map(Map map) {
+		public boolean Export_Map(Map_Model map) {
 			if (map.Is_Empty()) return false;
 			
 			ArrayList<String> map_text = new ArrayList<>();
