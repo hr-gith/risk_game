@@ -30,7 +30,7 @@ public class Game_Controller {
         	if (game.Setup()) {
 	        	this.Start_Up_Reinforcement();
 	        	while(!game.Is_Game_Over()) {
-	        		Play();
+	        		game.Play();
 	        	}
 	        	game_view.Display_Winner(game.current_player.name);
         	}
@@ -64,40 +64,5 @@ public class Game_Controller {
 	
 	public void Fortification (String from, String to, int nb_armies) {
 		game.current_player.Move_Army(from, to, nb_armies);
-	}
-	
-	/** 
-	 * Controls the game logic and process flow once the setup is complete and the game begins
-	 */
-    
-    public void Play() {
-    	game.current_action = "Play Game";
-        if (game.player_flag) {
-        	game.player_flag = false;
-        }
-
-        if (game.Is_Game_Over()) {    
-        	game.isFighting = false;
-        }           
-        switch (game.current_player.current_state_game) {     
-            case REINFORCEMENT:
-            	game.current_player.Reinforcement();   
-            	game.Update_Current_State(State_Game.ATTACKING);
-                break;
-            case ATTACKING:
-            	game.current_player.Attack();
-            	game.Update_Current_State(State_Game.FORTIFICATION);
-                break;
-            case FORTIFICATION:
-            	game_view.Display_Menu_Fortification(game.current_player);
-            	game.Update_Current_State(State_Game.REINFORCEMENT);
-            	game.Change_Player();
-                break;
-            default:
-                	break;
-        }  
-    }
-    
-
-	
+	}	
 }
