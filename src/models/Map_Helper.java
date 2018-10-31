@@ -1,6 +1,10 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Optional;
+
 import utilities.Config;
 import utilities.File_Operations;
 
@@ -8,7 +12,7 @@ import utilities.File_Operations;
  * IO_Map_Helper Class is a model 
  * Handles the map initialization and map creation 
  */
-public class IO_Map_Helper {
+public class Map_Helper {
 
 	/** 
 	 * reads a .map file and converts it to a Map object
@@ -140,5 +144,68 @@ public class IO_Map_Helper {
 			return true;
 		}
 		
+		/**
+		 * part of Depth first search on a graph
+		 * goes through neighbors of a territory if that neighbor belongs to list of visitors(customized graph: continents)
+		 * @param territory
+		 * @param visited
+		 */
+		public static void DFS_Graph(Territory territory, HashMap<String, Boolean> visited) {
+			visited.replace(territory.name, true);
+			for (Territory neighbour : territory.adj.values()) {
+				if (visited.containsKey(neighbour.name) && !visited.get(neighbour.name)) {
+					DFS_Graph (neighbour, visited);
+				}
+			}
+		}
 		
+		
+		/**
+		 * Apply Depth First Search (DFS) on a set of territory 
+		 * @param continent 
+		 * @return list of visited territories 
+		 */
+		public static HashMap<String, Boolean> DFS(HashSet<Territory> territories) {
+			HashMap<String, Boolean> visited = new HashMap<>();
+			Optional<Territory> first =  territories.stream().findFirst();
+			if(first.isPresent()){
+			    Territory root = first.get();			    
+			    //set visited to false for all territories
+			    for (Territory territory: territories ) {
+					visited.put(territory.name, false);
+				}
+				DFS_Graph(root, visited);
+			} 		
+			return visited;
+		}
+		
+		/**
+		 * Checks if any path exists between to territory in a specific list of territories
+		 * @param territories which is list of territories we look for a path
+		 * @param from_name which is the first territory
+		 * @param to_name which is the second territory
+		 * @return
+		 */
+		public static Boolean Exist_Path(HashSet<Territory> territories, String from_name, String to_name) {
+			Territory root = null;
+			Territory to = null;
+			for (Territory territory: territories ) {
+				if (territory.name.equals(from_name.toLowerCase()))
+					root = territory;
+				if (territory.name.equals(to_name.toLowerCase()))
+					to = territory;
+			}
+			if (root == null || to == null) return false;
+			
+			HashMap<String, Boolean> visited = new HashMap<>();
+		    //set visited to false for all territories
+		    for (Territory territory: territories ) {
+				visited.put(territory.name, false);
+			}
+			DFS_Graph(root, visited);
+			if (visited.get(to.name))
+				return true;
+			return false;
+		}
+
 }

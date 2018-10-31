@@ -12,6 +12,7 @@ import controllers.Game_Controller;
 import controllers.Map_Generator_Controller;
 import views.Game_View;
 import models.Map_Model;
+import utilities.Config;
 
 public class Game_Model extends Observable{
 
@@ -41,17 +42,34 @@ public class Game_Model extends Observable{
     	int cur_player_index = player_list.indexOf(current_player);
     	//check players after him/her in the list
     	for(int i = cur_player_index; i < player_list.size(); i++) {
-    		if (player_list.get(i).alive)
+    		if (player_list.get(i).Is_Alive())
     			return player_list.get(i);
     	}
     	//check players before him/her in the list
     	for(int i = 0; i < cur_player_index; i++) {
-    		if (player_list.get(i).alive)
+    		if (player_list.get(i).Is_Alive())
     			return player_list.get(i);
     	}
     	return null;
     }
     
+    /**
+     * @returns list of players who are active in the game
+     */
+    public ArrayList<Player> Get_Active_Players(){
+    	ArrayList<Player> result = new ArrayList<Player>();
+    	for (Player p: player_list) {
+    		if (p.Is_Alive())
+    			result.add(p);
+    	}
+    	return result;
+    }
+    
+    /**
+     * changes the current player to the next one based on the order of players in the list
+     * if there is another active player
+     * @return true if it is successfully changed
+     */
     public boolean Change_Player() {
     	Player next = Get_Next_Player();
     	if (next != null) {
@@ -63,18 +81,29 @@ public class Game_Model extends Observable{
     	return false;
     }
 
+    /**
+     * 
+     * @return number of all players in the game weather are active or dead
+     */
     public int Number_Of_Players() {
     	return player_list.size();
     }
 
+    /**
+     * adds a new player to the game
+     * checks duplication and maximum number of players
+     * @param new_player
+     * @return
+     */
     public boolean Add_Player(String new_player) {
-    	if (new_player != "") {
+    	if (new_player != "" && this.Number_Of_Players() < Config.max_nb_players) {
     		for(Player p: player_list){
     			if (p.name.equalsIgnoreCase(new_player))
     				return false;			
     		}
     		player_list.add(new Player(new_player));
     		return true;
+    		
     	}
     	return false;
     }
@@ -84,7 +113,8 @@ public class Game_Model extends Observable{
 	 * 
 	 */    
     public boolean Setup() {
-    	if (Number_Of_Players() < 2 || map == null || map.Is_Empty() || (map.Get_Territories().size()< Number_Of_Players())) 
+    	if (Number_Of_Players() < Config.min_nb_players || Number_Of_Players() > Config.max_nb_players ||
+    			map == null || map.Is_Empty() || (map.Get_Territories().size()< Number_Of_Players())) 
     		return false;
     	
     	Update_Current_State(State_Game.STARTUP);
@@ -101,10 +131,7 @@ public class Game_Model extends Observable{
         notifyObservers(this);
         
         current_action = "Calculate Reinforcement for each player ";
-        for (Player p : player_list) {
-            if (!p.Startup_Reinforcement())
-            	return false;
-        }
+        Startup_Reinforcement();
         setChanged();
         notifyObservers(this);
        
@@ -131,7 +158,41 @@ public class Game_Model extends Observable{
 
     }    
     
+    public void Startup_Reinforcement() {
+		int nb_initial_armies = Get_Number_StartUp_Reinforcements();
+        current_state = State_Game.STARTUP;
+        for(Player p: this.player_list) {
+        	p.reinforcements = nb_initial_armies;
+        	p.Assign_Min_Army_To_Territories();
+        }		
+	}
     
+    /** 
+	 * Calculates the number of resulting units to start the game for each player
+	 */	
+	public int Get_Number_StartUp_Reinforcements(){		
+		int result = 0;
+
+        switch (this.Number_Of_Players())
+        {
+            case 2:
+                result = 40;
+                break;
+            case 3:
+                result = 35;
+                break;
+            case 4:
+                result = 30;
+                break;
+            case 5:
+                result = 25;
+                break;
+            case 6:
+                result = 20;
+                break;
+        }
+        return result;
+	}
 	
 	/** 
 	 * Sets up the Player list with their name and corresponding player name
