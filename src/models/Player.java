@@ -56,14 +56,22 @@ public class Player {
 		return true;
 	}
 	
-	public boolean Reinforcement() {
-		current_state = State_Player.PLAYING;
+	public void Update_State(State_Player new_state) {
+		current_state = new_state;
+	}
+	
+	public boolean Reinforcement(String to_territory, int nb_armies) {
+		if (this.Add_Army_To_Territory(to_territory, nb_armies)) {
+			return true;
+		}
+		return false;
+		/*current_state = State_Player.PLAYING;
         old_state_game = State_Game.REINFORCEMENT;
     	if (old_state_game != State_Game.STARTUP)  
             Set_Number_Territory_Reinforcements();          
     	else
     		return false;
-        return true;
+        return true;*/
 	}
   
 	public boolean Assign_Min_Army_To_Territories() {
@@ -86,7 +94,7 @@ public class Player {
         else
         	return false;
 		
-        current_state_game = State_Game.ATTACKING;
+        //current_state_game = State_Game.ATTACKING; //?????????
         return true;
 
         //check if card set can be used

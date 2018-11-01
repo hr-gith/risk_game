@@ -2,22 +2,30 @@ package views;
 
 import controllers.Game_Controller;
 import models.Player;
+import models.State_Game;
+import models.Game_Model;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
 import java.lang.Object;
 
 /**
  * Information of players move Army and replace armies
- *
- * @author Elham
  */
-public class Game_View {
-    Scanner scanner = new Scanner(System.in);
-    Game_Controller game_controller;
-
+public class Game_View implements Observer{
+    private Scanner scanner;
+    public Game_Controller game_controller;
+    public Player current_player;
+    public State_Game current_state;
+    
+    public Game_View(Game_Controller game_ctrl) {
+    	game_controller = game_ctrl;
+    	scanner = new Scanner(System.in);
+    }
     /**
      * player info
      */
@@ -43,34 +51,40 @@ public class Game_View {
         }
         return name_of_players;
     }
+    
 
     /**
      * number of movies and the destination country
      *
      * @param currentPlayer the instance of object of player.
      */
-    public AbstractMap.SimpleEntry<String, Integer> Display_Menu_Reinforcements(Player player) {
+    public void Display_Menu_Reinforcements() {
     
-		System.out.println("Reinforcement =>player : " + player.name + "- Armies left: "+ player.reinforcements+ "\n countries :" + player.owned_territories.keySet().toString());
+		System.out.println("Reinforcement =>player : " + current_player.name + 
+				"- Armies left: "+ current_player.reinforcements+ 
+				"\n countries :" + current_player.owned_territories.keySet().toString());
         System.out.println("\nEnter the To territory ");
         String to_territory = scanner.nextLine();
         System.out.println("\nEnter the Number of move armies");
         int number_armies = Integer.valueOf(scanner.nextLine());
-        while (player.reinforcements < number_armies) {
-            System.out.println("the number of armies must less than " + player.reinforcements);
+        while (current_player.reinforcements < number_armies) {
+            System.out.println("the number of armies must less than " + current_player.reinforcements);
             System.out.println("\nEnter the Number of armies");
             number_armies = Integer.valueOf(scanner.nextLine());
         }
-        return new AbstractMap.SimpleEntry<String, Integer>(to_territory, number_armies);    	
+        game_controller.Reinforcement(to_territory, number_armies);
+    }
+    
+    public void Display_Menu_Attack() {
+    
     }
     
     /**
      * number or armies for replacement
-     *
      * @param currentPlayer instance of current player
      */
-    public void Display_Menu_Fortification(Player currentPlayer) {
-        System.out.println("Fortification =>player : " + currentPlayer.name + " has countries :" + currentPlayer.owned_territories.keySet().toString());
+    public void Display_Menu_Fortification() {
+        System.out.println("Fortification =>player : " + current_player.name + " has countries :" + current_player.owned_territories.keySet().toString());
         System.out.println("Do you want to move any units? (yes/no)");
         String answer = scanner.nextLine(); 
         
@@ -89,6 +103,25 @@ public class Game_View {
     public void Display_Winner(String winner) {
     	System.out.println("\n Congratulation "+winner+", you are the winner!!!");
     }
+
+    public void Update_Menu() {
+    	if (current_state == State_Game.STARTUP) {
+    		Display_Menu_Reinforcements();
+    	}else if (current_state == State_Game.REINFORCEMENT) {
+    		Display_Menu_Reinforcements();
+    	}else if (current_state == State_Game.ATTACKING) {
+    		Display_Menu_Attack();
+    	}else if (current_state == State_Game.FORTIFICATION) {
+    		Display_Menu_Fortification();
+    	}    		
+    }
+    
+	@Override
+	public void update(Observable obs, Object arg1) {
+		current_player = ((Game_Model) obs).current_player;
+		current_state = ((Game_Model) obs).current_state;
+		Update_Menu();
+	}
 
     /**
      * it shows the Place army on their own countries
