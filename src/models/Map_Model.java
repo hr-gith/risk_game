@@ -150,7 +150,7 @@ public class Map_Model {
 		//Is a connected graph?
 		HashSet<Territory> territories = new HashSet<Territory>(this.Get_Territories().values());
 		//HashSet<Territory> territories = (HashSet<Territory>)this.Get_Territories().values();
-		HashMap<String, Boolean> visited_territories = DFS(territories);
+		HashMap<String, Boolean> visited_territories = Map_Helper.DFS(territories);
 		 for (String territory : visited_territories.keySet())
 			 if (!visited_territories.get(territory))
 				 return false;
@@ -158,7 +158,7 @@ public class Map_Model {
 		//Are all continents connected graphs?
 		for (Continent con : continents.values()) {
 			territories = new HashSet<Territory>( con.territories.values());
-			visited_territories = DFS(territories);
+			visited_territories = Map_Helper.DFS(territories);
 			for (String territory : visited_territories.keySet())
 				 if (!visited_territories.get(territory))
 					 return false;
@@ -166,72 +166,9 @@ public class Map_Model {
 		
 		//If two territories have same positions or the same names? => has been checked while importing a map in IO_Map_Helper	
 		return true;
-}
-	
-	/**
-	 * part of Depth first search on a graph
-	 * goes through neighbors of a territory if that neighbor belongs to list of visitors(customized graph: continents)
-	 * @param territory
-	 * @param visited
-	 */
-	private void DFS_Graph(Territory territory, HashMap<String, Boolean> visited) {
-		visited.replace(territory.name, true);
-		for (Territory neighbour : territory.adj.values()) {
-			if (visited.containsKey(neighbour.name) && !visited.get(neighbour.name)) {
-				DFS_Graph (neighbour, visited);
-			}
-		}
 	}
 	
 	
-	/**
-	 * Apply Depth First Search (DFS) on a set of territory 
-	 * @param continent 
-	 * @return list of visited territories 
-	 */
-	private HashMap<String, Boolean> DFS(HashSet<Territory> territories) {
-		HashMap<String, Boolean> visited = new HashMap<>();
-		Optional<Territory> first =  territories.stream().findFirst();
-		if(first.isPresent()){
-		    Territory root = first.get();			    
-		    //set visited to false for all territories
-		    for (Territory territory: territories ) {
-				visited.put(territory.name, false);
-			}
-			DFS_Graph(root, visited);
-		} 		
-		return visited;
-	}
-	
-	/**
-	 * Checks if any path exists between to territory in a specific list of territories
-	 * @param territories which is list of territories we look for a path
-	 * @param from_name which is the first territory
-	 * @param to_name which is the second territory
-	 * @return
-	 */
-	public Boolean Exist_Path(HashSet<Territory> territories, String from_name, String to_name) {
-		Territory root = null;
-		Territory to = null;
-		for (Territory territory: territories ) {
-			if (territory.name.equals(from_name.toLowerCase()))
-				root = territory;
-			if (territory.name.equals(to_name.toLowerCase()))
-				to = territory;
-		}
-		if (root == null || to == null) return false;
-		
-		HashMap<String, Boolean> visited = new HashMap<>();
-	    //set visited to false for all territories
-	    for (Territory territory: territories ) {
-			visited.put(territory.name, false);
-		}
-		DFS_Graph(root, visited);
-		if (visited.get(to.name))
-			return true;
-		return false;
-	}
-
 	@Override
 	public String toString() {
 		String continent_str = "";

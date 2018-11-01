@@ -16,7 +16,6 @@ public class Player {
 	public State_Player current_state;
 	public State_Game current_state_game; 
 	public State_Game old_state_game; 
-	public boolean alive;	
 	public HashMap<String,Territory> owned_territories;
 	public Integer reinforcements;
 	
@@ -51,26 +50,28 @@ public class Player {
 		this(id, "Player " + id);  
 	}
 	
-	public boolean Startup_Reinforcement() {
-		Set_Number_StartUp_Reinforcements();
-        current_state_game = State_Game.STARTUP;
-        alive = true;
-		if (reinforcements > 0) {
-        	Assign_Min_Army_To_Territories();
-        	return true;
-		}
-		else
+	public boolean Is_Alive() {
+		if (current_state == State_Player.DEAD)
 			return false;
+		return true;
 	}
 	
-	public boolean Reinforcement() {
-		current_state = State_Player.PLAYING;
+	public void Update_State(State_Player new_state) {
+		current_state = new_state;
+	}
+	
+	public boolean Reinforcement(String to_territory, int nb_armies) {
+		if (this.Add_Army_To_Territory(to_territory, nb_armies)) {
+			return true;
+		}
+		return false;
+		/*current_state = State_Player.PLAYING;
         old_state_game = State_Game.REINFORCEMENT;
     	if (old_state_game != State_Game.STARTUP)  
             Set_Number_Territory_Reinforcements();          
     	else
     		return false;
-        return true;
+        return true;*/
 	}
   
 	public boolean Assign_Min_Army_To_Territories() {
@@ -93,7 +94,7 @@ public class Player {
         else
         	return false;
 		
-        current_state_game = State_Game.ATTACKING;
+        //current_state_game = State_Game.ATTACKING; //?????????
         return true;
 
         //check if card set can be used
@@ -199,13 +200,7 @@ public class Player {
 		 this.reinforcements = 3 + this.owned_territories.size() / 3; 	
 	}
 	
-	/** 
-	 * Calculates the number of resulting units to start the game for each player
-	 */	
-	public void Set_Number_StartUp_Reinforcements(){		
-		// hadi input start up reinforcement logic
-		this.reinforcements = this.owned_territories.size() * 2; 		
-	}
+	
 	
 	
 	
@@ -217,20 +212,19 @@ public class Player {
 	 * @return A boolean corresponding to if the army movement is valid
 	 */
 	
-	public Boolean Move_Army(String from, String to, int number_of_units){
-		Territory from_territory = this.owned_territories.get(from);
-		Territory to_territory = this.owned_territories.get(to);
-		if (from_territory != null && to_territory != null && !from_territory.equals(to_territory) && !from_territory.owner_name.equals(to_territory.owner_name)) {
-			//TODO: check if there is a path 
+	public Boolean Move_Army(String from_name, String to_name, int number_of_units){
+		Territory from = this.owned_territories.get(from_name);
+		Territory to = this.owned_territories.get(to_name);
+		if (from != null && to != null &&
+				!from_name.equalsIgnoreCase(to_name) && !from.owner_name.equalsIgnoreCase(to.owner_name)) {
 			
-			if (Has_Enough_Army_To_Move(from_territory, number_of_units )) {
-				this.Add_Army_To_Territory(to, number_of_units);
-				this.Add_Army_To_Territory(from, (number_of_units * -1));
+			if (Are_Connected_Territories (from_name, to_name)  && Has_Enough_Army_To_Move(from, number_of_units )) {
+				this.Add_Army_To_Territory(to_name, number_of_units);
+				this.Add_Army_To_Territory(from_name, (number_of_units * -1));
 				return true;
 			}			
 		}			
-		return false; 
-			
+		return false; 			
 	}
 	
 	
@@ -278,19 +272,11 @@ public class Player {
 	 * @return A boolean corresponding to if the owned territories are connected
 	 */
 	
-	private Boolean areConnectedTerritories(String t1, String t2){
+	private Boolean Are_Connected_Territories(String t1, String t2){
 		
-		// for Hadi to complete with Hamideh
-		/*
-		HashSet<Territory> territories = new HashSet<>();
-		//Needs testing
-			for ( Territory territory : owned_territories.values()) 
-				territories.add(territory);
-	
-		return Game_Model.map_generator.map.Exist_Path(territories, t1 , t2);
-		*/
-		return true;
-		
+		if (Map_Helper.Exist_Path(new HashSet<Territory>( owned_territories.values()), t1, t2))
+			return true;
+		return false;
 	}
 	
 	/** 

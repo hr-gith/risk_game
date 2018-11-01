@@ -146,7 +146,7 @@ public class MapTest {
 		new_territory_neighbour_1.Add_Neighbour(new_territory_neighbour_2);
 		HashSet<Territory> territories=new HashSet<Territory>(new_continent.territories.values());
 		
-		map.Exist_Path(territories, "new_territory_name_1","new_territory_name_3");
+		Map_Helper.Exist_Path(territories, "new_territory_name_1","new_territory_name_3");
 	}
 
 }

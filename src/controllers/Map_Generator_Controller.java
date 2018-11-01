@@ -1,7 +1,7 @@
 package controllers;
 
 
-import models.IO_Map_Helper;
+import models.Map_Helper;
 import models.Map_Model;
 import utilities.Config;
 import views.Map_Generator_View;
@@ -17,13 +17,13 @@ public class Map_Generator_Controller {
 	public Map_Generator_View map_generator_view;
 	public Map_View map_view;
 	public Map_Model map;
-	public IO_Map_Helper io_map_helper;
+	public Map_Helper io_map_helper;
 	 
 	public  Map_Generator_Controller() {
 		this.map_generator_view = new Map_Generator_View();
 		this.map_view = new Map_View();
 		this.map =Map_Model.Get_Map();
-		this.io_map_helper = new IO_Map_Helper();
+		this.io_map_helper = new Map_Helper();
 	}
 	
 	/**

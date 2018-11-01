@@ -12,7 +12,7 @@ public class IO_Map_HelperTest {
 	@Test
 	public void testImport_Map() {
 		String path = Config.input_file;
-		IO_Map_Helper io_map = new IO_Map_Helper();
+		Map_Helper io_map = new Map_Helper();
 		Map_Model map = io_map.Import_Map(path);
 		Assert.assertNull(map);
 	}
