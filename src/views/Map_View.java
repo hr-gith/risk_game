@@ -16,7 +16,7 @@ import models.Game_Model;
 import models.Map_Model;
 import models.Territory;
 
-public class Map_View extends JPanel implements Observer{
+public class Map_View extends View{
 
 	private Map_Model map;
 	JFrame jFrame;
@@ -55,7 +55,7 @@ public class Map_View extends JPanel implements Observer{
 					current_color++;
 				}
 				g.drawOval(territory.pos_x - 30, territory.pos_y - 15, 60, 30);
-				g.drawString(territory.name, territory.pos_x - 28, territory.pos_y + 2);
+				g.drawString(territory.name, territory.pos_x - 22, territory.pos_y + 2);
 				g.drawString(Integer.toString(territory.nb_armies), territory.pos_x - 10, territory.pos_y + 12);
 				// draw connections
 				for (Territory neighbour : territory.adj.values()) {
@@ -81,5 +81,11 @@ public class Map_View extends JPanel implements Observer{
 	@Override
 	public void update(Observable obs, Object arg1) {
 		this.map = ((Game_Model) obs).map;		
+	}
+
+	@Override
+	public void Update_Display(String text) {
+		// TODO Auto-generated method stub
+		
 	} 
 }

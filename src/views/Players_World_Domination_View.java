@@ -16,7 +16,7 @@ public class Players_World_Domination_View extends View {
 	}
 
 	@Override
-	public void Display(String text) {
+	public void Update_Display(String text) {
 		// TODO Auto-generated method stub
 		
 	}
