@@ -51,5 +51,9 @@ public class Game_Controller {
 		game.current_player.Move_Army(from, to, nb_armies);
 	}
 	
+	public void Attack(String from, String to, int nb_armies,int nb_dices, boolean all_out){
+		game.Attack(from, to, nb_dices, nb_armies, all_out);
+	}
+	
 	
 }

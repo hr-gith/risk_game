@@ -21,6 +21,7 @@ public class Game_View implements Observer{
     public Game_Controller game_controller;
     public Player current_player;
     public State_Game current_state;
+    public String message;
     
     public Game_View(Game_Controller game_ctrl) {
     	game_controller = game_ctrl;
@@ -76,7 +77,19 @@ public class Game_View implements Observer{
     }
     
     public void Display_Menu_Attack() {
-    
+        System.out.println("Attack =>player : " + current_player.name + " has countries :" + current_player.owned_territories.keySet().toString());
+        System.out.println("Enter your attacker territory:");
+        String from_territory = scanner.nextLine();
+        System.out.println("Enter a territory to attack: ");
+        String to_territory = scanner.nextLine();
+        System.out.println("Enter number of armies you want to attack with: ");
+        int number_armies = Integer.valueOf(scanner.nextLine());
+        System.out.println("Enter number of dices: ");
+        int number_dices = Integer.valueOf(scanner.nextLine());
+        System.out.println("Would you like to play in all out mode(y/n)? ");
+        String answer = scanner.nextLine();
+        boolean all_out = (answer.equalsIgnoreCase("y"));
+        game_controller.Attack(from_territory, to_territory, number_armies,number_dices, all_out);
     }
     
     /**
@@ -120,6 +133,7 @@ public class Game_View implements Observer{
 	public void update(Observable obs, Object arg1) {
 		current_player = ((Game_Model) obs).current_player;
 		current_state = ((Game_Model) obs).current_state;
+		message = ((Game_Model) obs).message;
 		Update_Menu();
 	}
 

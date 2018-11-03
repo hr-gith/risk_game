@@ -1,6 +1,7 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
@@ -60,11 +61,11 @@ public class Player {
 		current_state = new_state;
 	}
 	
-	public boolean Reinforcement(String to_territory, int nb_armies) {
+	public Message_Handler Reinforcement(String to_territory, int nb_armies) {
 		if (this.Add_Army_To_Territory(to_territory, nb_armies)) {
-			return true;
+			return new Message_Handler(true);
 		}
-		return false;
+		return new Message_Handler(true, "The territory does not belong to you or your reinforcement is not enough.");
 		/*current_state = State_Player.PLAYING;
         old_state_game = State_Game.REINFORCEMENT;
     	if (old_state_game != State_Game.STARTUP)  
@@ -131,9 +132,41 @@ public class Player {
 		return Add_Army_To_Territory(territory_key, 1);
 	}	
 	
-	
-    public void Attack() {
+	public Message_Handler Attack (Territory from, Territory to, Player defender, int nb_dices,int nb_armies,boolean all_out) {
         old_state_game = State_Game.ATTACKING;
+        Message_Handler response = new Message_Handler(true);
+		if (from != null && to != null &&
+				!from.name.equalsIgnoreCase(to.name) && !from.owner_name.equalsIgnoreCase(to.owner_name)) {
+			//check if from and to are adjacent
+			if (from.adj.containsKey(to.name.toLowerCase())) {
+				if (from.nb_armies > nb_armies) {
+					int[] result = Decide_Battle(nb_dices, defender.Get_NB_Dices(to, false));
+					from.nb_armies += result[0];
+					to.nb_armies += result[1];
+					//check if one of territories is defeated
+					if (from.nb_armies <= 0) {
+						this.Delete_Territory(from.name);
+						defender.Add_Territory(from);
+						from.nb_armies = 0;//????????????????????????????????
+						//TODO: move armies to new territory
+					}else if (to.nb_armies <= 0) {
+						defender.Delete_Territory(to.name);
+						this.Add_Territory(to);
+						to.nb_armies = 0;//????????????????????????????????
+						//TODO: move armies to new territory
+					}
+				}
+				else {
+					response.Set(false, "Error:These territories are not adjacent");
+				}
+			}else {
+				response.Set(false,"Error:These territories are not adjacent");
+			}
+			
+		}else {
+			response.Set(false, "Error:These territories are not valid territory name or both of them belong to you");
+		}
+        
         //check if user satisfies any territories to attack from
         //y-> update map with potential attackers
         //prompt attack move
@@ -153,9 +186,49 @@ public class Player {
         //set phase to fortification
 
         current_state_game = State_Game.FORTIFICATION;
-
+        return  response;
     }
-    
+	
+	/**
+	 * decide about one turn battle
+	 * @param attack_nb_dices
+	 * @param defend_nb_dices
+	 * @return a pair of numbers: the first number is the number of armies lost for attacker and the other one is for attacked one
+	 */
+	public int[] Decide_Battle(int attack_nb_dices, int defend_nb_dices) {
+		int[] result = {0,0};
+		ArrayList<Integer> attack_dices = Dice.Roll(attack_nb_dices); 
+		ArrayList<Integer> defend_dices = Dice.Roll(defend_nb_dices); 
+		
+		//compare the highest dices
+		if (attack_dices.get(0) > defend_dices.get(0)) 
+			result[1] = -1;
+		else
+			result[0] = -1;
+		
+		if (attack_nb_dices > 1 &&  defend_nb_dices > 1 ) {
+			if (attack_dices.get(1) > defend_dices.get(1)) 
+				result[1] += -1;
+			else
+				result[0] += -1;
+		}
+		return result;		
+	}
+	
+	public int Get_NB_Dices(Territory territory_in_attack,boolean isAttacker) {
+		int result = 0;
+		if (!isAttacker) 
+			//Defender
+			result = (territory_in_attack.nb_armies > 1)? 2 : 1;				
+		
+		else {
+			//Attacker
+			//TODO: add logic instead of getting from user
+		}
+		return result;
+	}
+	
+	
     public boolean Fortification(String from, String to, int nb_armies) {
         old_state_game = State_Game.FORTIFICATION;
         // game_view.Display_Menu_Fortification(current_player);        
@@ -216,7 +289,7 @@ public class Player {
 		Territory from = this.owned_territories.get(from_name);
 		Territory to = this.owned_territories.get(to_name);
 		if (from != null && to != null &&
-				!from_name.equalsIgnoreCase(to_name) && !from.owner_name.equalsIgnoreCase(to.owner_name)) {
+				!from_name.equalsIgnoreCase(to_name) && from.owner_name.equalsIgnoreCase(to.owner_name)) {
 			
 			if (Are_Connected_Territories (from_name, to_name)  && Has_Enough_Army_To_Move(from, number_of_units )) {
 				this.Add_Army_To_Territory(to_name, number_of_units);
@@ -289,5 +362,7 @@ public class Player {
 		return (t1.nb_armies > number_of_armies); 		
 	}
 	
-	
+	public boolean Can_Attack() {
+		return true;
+	}
 }

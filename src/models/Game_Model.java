@@ -59,12 +59,12 @@ public class Game_Model extends Observable{
     	if (current_player == null) return player_list.get(0);//game is just started
     	
     	int cur_player_index = player_list.indexOf(current_player);
-    	//check players after him/her in the list
+    	//check players after the current player in the list
     	for(int i = cur_player_index+1; i < player_list.size(); i++) {
     		if (player_list.get(i).Is_Alive() && player_list.get(i).reinforcements > 0)
     			return player_list.get(i);
     	}
-    	//check players before him/her in the list
+    	//check players before the current player in the list
     	for(int i = 0; i < cur_player_index; i++) {
     		if (player_list.get(i).Is_Alive() && player_list.get(i).reinforcements > 0)
     			return player_list.get(i);
@@ -126,6 +126,14 @@ public class Game_Model extends Observable{
     	}
     	return false;
     }
+    
+    public Player Get_Player(String name) {
+    	for(Player p : player_list) {
+			if (p.name.equalsIgnoreCase(name))
+				return p;
+		}
+    	return null;
+    }
 
 	/** 
 	 * Controls the game logic for the game setup phase
@@ -172,7 +180,12 @@ public class Game_Model extends Observable{
 
 
     }    
-    
+    /**
+     * set the current player to the next player if there is another active player in the game
+     * otherwise will return false
+     * @param next_player
+     * @return
+     */
     public boolean Change_Player(Player next_player) {
     	if (next_player != null && next_player.current_state != State_Player.DEAD) {
 			current_player.Update_State(State_Player.WAITING);
@@ -183,8 +196,14 @@ public class Game_Model extends Observable{
     	return false;
     }
     
+    /**
+     * 
+     * @param territory_name
+     * @param nb_armies
+     */
     public void Reinforcement(String territory_name, int nb_armies) {
-    	if (current_player.Reinforcement(territory_name, nb_armies)) {
+    	Message_Handler response = current_player.Reinforcement(territory_name, nb_armies); 
+    	if (response.ok) {
     		if (current_state == State_Game.STARTUP) {
     			Player next_player = this.Get_Next_Player_For_Reinforcement();
     			if (next_player != null) {
@@ -192,7 +211,7 @@ public class Game_Model extends Observable{
     			}else {
     				// End of StartUp => game is started
     				Change_Player(player_list.get(0));//get the first player to play the game
-	    			current_state = State_Game.ATTACKING;//????????????what is the first step after startup	    			
+	    			current_state = State_Game.ATTACKING;	    			
     			}    			
     		}
     		else if (current_state == State_Game.REINFORCEMENT){
@@ -201,47 +220,41 @@ public class Game_Model extends Observable{
     				current_state = State_Game.ATTACKING;
     				//TODO: Check if player can attack before the view gets data
     			}
-    		}
-    		setChanged();
-			notifyObservers(this);
+    		}    		
     	}
     	else {
-    		//TODO: Display error message
-    		message = "Error occured while reinforcement";
+    		message = response.message;
     	}
+    	setChanged();
+		notifyObservers(this);
+    }
+    
+    /**
+     * the attacked player always plays with maximum number of dices
+     * @param from_name
+     * @param to_name
+     * @param nb_dice
+     * @param nb_armies
+     */
+    public void Attack (String from_name, String to_name,int nb_dice,int nb_armies,boolean all_out) {
+    	Territory from = this.map.Get_Territory(from_name);
+		Territory to = this.map.Get_Territory(to_name);
+		Player defender = this.Get_Player(to.owner_name);
+		
+   		Message_Handler response = current_player.Attack(from, to, defender, nb_dice, nb_armies,all_out); 
+       	if (response.ok) {    		
+       		this.current_state = State_Game.FORTIFICATION;
+    	}
+    	else {
+    		message = "Error: please enter valid data";
+    	}
+       	setChanged();
+		notifyObservers(this);
     }
     
     /** 
 	 * Controls the game logic and process flow once the setup is complete and the game begins
-	 */
-    
-    public void Play() {
-    	/*message = "Play Game";
-        if (player_flag) {
-        	player_flag = false;
-        }
-
-        if (Is_Game_Over()) {    
-        	isFighting = false;
-        }           
-        switch (current_player.current_state_game) {     
-            case REINFORCEMENT:
-            	//current_player.Reinforcement();   
-            	Update_Current_State(State_Game.ATTACKING);
-                break;
-            case ATTACKING:
-            	current_player.Attack();
-            	Update_Current_State(State_Game.FORTIFICATION);
-                break;
-            case FORTIFICATION:
-            	Update_Current_State(State_Game.REINFORCEMENT);
-            	Change_Player();
-                break;
-            default:
-                	break;
-        }  */
-    }
-    
+	 */     
     public void Startup_Reinforcement() {
 		int nb_initial_armies = Get_Number_StartUp_Reinforcements();
         current_state = State_Game.STARTUP;
