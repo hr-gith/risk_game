@@ -5,27 +5,38 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import models.Continent;
+import models.Game_Model;
 import models.Map_Model;
 import models.Territory;
 
-public class Map_View extends JPanel{
+public class Map_View extends JPanel implements Observer{
 
 	private Map_Model map;
+	JFrame jFrame;
+	
+	public Map_View() {
+		jFrame = new JFrame();	
+	}
+	
 	/**
 	 * draw map
 	 */
-
 	public void Draw_Map(Map_Model map) {
-		this.map = map;
-		JFrame jFrame = new JFrame();
+		this.map = map;	
 		jFrame.add(this);
-		jFrame.setSize(1000, 1000);
+		jFrame.setSize(800, 800);
 		jFrame.setVisible(true);
+	}
+	
+	public void Close()	{
+		jFrame.setVisible(false);
 	}
 
 
@@ -62,8 +73,13 @@ public class Map_View extends JPanel{
 	    super.paintComponent(g);
 	    Graphics2D g2D = (Graphics2D) g;
 	    AffineTransform affT = g2D.getTransform();
-	    g2D.scale( 2, 2);
+	    g2D.scale( 1, 1);
 	    super.paint(g);
 	    g2D.setTransform(affT);
+	}
+
+	@Override
+	public void update(Observable obs, Object arg1) {
+		this.map = ((Game_Model) obs).map;		
 	} 
 }
