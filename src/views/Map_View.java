@@ -55,7 +55,7 @@ public class Map_View extends JPanel implements Observer{
 					current_color++;
 				}
 				g.drawOval(territory.pos_x - 30, territory.pos_y - 15, 60, 30);
-				g.drawString(territory.name, territory.pos_x - 28, territory.pos_y + 2);
+				g.drawString(territory.name, territory.pos_x - 22, territory.pos_y + 2);
 				g.drawString(Integer.toString(territory.nb_armies), territory.pos_x - 10, territory.pos_y + 12);
 				// draw connections
 				for (Territory neighbour : territory.adj.values()) {

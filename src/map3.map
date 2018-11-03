@@ -8,17 +8,17 @@ warn=no
 [Continents]
 Con1=5
 Con2=3
-Con3=2 
+Con3=2
 
 [Territories]
-t1,50,50,con1,t3,t4
-t2,170,50,con1,t4
-t3,220,100,con1,t1,t4,t5
-t4,130,170,con1,t1,t2,t3,t5
-t5,200,250,con2,t4,t3,t6,t7
-t6,100,300,con2,t5,t7,t8
-t7,150,350,con2,t6,t5,t10
-t8,20,370,con3,t6,t9
-t9,300,400,con3,t8,t10
-t10,200,450,con3,t9,t7
+t1,70,50,con1,t3,t4
+t2,220,70,con1,t4
+t3,370,120,con1,t1,t4,t5
+t4,180,190,con1,t1,t2,t3,t5
+t5,250,270,con2,t4,t3,t6,t7
+t6,150,320,con2,t5,t7,t8
+t7,200,370,con2,t6,t5,t10
+t8,50,430,con3,t6,t9
+t9,350,450,con3,t8,t10
+t10,250,500,con3,t9,t7
 
