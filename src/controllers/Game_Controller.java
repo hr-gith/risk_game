@@ -33,8 +33,8 @@ public class Game_Controller {
 				
 		if (map_view == null)
 			map_view =new Map_View();
-		game.addObserver(map_view);
-		
+		game.addObserver(map_view);		
+
 		phase_view =new Phase_View();
 		game.addObserver(phase_view);
 		
@@ -42,6 +42,7 @@ public class Game_Controller {
 		game.addObserver(players_world_domination_view);
 		
 	}
+	
 	
 	public void Start() {
 		map_view.Draw_Map(game.map);
