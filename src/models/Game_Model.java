@@ -19,6 +19,8 @@ public class Game_Model extends Observable{
     public ArrayList<Player> player_list;
     public Map_Model map;
     public Player current_player;
+    public Attack_Model attack_plan;
+    
     public State_Game current_state; 
 	public String message;
 	
@@ -30,6 +32,7 @@ public class Game_Model extends Observable{
     	message = "";
     	player_list = new ArrayList<Player>();
     	current_state = State_Game.SETUP;
+    	attack_plan = new Attack_Model();
     }
     
     public Boolean Is_Game_Over() {    	
@@ -120,14 +123,14 @@ public class Game_Model extends Observable{
     			if (p.name.equalsIgnoreCase(new_player))
     				return false;			
     		}
-    		player_list.add(new Player(new_player));
+    		player_list.add(new Player(new_player, this));
     		return true;
     		
     	}
     	return false;
     }
     
-    public Player Get_Player(String name) {
+    public Player Search_Player(String name) {
     	for(Player p : player_list) {
 			if (p.name.equalsIgnoreCase(name))
 				return p;
@@ -153,11 +156,8 @@ public class Game_Model extends Observable{
         
         //Calculate Reinforcement for each player 
         Startup_Reinforcement();
-    	current_state = State_Game.STARTUP;
+    	Update_State(State_Game.STARTUP, ""); 
 
-        setChanged();
-        notifyObservers(this);
-       
         isFighting = true;
         return true;
 
@@ -203,6 +203,7 @@ public class Game_Model extends Observable{
      */
     public void Reinforcement(String territory_name, int nb_armies) {
     	Message_Handler response = current_player.Reinforcement(territory_name, nb_armies); 
+    	State_Game new_state = current_state;
     	if (response.ok) {
     		if (current_state == State_Game.STARTUP) {
     			Player next_player = this.Get_Next_Player_For_Reinforcement();
@@ -211,22 +212,18 @@ public class Game_Model extends Observable{
     			}else {
     				// End of StartUp => game is started
     				Change_Player(player_list.get(0));//get the first player to play the game
-	    			current_state = State_Game.ATTACKING;	    			
+    				new_state = State_Game.ATTACKING;	    			
     			}    			
     		}
     		else if (current_state == State_Game.REINFORCEMENT){
     			if (current_player.reinforcements == 0) {
     				//end of reinforcement
-    				current_state = State_Game.ATTACKING;
+    				new_state = State_Game.ATTACKING;
     				//TODO: Check if player can attack before the view gets data
     			}
     		}    		
     	}
-    	else {
-    		message = response.message;
-    	}
-    	setChanged();
-		notifyObservers(this);
+    	Update_State(new_state, response.message);    	
     }
     
     /**
@@ -236,20 +233,22 @@ public class Game_Model extends Observable{
      * @param nb_dice
      * @param nb_armies
      */
-    public void Attack (String from_name, String to_name,int nb_dice,int nb_armies,boolean all_out) {
+    public void Attack (String from_name, String to_name,int nb_dice,boolean all_out) {
     	Territory from = this.map.Get_Territory(from_name);
 		Territory to = this.map.Get_Territory(to_name);
-		Player defender = this.Get_Player(to.owner_name);
+		Player defender = this.Search_Player(to.owner_name);
 		
-   		Message_Handler response = current_player.Attack(from, to, defender, nb_dice, nb_armies,all_out); 
-       	if (response.ok) {    		
-       		this.current_state = State_Game.FORTIFICATION;
+		this.attack_plan = new Attack_Model (current_player, defender, from, to, nb_dice);
+   		Message_Handler response = current_player.Attack(this.attack_plan); 
+    	State_Game new_state = current_state;
+
+       	/*if (response.ok) {    		
+       		new_state = State_Game.FORTIFICATION;
     	}
     	else {
     		message = "Error: please enter valid data";
     	}
-       	setChanged();
-		notifyObservers(this);
+       	Update_State(new_state, message);*/
     }
     
     /** 
@@ -257,7 +256,6 @@ public class Game_Model extends Observable{
 	 */     
     public void Startup_Reinforcement() {
 		int nb_initial_armies = Get_Number_StartUp_Reinforcements();
-        current_state = State_Game.STARTUP;
         for(Player p: this.player_list) {
         	p.reinforcements = nb_initial_armies;
         	p.Assign_Min_Army_To_Territories();
@@ -365,19 +363,6 @@ public class Game_Model extends Observable{
             index++;
         }
     }   
-	
-
-	/** 
-	 * Prints the current game phase of a player at the start of the phase
-	 * @param Player The current game player
-	 * @param String The current game state
-	 */
-
-    public static void Print_State_Once(Player player, String input) {
-        if (player.current_state_game != player.old_state_game) {
-            System.out.println(input);
-        }
-    }
 
 	/** 
 	 * Prints the current game phase of a player at the start of the phase
@@ -387,11 +372,12 @@ public class Game_Model extends Observable{
         return isFighting;
     }
     
-    /*public void Update_Current_State(State_Game new_state) {
+    public void Update_State(State_Game new_state,String new_message) {
+    	message = new_message;
     	current_state = new_state;
-    	setChanged();
-        notifyObservers(this);
-    }*/
+	    setChanged();
+	    notifyObservers(this);
+    }
 
 
 }

@@ -15,8 +15,7 @@ public class Player {
 	public Integer id; 	
 	public String name; 
 	public State_Player current_state;
-	public State_Game current_state_game; 
-	public State_Game old_state_game; 
+	public Game_Model ref_game; 
 	public HashMap<String,Territory> owned_territories;
 	public Integer reinforcements;
 	
@@ -27,28 +26,23 @@ public class Player {
 	 * @param String The player's name 
 	 */
 	
-	public Player(Integer id, String name){
+	public Player(Integer id, String name, Game_Model game){
 		this.id = id; 
 		this.name = name;  
 		this.current_state = State_Player.WAITING;
-		this.current_state_game = State_Game.SETUP; 
-		this.old_state_game = State_Game.SETUP; 
+		this.ref_game = game;
 	}
 	
-	public Player(String name){
-		this.id = 0; 
-		this.name = name;  
-		this.current_state = State_Player.WAITING;
-		this.current_state_game = State_Game.SETUP; 
-		this.old_state_game = State_Game.SETUP; 
+	public Player(String name, Game_Model game){
+		this(0, name, game);
 	}
 	
 	/** 
 	 * An overloaded constructor object that automatically assigns a player name corresponding to "Player" + player_id
 	 * @param Integer The player's game id  
 	 */
-	public Player(Integer id){
-		this(id, "Player " + id);  
+	public Player(Integer id, Game_Model game){
+		this(id, "Player " + id, game);  
 	}
 	
 	public boolean Is_Alive() {
@@ -132,41 +126,22 @@ public class Player {
 		return Add_Army_To_Territory(territory_key, 1);
 	}	
 	
-	public Message_Handler Attack (Territory from, Territory to, Player defender, int nb_dices,int nb_armies,boolean all_out) {
-        old_state_game = State_Game.ATTACKING;
+	public Message_Handler Attack (Attack_Model attack_plan) {
         Message_Handler response = new Message_Handler(true);
-		if (from != null && to != null &&
-				!from.name.equalsIgnoreCase(to.name) && !from.owner_name.equalsIgnoreCase(to.owner_name)) {
-			//check if from and to are adjacent
-			if (from.adj.containsKey(to.name.toLowerCase())) {
-				if (from.nb_armies > nb_armies) {
-					int[] result = Decide_Battle(nb_dices, defender.Get_NB_Dices(to, false));
-					from.nb_armies += result[0];
-					to.nb_armies += result[1];
-					//check if one of territories is defeated
-					if (from.nb_armies <= 0) {
-						this.Delete_Territory(from.name);
-						defender.Add_Territory(from);
-						from.nb_armies = 0;//????????????????????????????????
-						//TODO: move armies to new territory
-					}else if (to.nb_armies <= 0) {
-						defender.Delete_Territory(to.name);
-						this.Add_Territory(to);
-						to.nb_armies = 0;//????????????????????????????????
-						//TODO: move armies to new territory
-					}
-				}
-				else {
-					response.Set(false, "Error:These territories are not adjacent");
-				}
-			}else {
-				response.Set(false,"Error:These territories are not adjacent");
+		if (attack_plan.Is_Valid_Attack()) {
+			if (!attack_plan.all_out) {
+				attack_plan.Decide_Battle();
+				attack_plan.Apply_Result();
+				//TODO: move armies by winner
 			}
-			
-		}else {
-			response.Set(false, "Error:These territories are not valid territory name or both of them belong to you");
+			else {
+				//TODO: all out
+			}
 		}
-        
+		else {
+			response.ok = false;
+			response.message = attack_plan.message;
+		}
         //check if user satisfies any territories to attack from
         //y-> update map with potential attackers
         //prompt attack move
@@ -185,56 +160,29 @@ public class Player {
         // increment cards if conquered
         //set phase to fortification
 
-        current_state_game = State_Game.FORTIFICATION;
         return  response;
     }
 	
-	/**
-	 * decide about one turn battle
-	 * @param attack_nb_dices
-	 * @param defend_nb_dices
-	 * @return a pair of numbers: the first number is the number of armies lost for attacker and the other one is for attacked one
-	 */
-	public int[] Decide_Battle(int attack_nb_dices, int defend_nb_dices) {
-		int[] result = {0,0};
-		ArrayList<Integer> attack_dices = Dice.Roll(attack_nb_dices); 
-		ArrayList<Integer> defend_dices = Dice.Roll(defend_nb_dices); 
-		
-		//compare the highest dices
-		if (attack_dices.get(0) > defend_dices.get(0)) 
-			result[1] = -1;
-		else
-			result[0] = -1;
-		
-		if (attack_nb_dices > 1 &&  defend_nb_dices > 1 ) {
-			if (attack_dices.get(1) > defend_dices.get(1)) 
-				result[1] += -1;
-			else
-				result[0] += -1;
-		}
-		return result;		
-	}
 	
-	public int Get_NB_Dices(Territory territory_in_attack,boolean isAttacker) {
+	
+	public int Get_Max_NB_Dices(Territory territory_in_attack,boolean isAttacker) {
 		int result = 0;
+		int nb_armies = territory_in_attack.nb_armies;
 		if (!isAttacker) 
 			//Defender
-			result = (territory_in_attack.nb_armies > 1)? 2 : 1;				
+			result = (nb_armies > 1)? 2 : 1;				
 		
 		else {
 			//Attacker
-			//TODO: add logic instead of getting from user
+			result = (nb_armies > 2 ) ? 3 : ((nb_armies == 2)? 1 : 0);  
 		}
 		return result;
 	}
 	
 	
     public boolean Fortification(String from, String to, int nb_armies) {
-        old_state_game = State_Game.FORTIFICATION;
-        // game_view.Display_Menu_Fortification(current_player);        
-
         //Test if any units to fortify
-        if (Has_Units_To_Move()) {
+        if (Can_Fortify()) {
     		if (!Move_Army(from, to, nb_armies))
     			return false;                 
         } 
@@ -247,34 +195,16 @@ public class Player {
     	current_state = State_Player.WAITING;  
         //current_player_order = (current_player_order + 1) % Game_Model.number_of_players;
         //player_flag = true;
-    	current_state_game = State_Game.REINFORCEMENT;//for the next player//??????????????????????
+    	//current_state_game = State_Game.REINFORCEMENT;//for the next player//??????????????????????
     	return true;
     }
     
     /** 
-	 * Checks whether a player has at least any units that are capable of moving territories
-	 * @param Player The current game player
-	 * @return A boolean value representing whether the player is capable of moving any units
-	 */
-    
-    public Boolean Has_Units_To_Move() {
-        for (String key : owned_territories.keySet()) {
-            if (owned_territories.get(key).nb_armies > 1)
-                return true;
-        }
-        return false;
-    }
-	
-
-	/** 
 	 * Calculates the number of resulting reinforcements based on the number of owned territories 
 	 */	
 	public void Set_Number_Territory_Reinforcements(){		
 		 this.reinforcements = 3 + this.owned_territories.size() / 3; 	
 	}
-	
-	
-	
 	
 	
 	/** 
@@ -362,7 +292,19 @@ public class Player {
 		return (t1.nb_armies > number_of_armies); 		
 	}
 	
-	public boolean Can_Attack() {
-		return true;
-	}
+	/** 
+	 * Checks whether a player has at least any units that are capable of moving territories
+	 * @param Player The current game player
+	 * @return A boolean value representing whether the player is capable of moving any units
+	 */
+    
+    public Boolean Can_Fortify() {
+        for (String key : owned_territories.keySet()) {
+            if (owned_territories.get(key).nb_armies > 1)
+                return true;
+        }
+        return false;
+        
+    }
+	
 }

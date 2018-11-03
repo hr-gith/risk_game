@@ -82,14 +82,17 @@ public class Game_View implements Observer{
         String from_territory = scanner.nextLine();
         System.out.println("Enter a territory to attack: ");
         String to_territory = scanner.nextLine();
-        System.out.println("Enter number of armies you want to attack with: ");
-        int number_armies = Integer.valueOf(scanner.nextLine());
-        System.out.println("Enter number of dices: ");
-        int number_dices = Integer.valueOf(scanner.nextLine());
+        
+        
         System.out.println("Would you like to play in all out mode(y/n)? ");
         String answer = scanner.nextLine();
         boolean all_out = (answer.equalsIgnoreCase("y"));
-        game_controller.Attack(from_territory, to_territory, number_armies,number_dices, all_out);
+        int number_dices = 0;
+        if (!all_out) {
+            System.out.println("Enter number of dices: ");
+            number_dices = Integer.valueOf(scanner.nextLine());
+        }
+        game_controller.Attack(from_territory, to_territory, number_dices, all_out);
     }
     
     /**

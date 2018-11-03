@@ -20,7 +20,7 @@ public class Test_Game_Model {
 		
 		for(int i = 0; i<number_of_players; i++){
 		
-		player_list.add(new Player(i));
+		player_list.add(new Player(i,new Game_Model(Map_Model.Get_Map())));
 		
 		}
 	}
