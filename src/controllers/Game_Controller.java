@@ -6,6 +6,7 @@ import models.Player;
 import models.State_Game;
 import views.Game_View;
 import views.Phase_View;
+import views.Players_World_Domination_View;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ public class Game_Controller {
 	public Game_Model game;
 	public Game_View game_view;
 	public Phase_View phase_view;
+	public  Players_World_Domination_View players_world_domination_view ;
+	
 	
 	public Game_Controller(Map_Model map) {
 		game = new Game_Model(map);
@@ -29,6 +32,8 @@ public class Game_Controller {
 		phase_view =new Phase_View();
 		game.addObserver(phase_view);
 		
+		players_world_domination_view =new Players_World_Domination_View ();
+		game.addObserver(players_world_domination_view);
 	}
 	
 	public void Start() {
