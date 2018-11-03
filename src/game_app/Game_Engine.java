@@ -10,6 +10,7 @@ public class Game_Engine {
 		
 		if (map_generator.start()) {
 			Game_Controller game = new Game_Controller(map_generator.map);
+			game.map_view = map_generator.map_view;
 			game.Start();
 		}
 		else {
