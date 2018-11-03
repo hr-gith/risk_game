@@ -21,6 +21,7 @@ public class Map_View extends JPanel{
 	 */
 
 	public void Draw_Map(Map_Model map) {
+		this.map = map;
 		JFrame jFrame = new JFrame();
 		jFrame.add(this);
 		jFrame.setSize(1000, 1000);
