@@ -32,7 +32,6 @@ public class Game_Model extends Observable{
     	message = "";
     	player_list = new ArrayList<Player>();
     	current_state = State_Game.SETUP;
-    	attack_plan = new Attack_Model();
     }
     
     public Boolean Is_Game_Over() {    	
