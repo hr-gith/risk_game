@@ -16,7 +16,7 @@ import models.Game_Model;
 import models.Map_Model;
 import models.Territory;
 
-public class Map_View extends JPanel implements Observer{
+public class Map_View extends View{
 
 	private Map_Model map;
 	JFrame jFrame;
@@ -81,5 +81,11 @@ public class Map_View extends JPanel implements Observer{
 	@Override
 	public void update(Observable obs, Object arg1) {
 		this.map = ((Game_Model) obs).map;		
+	}
+
+	@Override
+	public void Update_Display(String text) {
+		// TODO Auto-generated method stub
+		
 	} 
 }
