@@ -238,7 +238,7 @@ public class Game_Model extends Observable{
 		Territory to = this.map.Get_Territory(to_name);
 		Player defender = this.Search_Player(to.owner_name);
 		
-		this.attack_plan = new Attack_Model (current_player, defender, from, to, nb_dice);
+		this.attack_plan = new Attack_Model (current_player, defender, from, to, nb_dice, all_out);
    		Message_Handler response = current_player.Attack(this.attack_plan); 
     	State_Game new_state = current_state;
 

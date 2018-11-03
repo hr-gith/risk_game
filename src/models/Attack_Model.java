@@ -30,18 +30,27 @@ public class Attack_Model {
 		message = "";
 	}
 	
-	public Attack_Model(Player attacker, Player defender, Territory from, Territory to) {
+	public Attack_Model(Player attacker, Player defender, Territory from, Territory to, int attacker_nb_dices, boolean all_out) {
 		current_state = State.NONE;
 		message = "";
 		this.attacker = attacker;
 		this.defender = defender;
 		this.from = from;
 		this.to= to;
+		this.all_out = all_out;
+		
+		if (all_out) {
+			Set_Max_NB_Dices();
+		}
+		else {
+			this.attacker_nb_dices = attacker_nb_dices;
+			this.defender_nb_dices = Get_Max_NB_Dices(to,false);
+		}
 	}
 	
-	public Attack_Model(Player attacker, Player defender, Territory from, Territory to, int attacker_nb_dices) {
-		this(attacker, defender, from, to);
-		this.attacker_nb_dices = attacker_nb_dices;
+	public void Set_Max_NB_Dices() {
+		this.attacker_nb_dices = Get_Max_NB_Dices(from, true);
+		this.defender_nb_dices = Get_Max_NB_Dices(to,false);
 	}
 	/**
 	 * decide about one turn battle
@@ -78,7 +87,7 @@ public class Attack_Model {
 				!from.name.equalsIgnoreCase(to.name) && !from.owner_name.equalsIgnoreCase(to.owner_name)) {
 			//check if from and to are adjacent
 			if (from.adj.containsKey(to.name.toLowerCase())) {
-				if ( attacker_nb_dices < attacker.Get_Max_NB_Dices(from, true))
+				if ( attacker_nb_dices < Get_Max_NB_Dices(from, true))
 					current_state = State.START;
 					return true;
 			}
@@ -108,6 +117,20 @@ public class Attack_Model {
 		}
 		//TODO: move as many army as they want?????????????
 		current_state = State.END;
+	}
+	
+	public int Get_Max_NB_Dices(Territory territory_in_attack,boolean isAttacker) {
+		int result = 0;
+		int nb_armies = territory_in_attack.nb_armies;
+		if (!isAttacker) 
+			//Defender
+			result = (nb_armies > 1)? 2 : 1;				
+		
+		else {
+			//Attacker
+			result = (nb_armies > 2 ) ? 3 : ((nb_armies == 2)? 1 : 0);  
+		}
+		return result;
 	}
 
 }

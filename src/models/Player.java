@@ -68,6 +68,64 @@ public class Player {
     		return false;
         return true;*/
 	}
+	
+	public Message_Handler Attack (Attack_Model attack_plan) {
+        Message_Handler response = new Message_Handler(true);
+		if (attack_plan.Is_Valid_Attack()) {
+			if (!attack_plan.all_out) {
+				attack_plan.Decide_Battle();
+				attack_plan.Apply_Result();
+				//TODO: move armies by winner
+			}
+			else {
+				//TODO: all out
+			}
+		}
+		else {
+			response.ok = false;
+			response.message = attack_plan.message;
+		}
+        //check if user satisfies any territories to attack from
+        //y-> update map with potential attackers
+        //prompt attack move
+        // call attack method
+        // update army counts and army locations on map
+        // if defeated Player
+        //increment cards
+        //move to reinforcement phase
+
+        //or  end attack phase
+        // increment cards if conquered
+        //set phase to fortification
+
+
+        //n-> notify user they are finished attacking and are now ready to fortify
+        // increment cards if conquered
+        //set phase to fortification
+
+        return  response;
+    }
+	
+	
+    public boolean Fortification(String from, String to, int nb_armies) {
+        //Test if any units to fortify
+        if (Can_Fortify()) {
+    		if (!Move_Army(from, to, nb_armies))
+    			return false;                 
+        } 
+        else {
+        	return false;
+        }
+
+    	//current_player_order = (current_player_order + 1) % Game_Model.number_of_players;
+        //player_flag = true;
+    	current_state = State_Player.WAITING;  
+        //current_player_order = (current_player_order + 1) % Game_Model.number_of_players;
+        //player_flag = true;
+    	//current_state_game = State_Game.REINFORCEMENT;//for the next player//??????????????????????
+    	return true;
+    }
+    
   
 	public boolean Assign_Min_Army_To_Territories() {
 		if (reinforcements >= owned_territories.size()) {
@@ -126,79 +184,7 @@ public class Player {
 		return Add_Army_To_Territory(territory_key, 1);
 	}	
 	
-	public Message_Handler Attack (Attack_Model attack_plan) {
-        Message_Handler response = new Message_Handler(true);
-		if (attack_plan.Is_Valid_Attack()) {
-			if (!attack_plan.all_out) {
-				attack_plan.Decide_Battle();
-				attack_plan.Apply_Result();
-				//TODO: move armies by winner
-			}
-			else {
-				//TODO: all out
-			}
-		}
-		else {
-			response.ok = false;
-			response.message = attack_plan.message;
-		}
-        //check if user satisfies any territories to attack from
-        //y-> update map with potential attackers
-        //prompt attack move
-        // call attack method
-        // update army counts and army locations on map
-        // if defeated Player
-        //increment cards
-        //move to reinforcement phase
-
-        //or  end attack phase
-        // increment cards if conquered
-        //set phase to fortification
-
-
-        //n-> notify user they are finished attacking and are now ready to fortify
-        // increment cards if conquered
-        //set phase to fortification
-
-        return  response;
-    }
 	
-	
-	
-	public int Get_Max_NB_Dices(Territory territory_in_attack,boolean isAttacker) {
-		int result = 0;
-		int nb_armies = territory_in_attack.nb_armies;
-		if (!isAttacker) 
-			//Defender
-			result = (nb_armies > 1)? 2 : 1;				
-		
-		else {
-			//Attacker
-			result = (nb_armies > 2 ) ? 3 : ((nb_armies == 2)? 1 : 0);  
-		}
-		return result;
-	}
-	
-	
-    public boolean Fortification(String from, String to, int nb_armies) {
-        //Test if any units to fortify
-        if (Can_Fortify()) {
-    		if (!Move_Army(from, to, nb_armies))
-    			return false;                 
-        } 
-        else {
-        	return false;
-        }
-
-    	//current_player_order = (current_player_order + 1) % Game_Model.number_of_players;
-        //player_flag = true;
-    	current_state = State_Player.WAITING;  
-        //current_player_order = (current_player_order + 1) % Game_Model.number_of_players;
-        //player_flag = true;
-    	//current_state_game = State_Game.REINFORCEMENT;//for the next player//??????????????????????
-    	return true;
-    }
-    
     /** 
 	 * Calculates the number of resulting reinforcements based on the number of owned territories 
 	 */	
