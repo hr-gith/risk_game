@@ -28,13 +28,14 @@ public class Game_Controller {
 		game = new Game_Model(map);
 		game_view = new Game_View(this);
 		game.addObserver(game_view);
-		
+
 		phase_view =new Phase_View();
 		game.addObserver(phase_view);
 		
 		players_world_domination_view =new Players_World_Domination_View ();
 		game.addObserver(players_world_domination_view);
 	}
+	
 	
 	public void Start() {
 		ArrayList<String> players_name = game_view.Display_Menu_Players();
