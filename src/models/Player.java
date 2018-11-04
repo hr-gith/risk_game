@@ -79,6 +79,11 @@ public class Player {
 			}
 			else {
 				//TODO: all out
+				// to be tested
+				while (attack_plan.from.nb_armies > 1 && attack_plan.from.owner_name != attack_plan.to.owner_name) {
+				attack_plan.Decide_Battle();
+				attack_plan.Apply_Result();
+				}
 			}
 		}
 		else {

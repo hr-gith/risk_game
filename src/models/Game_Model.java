@@ -218,7 +218,6 @@ public class Game_Model extends Observable{
     			if (current_player.reinforcements == 0) {
     				//end of reinforcement
     				new_state = State_Game.ATTACKING;
-    				//TODO: Check if player can attack before the view gets data
     			}
     		}    		
     	}
