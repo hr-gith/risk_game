@@ -1,6 +1,7 @@
 package models;
 
 import java.util.ArrayList;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -136,6 +137,36 @@ public class Game_Model extends Observable{
 		}
     	return null;
     }
+    
+    
+    /**
+     * 
+     * @return String the number of armies owned by each player
+     */
+    public String Armies_Of_Player() {
+    	String result="";
+    	for(Player p:player_list) {
+    		int sum=p.Total_Number_of_Armies_Of_Players();
+    	result+= "\nName Of Player:"+ p.name +"   "+sum;
+    	}
+    	
+    	return result ;
+    	
+    }
+    
+    
+    /**
+     * 
+     * @return name of continent owner
+     */
+    
+    public String Continent_Owner(){
+    	
+    	return Map_Model.Get_Map().Continent_List();
+    }
+    
+    
+    
 
 	/** 
 	 * Controls the game logic for the game setup phase
@@ -240,13 +271,16 @@ public class Game_Model extends Observable{
    		Message_Handler response = current_player.Attack(this.attack_plan); 
     	State_Game new_state = current_state;
 
-       	/*if (response.ok) {    		
-       		new_state = State_Game.FORTIFICATION;
+       	if (response.ok ) {
+       		if (!current_player.Has_Extra_Army_To_Move()) {    		
+       			new_state = State_Game.FORTIFICATION;
+       		}
     	}
     	else {
     		message = "Error: please enter valid data";
     	}
-       	Update_State(new_state, message);*/
+       	
+       	Update_State(new_state, message);
     }
     
     /** 

@@ -115,7 +115,7 @@ public class Player {
 	
     public boolean Fortification(String from, String to, int nb_armies) {
         //Test if any units to fortify
-        if (Can_Fortify()) {
+        if (Has_Extra_Army_To_Move()) {
     		if (!Move_Army(from, to, nb_armies))
     			return false;                 
         } 
@@ -236,10 +236,25 @@ public class Player {
 		  }
 		  if (!this.owned_territories.containsKey(new_territory.name.toLowerCase())) {
 			  this.owned_territories.put(new_territory.name.toLowerCase(), new_territory);
+			  new_territory.owner_name = this.name;
 			  			  
 			  return true; 
 		  }		  
 		  return false;
+	}
+	
+	/**
+	 * 
+	 * @return Total_Number_of_Armies_Of_Players
+	 */
+	
+	public int Total_Number_of_Armies_Of_Players() {
+
+		int total_Number_Of_Armies = 0;
+		for (Territory t : owned_territories.values())
+			total_Number_Of_Armies += t.nb_armies;
+		return total_Number_Of_Armies;
+
 	}
 	
 	
@@ -253,6 +268,8 @@ public class Player {
 		Objects.requireNonNull(territory_name);	
 		
 		  if (this.owned_territories != null && !this.owned_territories.isEmpty() && this.owned_territories.containsKey(territory_name.toLowerCase())) {
+			  Territory deleted = this.owned_territories.get(territory_name);
+			  deleted.owner_name = "";
 			  this.owned_territories.remove(territory_name.toLowerCase());		  
 			  return true;
 		  }
@@ -290,7 +307,7 @@ public class Player {
 	 * @return A boolean value representing whether the player is capable of moving any units
 	 */
     
-    public Boolean Can_Fortify() {
+    public Boolean Has_Extra_Army_To_Move() {
         for (String key : owned_territories.keySet()) {
             if (owned_territories.get(key).nb_armies > 1)
                 return true;

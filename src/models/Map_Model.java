@@ -65,6 +65,20 @@ public class Map_Model {
 		  return this.continents.isEmpty();
 	}	
 	
+	
+	public String Continent_List() {
+		String result="";
+		for ( Continent continent:continents.values() ){
+			result+=continent.name+ "    " + continent.Get_Owner();
+			
+		}
+		return result;
+		
+	}
+	
+	
+	
+	
 	/**
 	 * Adds a continent to the map
 	 * @param new_Continent
