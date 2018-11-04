@@ -241,6 +241,20 @@ public class Player {
 		  return false;
 	}
 	
+	/**
+	 * 
+	 * @return Total_Number_of_Armies_Of_Players
+	 */
+	
+	public int Total_Number_of_Armies_Of_Players() {
+
+		int total_Number_Of_Armies = 0;
+		for (Territory t : owned_territories.values())
+			total_Number_Of_Armies += t.nb_armies;
+		return total_Number_Of_Armies;
+
+	}
+	
 	
 	/** 
 	 * Removes a territory to the list of owned territories of a player

@@ -26,6 +26,7 @@ public class Game_Controller {
 	public  Players_World_Domination_View players_world_domination_view ;
 	
 	
+	
 	public Game_Controller(Map_Model map) {
 		game = new Game_Model(map);
 		game_view = new Game_View(this);

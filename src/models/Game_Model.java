@@ -136,6 +136,25 @@ public class Game_Model extends Observable{
 		}
     	return null;
     }
+    
+    
+    /**
+     * 
+     * @return String the number of armies owned by each player
+     */
+    public String Armies_Of_Player() {
+    	String result="";
+    	for(Player p:player_list) {
+    		int sum=p.Total_Number_of_Armies_Of_Players();
+    	result+= "\nName Of Player:"+ p.name +"   "+sum;
+    	}
+    	
+    	return result ;
+    	
+    }
+    
+    
+    
 
 	/** 
 	 * Controls the game logic for the game setup phase
