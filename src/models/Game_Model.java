@@ -1,6 +1,7 @@
 package models;
 
 import java.util.ArrayList;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -151,6 +152,17 @@ public class Game_Model extends Observable{
     	
     	return result ;
     	
+    }
+    
+    
+    /**
+     * 
+     * @return name of continent owner
+     */
+    
+    public String Continent_Owner(){
+    	
+    	return Map_Model.Get_Map().Continent_List();
     }
     
     
