@@ -259,13 +259,16 @@ public class Game_Model extends Observable{
    		Message_Handler response = current_player.Attack(this.attack_plan); 
     	State_Game new_state = current_state;
 
-       	/*if (response.ok) {    		
-       		new_state = State_Game.FORTIFICATION;
+       	if (response.ok ) {
+       		if (!current_player.Has_Extra_Army_To_Move()) {    		
+       			new_state = State_Game.FORTIFICATION;
+       		}
     	}
     	else {
     		message = "Error: please enter valid data";
     	}
-       	Update_State(new_state, message);*/
+       	
+       	Update_State(new_state, message);
     }
     
     /** 
