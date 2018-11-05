@@ -69,7 +69,7 @@ public class Map_Model {
 	public String Continent_List() {
 		String result="";
 		for ( Continent continent:continents.values() ){
-			result+=continent.name+ "    " + continent.Get_Owner();
+			result+="\n"+continent.name+ ":   " + continent.Get_Owner();
 			
 		}
 		return result;

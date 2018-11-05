@@ -166,7 +166,7 @@ public class Game_Model extends Observable {
 
 	public String Continent_Owner() {
 
-		return Map_Model.Get_Map().Continent_List();
+		return map.Continent_List();
 	}
 
 	/**
