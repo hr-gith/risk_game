@@ -165,6 +165,20 @@ public class Game_Model extends Observable{
     	return Map_Model.Get_Map().Continent_List();
     }
     
+   /**
+    * 
+    * @return percentage of the map controlled by every player
+    */
+    public String Percentage_of_world_Owner() {
+    	int percentage=0;
+    	for( Player player:player_list) {
+    		
+    	int player_territories =	player.owned_territories.size();
+    	 int all_territories =map.Number_Of_All_Territories();
+    	 percentage= (100*player_territories)/all_territories;
+    	}
+    	return String.valueOf(percentage);
+    }
     
     
 

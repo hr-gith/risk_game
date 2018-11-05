@@ -56,6 +56,19 @@ public class Continent {
 		  return false;
 	}
 	
+	public int Number_OF_Territory() {
+	int sum=territories.values().size();
+		
+	return	sum; 
+	}
+	
+	
+
+	
+	
+	
+	
+	
 	/**
 	 * Deletes a territory and its connection from the continent
 	 * @param territory_name

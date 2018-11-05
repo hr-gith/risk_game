@@ -114,6 +114,17 @@ public class Map_Model {
 		  return false;
 	}
 	
+	public int Number_Of_All_Territories() {
+		int sum=0;
+		for (Continent continent:continents.values()) {
+			sum+=continent.Number_OF_Territory();
+		}
+		return sum;
+		
+	}
+	
+	
+	
 	/**
 	 * Search a territory name in the map and returns the territory
 	 * @param territory_name
