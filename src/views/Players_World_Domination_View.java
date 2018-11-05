@@ -2,11 +2,8 @@ package views;
 
 import java.awt.Color;
 import java.util.Observable;
-
 import javax.swing.*;
-
 import models.Game_Model;
-import models.Map_Model;
 
 public class Players_World_Domination_View extends View {
 
@@ -33,6 +30,7 @@ public class Players_World_Domination_View extends View {
 		this.total_number_of_armies_Of_player = ((Game_Model) obs).Armies_Of_Player();
 		this.continent_owner = ((Game_Model) obs).Continent_Owner();
 		this.percentage_of_world_owner = ((Game_Model) obs).Percentage_of_world_Owner();
+		Draw_Players_World_Domination_View_Window();
 	}
 
 	@Override

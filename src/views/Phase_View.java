@@ -66,11 +66,7 @@ public class Phase_View extends View {
 		jFrame.setVisible(false);
 	}
 	
-//	@Override
-//	public void paintComponent(Graphics g) {
-//		g.drawString(this.current_player_name,50,50 );
-//	}
-//	
+
 
 	@Override
 	public void update(Observable obs, Object arg) {
