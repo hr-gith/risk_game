@@ -1,6 +1,7 @@
 package views;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.util.Observable;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -27,7 +28,7 @@ public class Phase_View extends View {
      
 
 	public Phase_View() {
-		jFrame = new JFrame("Update_Information");
+		jFrame = new JFrame("Phase_View");
 		jpanel=new JPanel();
 		jLabel1=new JLabel();
 		jLabel2=new JLabel();
@@ -37,11 +38,11 @@ public class Phase_View extends View {
 	public void Update_Phase_View_Window(String current_player_name, String current_state_name, String update_state) {
 
         jFrame.setSize(400, 400);
-        jFrame.setBackground(Color.green);
+        jFrame.setBackground(Color.blue);
 		jFrame.setVisible(true);
 		jFrame.setLayout(null);
 		
-		jpanel.setBounds(40,80,200,200);    
+		jpanel.setBounds(45,40,300,300);    
 	    jpanel.setBackground(Color.yellow);
 	    
 	    jFrame.add(jpanel);
@@ -49,15 +50,15 @@ public class Phase_View extends View {
 	   
 	    jLabel1.setText(current_player_name);
 	    jLabel1.setBounds(0, 0, 200, 50);
-	    jLabel1.add(jpanel);
+	    jpanel.add(jLabel1);
 	    
 	    jLabel2.setText(current_state_name);
 	    jLabel2.setBounds(0, 20, 200, 50);
-	    jLabel2.add(jpanel);
+	    jpanel.add(jLabel2);
 	    
 	    jLabel3.setText(update_state);
 	    jLabel3.setBounds(0, 40, 200, 50);
-	    jLabel3.add(jpanel);
+	    jpanel.add(jLabel3);
 	   
 	}
 
@@ -65,6 +66,11 @@ public class Phase_View extends View {
 		jFrame.setVisible(false);
 	}
 	
+//	@Override
+//	public void paintComponent(Graphics g) {
+//		g.drawString(this.current_player_name,50,50 );
+//	}
+//	
 
 	@Override
 	public void update(Observable obs, Object arg) {
