@@ -85,6 +85,11 @@ public class Player {
 				attack_plan.Apply_Result();
 				}
 			}
+			/*if (!Has_Extra_Army_To_Move()) {    		
+       			ref_game.Update_State(State_Game.FORTIFICATION, "You can not attack any more!");
+       		}else {
+       			//go to post attack???? if there is a conquerer????
+       		}*/
 		}
 		else {
 			response.ok = false;

@@ -271,6 +271,10 @@ public class Game_Model extends Observable{
        	Update_State(new_state, message);
     }
     
+    public void Move_To_Next_Phase() {
+    	
+    }
+    
     /** 
 	 * Controls the game logic and process flow once the setup is complete and the game begins
 	 */     
