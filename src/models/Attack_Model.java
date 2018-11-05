@@ -86,9 +86,8 @@ public class Attack_Model {
 		if (from != null && to != null &&
 				!from.name.equalsIgnoreCase(to.name) && !from.owner_name.equalsIgnoreCase(to.owner_name)) {
 			//check if from and to are adjacent
-			//also check if "to" 's owner is different than the attacker 
 			if (from.adj.containsKey(to.name.toLowerCase())) {
-				if ( attacker_nb_dices < Get_Max_NB_Dices(from, true))
+				if ( attacker_nb_dices <= Get_Max_NB_Dices(from, true))
 					current_state = State.START;
 					return true;
 			}

@@ -142,4 +142,5 @@ public class Continent {
 		return "Continent [id =" + id + ", name =" + name + ", score = " + score + ", territories: \n" + territories_str + " \n]\n\n";
 	}
 	
+	
 }

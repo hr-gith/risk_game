@@ -83,6 +83,7 @@ public class Player {
 				while (attack_plan.from.nb_armies > 1 && attack_plan.from.owner_name != attack_plan.to.owner_name) {
 				attack_plan.Decide_Battle();
 				attack_plan.Apply_Result();
+				//TODO: if successful, movie all possible armies ?!
 				}
 			}
 			/*if (!Has_Extra_Army_To_Move()) {    		
