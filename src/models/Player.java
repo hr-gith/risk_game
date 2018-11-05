@@ -18,6 +18,7 @@ public class Player {
 	public Game_Model ref_game; 
 	public HashMap<String,Territory> owned_territories;
 	public Integer reinforcements;
+	public Cards cards; 
 	
 	
 	/** 
@@ -31,6 +32,7 @@ public class Player {
 		this.name = name;  
 		this.current_state = State_Player.WAITING;
 		this.ref_game = game;
+		this.cards = new Cards(); 
 	}
 	
 	public Player(String name, Game_Model game){
@@ -83,8 +85,14 @@ public class Player {
 				while (attack_plan.from.nb_armies > 1 && attack_plan.from.owner_name != attack_plan.to.owner_name) {
 				attack_plan.Decide_Battle();
 				attack_plan.Apply_Result();
+				//TODO: if successful, movie all possible armies ?!
 				}
 			}
+			/*if (!Has_Extra_Army_To_Move()) {    		
+       			ref_game.Update_State(State_Game.FORTIFICATION, "You can not attack any more!");
+       		}else {
+       			//go to post attack???? if there is a conquerer????
+       		}*/
 		}
 		else {
 			response.ok = false;
@@ -111,10 +119,23 @@ public class Player {
         return  response;
     }
 	
+	public Message_Handler Fortify(String from_territory, String to_territory, int nb_armies) {
+		if (this.Fortification(from_territory, to_territory, nb_armies)) {
+			return new Message_Handler(true);
+		}
+		return new Message_Handler(true, "The territories are not connected, are invalid, or you have not left ample units.");
+		/*current_state = State_Player.PLAYING;
+        old_state_game = State_Game.REINFORCEMENT;
+    	if (old_state_game != State_Game.STARTUP)  
+            Set_Number_Territory_Reinforcements();          
+    	else
+    		return false;
+        return true;*/
+	}
 	
     public boolean Fortification(String from, String to, int nb_armies) {
         //Test if any units to fortify
-        if (Can_Fortify()) {
+        if (Has_Extra_Army_To_Move()) {
     		if (!Move_Army(from, to, nb_armies))
     			return false;                 
         } 
@@ -124,7 +145,7 @@ public class Player {
 
     	//current_player_order = (current_player_order + 1) % Game_Model.number_of_players;
         //player_flag = true;
-    	current_state = State_Player.WAITING;  
+//    	current_state = State_Player.WAITING;  
         //current_player_order = (current_player_order + 1) % Game_Model.number_of_players;
         //player_flag = true;
     	//current_state_game = State_Game.REINFORCEMENT;//for the next player//??????????????????????
@@ -235,10 +256,25 @@ public class Player {
 		  }
 		  if (!this.owned_territories.containsKey(new_territory.name.toLowerCase())) {
 			  this.owned_territories.put(new_territory.name.toLowerCase(), new_territory);
+			  new_territory.owner_name = this.name;
 			  			  
 			  return true; 
 		  }		  
 		  return false;
+	}
+	
+	/**
+	 * 
+	 * @return Total_Number_of_Armies_Of_Players
+	 */
+	
+	public int Total_Number_of_Armies_Of_Players() {
+
+		int total_Number_Of_Armies = 0;
+		for (Territory t : owned_territories.values())
+			total_Number_Of_Armies += t.nb_armies;
+		return total_Number_Of_Armies;
+
 	}
 	
 	
@@ -252,6 +288,8 @@ public class Player {
 		Objects.requireNonNull(territory_name);	
 		
 		  if (this.owned_territories != null && !this.owned_territories.isEmpty() && this.owned_territories.containsKey(territory_name.toLowerCase())) {
+			  Territory deleted = this.owned_territories.get(territory_name);
+			  deleted.owner_name = "";
 			  this.owned_territories.remove(territory_name.toLowerCase());		  
 			  return true;
 		  }
@@ -289,7 +327,7 @@ public class Player {
 	 * @return A boolean value representing whether the player is capable of moving any units
 	 */
     
-    public Boolean Can_Fortify() {
+    public Boolean Has_Extra_Army_To_Move() {
         for (String key : owned_territories.keySet()) {
             if (owned_territories.get(key).nb_armies > 1)
                 return true;

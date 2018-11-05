@@ -1,6 +1,7 @@
 package models;
 
 import java.util.ArrayList;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,7 +45,7 @@ public class Game_Model extends Observable{
     	
     	int cur_player_index = player_list.indexOf(current_player);
     	//check players after him/her in the list
-    	for(int i = cur_player_index; i < player_list.size(); i++) {
+    	for(int i = cur_player_index+1; i < player_list.size(); i++) {
     		if (player_list.get(i).Is_Alive())
     			return player_list.get(i);
     	}
@@ -156,7 +157,9 @@ public class Game_Model extends Observable{
         //Calculate Reinforcement for each player 
         Startup_Reinforcement();
     	Update_State(State_Game.STARTUP, ""); 
+//    	Update_State(State_Game.REINFORCEMENT, ""); 
 
+    	
         isFighting = true;
         return true;
 
@@ -235,24 +238,62 @@ public class Game_Model extends Observable{
     	Territory from = this.map.Get_Territory(from_name);
 		Territory to = this.map.Get_Territory(to_name);
 		Player defender = this.Search_Player(to.owner_name);
-		
-		this.attack_plan = new Attack_Model (current_player, defender, from, to, nb_dice, all_out);
-   		Message_Handler response = current_player.Attack(this.attack_plan); 
-    	State_Game new_state = current_state;
+	
 
-       	/*if (response.ok) {    		
-       		new_state = State_Game.FORTIFICATION;
-    	}
-    	else {
-    		message = "Error: please enter valid data";
-    	}
-       	Update_State(new_state, message);*/
-    }
+		this.attack_plan = new Attack_Model(current_player, defender, from, to, nb_dice, all_out);
+		Message_Handler response = current_player.Attack(this.attack_plan);
+		State_Game new_state = current_state;
+
+		if (response.ok) {
+			if (!current_player.Has_Extra_Army_To_Move()) {
+				new_state = State_Game.FORTIFICATION;
+			}
+		} else {
+			message = "Error: please enter valid data";
+		}
+
+		Update_State(new_state, message);
+	}
     
-    /** 
-	 * Controls the game logic and process flow once the setup is complete and the game begins
-	 */     
-    public void Startup_Reinforcement() {
+    /**
+     * Reposition units for fortification before finishing turn. 
+     * @param from_name
+     * @param to_name
+     * @param nb_armies
+     */
+    public void Fortify (String from_name, String to_name, int nb_of_armies ) {
+   
+
+		Message_Handler response = current_player.Fortify(from_name, to_name, nb_of_armies);
+		State_Game new_state = current_state;
+
+		if (response.ok) {
+			if (!current_player.Has_Extra_Army_To_Move()) {
+				Move_To_Next_Phase();
+			}
+		} else {
+			message = "Error: please enter valid data";
+		}
+
+		Update_State(new_state, message);
+	}
+    
+
+	public void Move_To_Next_Phase() {
+		if (current_state == State_Game.ATTACKING)
+			Update_State(State_Game.FORTIFICATION, "");
+		else if (current_state == State_Game.FORTIFICATION) {
+			current_player = this.Get_Next_Player();
+			current_player.Set_Number_Territory_Reinforcements(); 
+			Update_State(State_Game.REINFORCEMENT, "");
+		}
+	}
+
+	/**
+	 * Controls the game logic and process flow once the setup is complete and the
+	 * game begins
+	 */
+	public void Startup_Reinforcement() {
 		int nb_initial_armies = Get_Number_StartUp_Reinforcements();
         for(Player p: this.player_list) {
         	p.reinforcements = nb_initial_armies;
@@ -266,22 +307,25 @@ public class Game_Model extends Observable{
 	public int Get_Number_StartUp_Reinforcements(){		
 		int result = 0;
 
+		int nb_starting_territories= this.current_player.owned_territories.size(); 
+		
         switch (this.Number_Of_Players())
         {
+     
+        
             case 2:
-                result = 40;
+                result = nb_starting_territories +4; //40;
                 break;
             case 3:
-                result = 35;
+                result = nb_starting_territories +3; //35;
                 break;
             case 4:
-                result = 30;
+                result = nb_starting_territories +3; // 30;
                 break;
             case 5:
-                result = 25;
-                break;
+                result = nb_starting_territories +2; //25;
             case 6:
-                result = 20;
+                result = nb_starting_territories +2; //20;
                 break;
         }
         return result;

@@ -56,6 +56,19 @@ public class Continent {
 		  return false;
 	}
 	
+	public int Number_OF_Territory() {
+	int sum=territories.values().size();
+		
+	return	sum; 
+	}
+	
+	
+
+	
+	
+	
+	
+	
 	/**
 	 * Deletes a territory and its connection from the continent
 	 * @param territory_name
@@ -88,7 +101,6 @@ public class Continent {
 	} 
 	
 	/**
-<<<<<<< HEAD
 	 * finds player who owns all the territories in the continent
 	 * 
 	 * @return name of owner or "" if the continent have more than one owner or no owner
@@ -106,8 +118,6 @@ public class Continent {
 	}
 	
 	/**
-=======
->>>>>>> refs/remotes/origin/ColinTemp
 	 * calculates score based on the number of territories in the continent
 	 */
 	public void Calculate_Score() {
@@ -144,5 +154,6 @@ public class Continent {
 		}
 		return "Continent [id =" + id + ", name =" + name + ", score = " + score + ", territories: \n" + territories_str + " \n]\n\n";
 	}
+	
 	
 }

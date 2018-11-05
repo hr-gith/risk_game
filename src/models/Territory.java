@@ -35,7 +35,7 @@ public class Territory {
 		this.pos_y = pos_y;
 		this.continent_name = continent_name;
 		this.owner_name = "";
-		this.nb_armies = 0;
+		this.nb_armies = 1;
 		this.adj = new HashMap<>();
 	}
 	/**

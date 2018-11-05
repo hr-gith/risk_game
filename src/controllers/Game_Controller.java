@@ -26,6 +26,7 @@ public class Game_Controller {
 	public  Players_World_Domination_View players_world_domination_view ;
 	
 	
+	
 	public Game_Controller(Map_Model map) {
 		game = new Game_Model(map);
 		game_view = new Game_View(this);
@@ -68,12 +69,14 @@ public class Game_Controller {
 	}	
 	
 	public void Fortification (String from, String to, int nb_armies) {
-		game.current_player.Move_Army(from, to, nb_armies);
+		game.Fortify(from, to, nb_armies);
 	}
 	
 	public void Attack(String from, String to, int nb_dices, boolean all_out){
 		game.Attack(from, to, nb_dices, all_out);
 	}
 	
-	
+	public void Move_To_Next_Phase() {
+		game.Move_To_Next_Phase();
+	}
 }

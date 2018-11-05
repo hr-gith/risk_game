@@ -65,6 +65,20 @@ public class Map_Model {
 		  return this.continents.isEmpty();
 	}	
 	
+	
+	public String Continent_List() {
+		String result="";
+		for ( Continent continent:continents.values() ){
+			result+=continent.name+ "    " + continent.Get_Owner();
+			
+		}
+		return result;
+		
+	}
+	
+	
+	
+	
 	/**
 	 * Adds a continent to the map
 	 * @param new_Continent
@@ -99,6 +113,17 @@ public class Map_Model {
 		  }
 		  return false;
 	}
+	
+	public int Number_Of_All_Territories() {
+		int sum=0;
+		for (Continent continent:continents.values()) {
+			sum+=continent.Number_OF_Territory();
+		}
+		return sum;
+		
+	}
+	
+	
 	
 	/**
 	 * Search a territory name in the map and returns the territory

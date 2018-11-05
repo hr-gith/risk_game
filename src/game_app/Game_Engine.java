@@ -13,6 +13,8 @@ public class Game_Engine {
 			game.map_view = map_generator.map_view;
 			game.Start();
 		}
+		
+	
 		else {
 			//TODO:ERROR
 		}
