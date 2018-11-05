@@ -298,7 +298,12 @@ public class Game_Model extends Observable{
     }
     
     public void Move_To_Next_Phase() {
-    	
+    	if (current_state == State_Game.ATTACKING)
+    		Update_State(State_Game.FORTIFICATION,"");
+    	else if (current_state == State_Game.FORTIFICATION) {
+    	    current_player = this.Get_Next_Player();
+    		Update_State(State_Game.REINFORCEMENT, "");
+    	}
     }
     
     /** 
