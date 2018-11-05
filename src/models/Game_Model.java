@@ -137,6 +137,53 @@ public class Game_Model extends Observable{
 		}
     	return null;
     }
+    
+    
+    /**
+	 * 
+	 * @return String the number of armies owned by each player
+	 */
+	public String Armies_Of_Player() {
+		String result = "";
+		for (Player p : player_list) {
+			int sum = p.Total_Number_of_Armies_Of_Players();
+			result += " \n" + " Name Of Player:" + p.name + " " + sum;
+		}
+
+		return result;
+
+	}
+
+	/**
+	 * 
+	 * @return name of continent owner
+	 */
+
+	public String Continent_Owner() {
+
+		return map.Continent_List();
+	}
+
+	/**
+	 * 
+	 * @return percentage of the map controlled by every player
+	 */
+	public String Percentage_of_world_Owner() {
+		int percentage = 0;
+		String name="";
+		for (Player player : player_list) {
+
+			int player_territories = player.owned_territories.size();
+			int all_territories = map.Number_Of_All_Territories();
+			percentage = (100 * player_territories) / all_territories;
+		}
+		for (Player player : player_list) {
+
+			name =  player.name+": " +"%"+String.valueOf(percentage);
+		}
+		return name;
+	}
+    
 
 	/** 
 	 * Controls the game logic for the game setup phase
