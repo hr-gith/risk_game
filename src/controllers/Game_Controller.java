@@ -76,5 +76,7 @@ public class Game_Controller {
 		game.Attack(from, to, nb_dices, all_out);
 	}
 	
-	
+	public void Move_To_Next_Phase() {
+		game.Move_To_Next_Phase();
+	}
 }

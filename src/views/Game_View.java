@@ -78,21 +78,27 @@ public class Game_View implements Observer{
     
     public void Display_Menu_Attack() {
         System.out.println("Attack =>player : " + current_player.name + " has countries :" + current_player.owned_territories.keySet().toString());
-        System.out.println("Enter your attacker territory:");
-        String from_territory = scanner.nextLine();
-        System.out.println("Enter a territory to attack: ");
-        String to_territory = scanner.nextLine();
-        
-        
-        System.out.println("Would you like to play in all out mode(y/n)? ");
+        System.out.println("Would you like to attack?");
         String answer = scanner.nextLine();
-        boolean all_out = (answer.equalsIgnoreCase("y"));
-        int number_dices = 0;
-        if (!all_out) {
-            System.out.println("Enter number of dices: ");
-            number_dices = Integer.valueOf(scanner.nextLine());
+        if (answer.equalsIgnoreCase("y")) {
+	        System.out.println("Enter your attacker territory:");
+	        String from_territory = scanner.nextLine();
+	        System.out.println("Enter a territory to attack: ");
+	        String to_territory = scanner.nextLine();
+	        
+	        
+	        System.out.println("Would you like to play in all out mode(y/n)? ");
+	        answer = scanner.nextLine();
+	        boolean all_out = (answer.equalsIgnoreCase("y"));
+	        int number_dices = 0;
+	        if (!all_out) {
+	            System.out.println("Enter number of dices: ");
+	            number_dices = Integer.valueOf(scanner.nextLine());
+	        }
+	        game_controller.Attack(from_territory, to_territory, number_dices, all_out);
         }
-        game_controller.Attack(from_territory, to_territory, number_dices, all_out);
+        else
+        	game_controller.Move_To_Next_Phase();
     }
     
     /**
