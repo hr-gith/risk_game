@@ -9,13 +9,18 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import models.Player;
-
+/**
+ * this is a junit class to test Game_Model class of the risk game 
+ *
+ */
 public class Test_Game_Model {
 
 	static Integer number_of_players = 5; 
 	static ArrayList<Player> player_list = new ArrayList<Player>();; 
 	ArrayList<Player> shuffled_player_list; 
-	
+	/**
+	 * this method runs before any test to assign value to each members
+	 */
 	@BeforeClass public static void setUp(){
 		
 		for(int i = 0; i<number_of_players; i++){
@@ -24,7 +29,9 @@ public class Test_Game_Model {
 		
 		}
 	}
-	
+	/**
+	 * method to test Player_list_Setup() 
+	 */
 	@Test
 	public void test_Player_List_Setup(){
 		
@@ -37,7 +44,9 @@ public class Test_Game_Model {
 		
 		
 	}
-	
+	/**
+	 * method to test randomizing the player list
+	 */
 //	@Ignore
 	@Test
 	public void test_Player_List_Randomize(){
