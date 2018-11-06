@@ -10,7 +10,7 @@ import org.junit.runners.*;
 	
 	@Suite.SuiteClasses({ Test_Player.class})
 /**
- * thisi is the Suit class for junit tests
+ * this is the Suit class for junit tests
  *
  */
 public class SuiteOfTests{
