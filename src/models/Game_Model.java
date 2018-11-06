@@ -154,8 +154,9 @@ public class Game_Model extends Observable {
 		for (Player p : player_list) {
 			int sum = p.Total_Number_of_Armies_Of_Players();
 			sb.append(" Name Of Player: " + p.name + "    " +"Sum of Armies: "+ sum+"    ") ;
+			sb.append(System.getProperty("line.separator"));
 		}
-		sb.append(System.getProperty("line.separator"));
+		
 		return sb.toString();
 
 	}
@@ -190,8 +191,9 @@ public class Game_Model extends Observable {
 		}
 		for (int i = 0; i < percentage_list.size(); i++) {
 	    	sb.append(percentage_list.get(i)+"    ");
+	    	sb.append(System.getProperty("line.separator"));
 		} 
-		sb.append(System.getProperty("line.separator"));
+		
 		
 		return sb.toString();
 	}

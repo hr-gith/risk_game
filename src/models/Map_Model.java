@@ -71,8 +71,9 @@ public class Map_Model {
 		
 		for ( Continent continent:continents.values() ){
 			sb.append(continent.name+ " : " + continent.Get_Owner()+"    ");
+			sb.append(System.getProperty("line.separator"));
 		}
-		sb.append(System.getProperty("line.separator"));
+		
 		return sb.toString();
 		
 	}

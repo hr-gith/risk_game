@@ -5,6 +5,12 @@ import java.util.Observable;
 import javax.swing.*;
 import models.Game_Model;
 
+/**
+ * player world domination view class is implemented observer and  extends JPrame from abstract view class for updating following fields
+ * 1.total number of armies Of player
+ * 2.continent owner
+ * 3.percentage of world owner
+ */
 public class Players_World_Domination_View extends View {
 
 	public String total_number_of_armies_Of_player;
@@ -16,7 +22,9 @@ public class Players_World_Domination_View extends View {
 	JLabel jLabel1;
 	JLabel jLabel2;
 	JLabel jLabel3;
-
+/**
+ *constructor that create new object for JFrame, JPanel and JLabel 
+ */
 	public Players_World_Domination_View() {
 		jFrame = new JFrame("Players_World_Domination");
 		jpanel = new JPanel();
@@ -24,7 +32,10 @@ public class Players_World_Domination_View extends View {
 		jLabel2 = new JLabel();
 		jLabel3 = new JLabel();
 	}
-
+	
+/**
+ * update method for observer
+ */
 	@Override
 	public void update(Observable obs, Object arg1) {
 		this.total_number_of_armies_Of_player = ((Game_Model) obs).Armies_Of_Player();
@@ -33,12 +44,10 @@ public class Players_World_Domination_View extends View {
 		Draw_Players_World_Domination_View_Window();
 	}
 
-	@Override
-	public void Update_Display(String text) {
-		// TODO Auto-generated method stub
-
-	}
-
+	
+/**
+ * Draw method for showing updated fields in the JFrame window
+ */
 	public void Draw_Players_World_Domination_View_Window() {
 		jFrame.setSize(500, 500);
 		jFrame.setBackground(Color.blue);
@@ -66,6 +75,11 @@ public class Players_World_Domination_View extends View {
 
 	public void Close() {
 		jFrame.setVisible(false);
+	}
+	@Override
+	public void Update_Display(String text) {
+		// TODO Auto-generated method stub
+
 	}
 
 }
