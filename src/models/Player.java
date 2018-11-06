@@ -1,7 +1,5 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
@@ -254,8 +252,8 @@ public class Player {
 	 */
 	
 	public int Total_Number_of_Armies_Of_Players() {
-
 		int total_Number_Of_Armies = 0;
+		
 		for (Territory t : owned_territories.values())
 			total_Number_Of_Armies += t.nb_armies;
 		return total_Number_Of_Armies;
@@ -266,7 +264,7 @@ public class Player {
 	/** 
 	 * Removes a territory to the list of owned territories of a player
 	 * @param Territory The territory being removed from the player
-	 * @return A boolean corresponding to if the territory was removed sucessfully
+	 * @return A boolean corresponding to if the territory was removed successfully
 	 */
 	
 	public boolean Delete_Territory(String territory_name) {

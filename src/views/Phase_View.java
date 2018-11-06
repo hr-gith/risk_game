@@ -37,12 +37,12 @@ public class Phase_View extends View {
 
 	public void Update_Phase_View_Window(String current_player_name, String current_state_name, String update_state) {
 
-        jFrame.setSize(400, 400);
+        jFrame.setSize(500, 500);
         jFrame.setBackground(Color.blue);
 		jFrame.setVisible(true);
 		jFrame.setLayout(null);
 		
-		jpanel.setBounds(45,40,300,300);    
+		jpanel.setBounds(45,40,400,400);    
 	    jpanel.setBackground(Color.yellow);
 	    
 	    jFrame.add(jpanel);

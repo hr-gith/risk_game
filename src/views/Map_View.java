@@ -6,11 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.util.HashMap;
 import java.util.Observable;
-import java.util.Observer;
-
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-
 import models.Continent;
 import models.Game_Model;
 import models.Map_Model;

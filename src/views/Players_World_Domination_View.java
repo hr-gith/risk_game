@@ -40,20 +40,19 @@ public class Players_World_Domination_View extends View {
 	}
 
 	public void Draw_Players_World_Domination_View_Window() {
-		jFrame.setSize(400, 400);
+		jFrame.setSize(500, 500);
 		jFrame.setBackground(Color.blue);
 		jFrame.setVisible(true);
 		jFrame.setLayout(null);
 
-		jpanel.setBounds(45, 40, 300, 300);
+		jpanel.setBounds(45, 40, 400, 400);
 		jpanel.setBackground(Color.yellow);
 
 		jFrame.add(jpanel);
-
-	
-		jLabel1.setText(percentage_of_world_owner);
-		jLabel1.setBounds(0, 0, 200, 50);
-		jpanel.add(jLabel1);
+		
+	    jLabel1.setText(percentage_of_world_owner);
+	    jLabel1.setBounds(0, 0, 200, 50);
+	    jpanel.add(jLabel1);
 
 		jLabel2.setText(continent_owner);
 		jLabel2.setBounds(0, 20, 200, 50);

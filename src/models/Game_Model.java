@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Observable;
 import java.util.Scanner;
 
@@ -149,13 +150,13 @@ public class Game_Model extends Observable {
 	 * @return String the number of armies owned by each player
 	 */
 	public String Armies_Of_Player() {
-		String result = "";
+		StringBuilder sb = new StringBuilder(64);
 		for (Player p : player_list) {
 			int sum = p.Total_Number_of_Armies_Of_Players();
-			result += " \n" + " Name Of Player:" + p.name + " " + sum;
+			sb.append(" Name Of Player: " + p.name + "    " +"Sum of Armies: "+ sum+"    ") ;
 		}
-
-		return result;
+		sb.append(System.getProperty("line.separator"));
+		return sb.toString();
 
 	}
 
@@ -174,19 +175,25 @@ public class Game_Model extends Observable {
 	 * @return percentage of the map controlled by every player
 	 */
 	public String Percentage_of_world_Owner() {
-		int percentage = 0;
-		String name="";
+		float percentage = 0;
+		String name = "";
+		List<String> percentage_list = new ArrayList<String>();
+		StringBuilder sb = new StringBuilder(64);
+		
 		for (Player player : player_list) {
-
-			int player_territories = player.owned_territories.size();
-			int all_territories = map.Number_Of_All_Territories();
-			percentage = (100 * player_territories) / all_territories;
+			float player_territories = (float)player.owned_territories.size();
+			float all_territories =(float) map.Number_Of_All_Territories();
+			percentage =(100.0f * player_territories) / all_territories;
+			String formattedString = String.format("%.02f", percentage);
+			name = '\n' + player.name + ": " + "%" + formattedString;
+			percentage_list.add(name);
 		}
-		for (Player player : player_list) {
-
-			name =  player.name+": " +"%"+String.valueOf(percentage);
-		}
-		return name;
+		for (int i = 0; i < percentage_list.size(); i++) {
+	    	sb.append(percentage_list.get(i)+"    ");
+		} 
+		sb.append(System.getProperty("line.separator"));
+		
+		return sb.toString();
 	}
 
 	/**

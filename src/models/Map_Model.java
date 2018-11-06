@@ -67,12 +67,13 @@ public class Map_Model {
 	
 	
 	public String Continent_List() {
-		String result="";
+		StringBuilder sb = new StringBuilder(64);
+		
 		for ( Continent continent:continents.values() ){
-			result+="\n"+continent.name+ ":   " + continent.Get_Owner();
-			
+			sb.append(continent.name+ " : " + continent.Get_Owner()+"    ");
 		}
-		return result;
+		sb.append(System.getProperty("line.separator"));
+		return sb.toString();
 		
 	}
 	

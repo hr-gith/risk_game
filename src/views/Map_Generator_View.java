@@ -5,7 +5,6 @@ import java.util.Scanner;
 import models.Continent;
 import models.Map_Model;
 import models.Territory;
-import controllers.Map_Generator_Controller;
 
 /**
  * class related to the map generator view
