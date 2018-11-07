@@ -215,6 +215,7 @@ public class Player {
 	 */	
 	public void Set_Number_Territory_Reinforcements(){		
 		 this.reinforcements = 3 + this.owned_territories.size() / 3; 	
+		 //continents
 	}
 	
 	

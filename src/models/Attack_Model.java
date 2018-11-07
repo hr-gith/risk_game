@@ -104,12 +104,16 @@ public class Attack_Model {
 	public void Apply_Result () {
 		from.nb_armies += attacker_loss;
 		to.nb_armies += defender_loss;
-		//check if one of territories is defeated
+		//check if attacked territory is defeated
 		if (to.nb_armies <= 0) {
 			//winner is the attacker
 			
 			defender.Delete_Territory(to.name);
 			attacker.Add_Territory(to);
+		
+			//TODO check if the defeated player is dead?
+			//TODO check for end of the game ?
+			
 			//move minimum army//?????????????
 			to.nb_armies = 1;
 			from.nb_armies -= 1;
