@@ -180,10 +180,10 @@ public class Game_Model extends Observable {
 		String name = "";
 		List<String> percentage_list = new ArrayList<String>();
 		StringBuilder sb = new StringBuilder(64);
-		
+		float all_territories =(float) map.Number_Of_All_Territories();
+
 		for (Player player : player_list) {
 			float player_territories = (float)player.owned_territories.size();
-			float all_territories =(float) map.Number_Of_All_Territories();
 			percentage =(100.0f * player_territories) / all_territories;
 			String formattedString = String.format("%.02f", percentage);
 			name = '\n' + player.name + ": " + "%" + formattedString;

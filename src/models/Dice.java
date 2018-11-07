@@ -17,7 +17,7 @@ public class Dice {
 			numbers.add(Roll());
 		}
 		
-		Collections.sort(numbers);
+		Collections.sort(numbers, Collections.reverseOrder());
 		return numbers;
     }
 }

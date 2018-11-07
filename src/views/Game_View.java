@@ -78,7 +78,7 @@ public class Game_View implements Observer{
     
     public void Display_Menu_Attack() {
         System.out.println("Attack =>player : " + current_player.name + " has countries :" + current_player.owned_territories.keySet().toString());
-        System.out.println("Would you like to attack?");
+        System.out.println("Would you like to attack(y/n)?");
         String answer = scanner.nextLine();
         if (answer.equalsIgnoreCase("y")) {
 	        System.out.println("Enter your attacker territory:");
