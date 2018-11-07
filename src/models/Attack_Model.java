@@ -128,7 +128,7 @@ public class Attack_Model {
 		
 		else {
 			//Attacker
-			result = (nb_armies > 2 ) ? 3 : ((nb_armies == 2)? 1 : 0);  
+			result = (nb_armies > 3 ) ? 3 : ((nb_armies == 3)? 2 : ((nb_armies == 2)? 1: 0));  
 		}
 		return result;
 	}
