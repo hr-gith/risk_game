@@ -308,16 +308,15 @@ public class Game_Model extends Observable{
      * @param to_name
      * @param nb_armies
      */
-    public void Fortify (String from_name, String to_name, int nb_of_armies ) {
-   
+    public void Fortify (String from_name, String to_name, int nb_of_armies ) {   
 
 		Message_Handler response = current_player.Fortify(from_name, to_name, nb_of_armies);
 		State_Game new_state = current_state;
 
 		if (response.ok) {
-			if (!current_player.Has_Extra_Army_To_Move()) {
+			//if (!current_player.Has_Extra_Army_To_Move()) {
 				Move_To_Next_Phase();
-			}
+			//}
 		} else {
 			message = "Error: please enter valid data";
 		}

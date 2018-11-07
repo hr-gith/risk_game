@@ -123,7 +123,7 @@ public class Player {
 		if (this.Fortification(from_territory, to_territory, nb_armies)) {
 			return new Message_Handler(true);
 		}
-		return new Message_Handler(true, "The territories are not connected, are invalid, or you have not left ample units.");
+		return new Message_Handler(false, "The territories are not connected, are invalid, or you have not left ample units.");
 		/*current_state = State_Player.PLAYING;
         old_state_game = State_Game.REINFORCEMENT;
     	if (old_state_game != State_Game.STARTUP)  

@@ -58,15 +58,22 @@ public class Game_View implements Observer{
      * number of movies and the destination country
      *
      * @param currentPlayer the instance of object of player.
-     */
-    public void Display_Menu_StartUp() {
-    
-		System.out.println("StartUp =>player : " + current_player.name + 
+     */      
+    public void Display_Menu_StartUp_Reinforcements() {
+        
+		System.out.println("Reinforcement =>player : " + current_player.name + 
 				"- Armies left: "+ current_player.reinforcements+ 
 				"\n countries :" + current_player.owned_territories.keySet().toString());
         System.out.println("\nEnter the To territory ");
         String to_territory = scanner.nextLine();
-        game_controller.Reinforcement(to_territory, 1);
+        System.out.println("\nEnter the Number of move armies");
+        int number_armies = Integer.valueOf(scanner.nextLine());
+        while (current_player.reinforcements < number_armies) {
+            System.out.println("the number of armies must less than " + current_player.reinforcements);
+            System.out.println("\nEnter the Number of armies");
+            number_armies = Integer.valueOf(scanner.nextLine());
+        }
+        game_controller.Reinforcement(to_territory, number_armies);
     }
     
     
@@ -91,31 +98,23 @@ public class Game_View implements Observer{
 			}
 			else {  decision = "y"; }
 		 
-		if(decision.equals("y") || decision.equals("yes"))
-		{
-			System.out.println("Which cards do you want to play? (infantry, cavalry, artillery) For example, cavalry, cavalry, artillery" );
-			String played_cards = scanner.nextLine();
-			String[] played_cards_array = played_cards.split(",");
-			
-			if(current_player.cards.Are_Playable(played_cards_array)){
+			if(decision.equals("y") || decision.equals("yes"))
+			{
+				System.out.println("Which cards do you want to play? (infantry, cavalry, artillery) For example, cavalry, cavalry, artillery" );
+				String played_cards = scanner.nextLine();
+				String[] played_cards_array = played_cards.split(",");
 				
-				current_player.reinforcements = current_player.reinforcements + current_player.cards.Get_Card_Reinforcement_Qty();
-				
-				System.out.println("Reinforcement =>player : " + current_player.name + 
-						"- Armies left: "+ current_player.reinforcements+ 
-						"\n countries :" + current_player.owned_territories.keySet().toString());
-				System.out.println("Cards Available: \n Infantry: " + current_player.cards.infantry + ", Cavalry: " + current_player.cards.cavalry + ", Artillery: " + current_player.cards.artillery); 
-		        
-				
-			}
-			
-			
-			
-			
-		} else break; 
-		
-		}
-		
+				if(current_player.cards.Are_Playable(played_cards_array)){
+					
+					current_player.reinforcements = current_player.reinforcements + current_player.cards.Get_Card_Reinforcement_Qty();
+					
+					System.out.println("Reinforcement =>player : " + current_player.name + 
+							"- Armies left: "+ current_player.reinforcements+ 
+							"\n countries :" + current_player.owned_territories.keySet().toString());
+					System.out.println("Cards Available: \n Infantry: " + current_player.cards.infantry + ", Cavalry: " + current_player.cards.cavalry + ", Artillery: " + current_player.cards.artillery); 
+				}		
+			} else break; 		
+		}		
 		
 		System.out.println("\nEnter the To territory ");
         String to_territory = scanner.nextLine();
@@ -197,7 +196,7 @@ public class Game_View implements Observer{
     		//modify the game_controller setup phase to go here
     		break;
     	case STARTUP: 
-    		Display_Menu_StartUp();
+    		Display_Menu_StartUp_Reinforcements();
     		break;
     	case REINFORCEMENT: 
     		Display_Menu_Reinforcements();
