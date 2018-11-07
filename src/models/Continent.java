@@ -117,6 +117,7 @@ public class Continent {
 			return "";
 	}
 	
+
 	/**
 	 * calculates score based on the number of territories in the continent
 	 */

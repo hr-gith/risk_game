@@ -16,6 +16,7 @@ public class Player {
 	public Game_Model ref_game; 
 	public HashMap<String,Territory> owned_territories;
 	public Integer reinforcements;
+	public Cards cards; 
 	
 	
 	/** 
@@ -29,6 +30,7 @@ public class Player {
 		this.name = name;  
 		this.current_state = State_Player.WAITING;
 		this.ref_game = game;
+		this.cards = new Cards(); 
 	}
 	
 	public Player(String name, Game_Model game){
@@ -115,6 +117,19 @@ public class Player {
         return  response;
     }
 	
+	public Message_Handler Fortify(String from_territory, String to_territory, int nb_armies) {
+		if (this.Fortification(from_territory, to_territory, nb_armies)) {
+			return new Message_Handler(true);
+		}
+		return new Message_Handler(false, "The territories are not connected, are invalid, or you have not left ample units.");
+		/*current_state = State_Player.PLAYING;
+        old_state_game = State_Game.REINFORCEMENT;
+    	if (old_state_game != State_Game.STARTUP)  
+            Set_Number_Territory_Reinforcements();          
+    	else
+    		return false;
+        return true;*/
+	}
 	
     public boolean Fortification(String from, String to, int nb_armies) {
         //Test if any units to fortify
@@ -128,7 +143,7 @@ public class Player {
 
     	//current_player_order = (current_player_order + 1) % Game_Model.number_of_players;
         //player_flag = true;
-    	current_state = State_Player.WAITING;  
+//    	current_state = State_Player.WAITING;  
         //current_player_order = (current_player_order + 1) % Game_Model.number_of_players;
         //player_flag = true;
     	//current_state_game = State_Game.REINFORCEMENT;//for the next player//??????????????????????
@@ -179,7 +194,8 @@ public class Player {
 	 * @param String the name of the territory to add the army
 	 * @return A boolean corresponding to if the army placement is valid
 	 */	
-	public Boolean Add_Army_To_Territory(String territory_key, int nb_new_armies ){		
+	public Boolean Add_Army_To_Territory(String territory_key, int nb_new_armies ){	
+		territory_key = territory_key.trim().toLowerCase();
 		if(owned_territories.containsKey(territory_key) && this.reinforcements >= nb_new_armies){		
 			this.owned_territories.get(territory_key).nb_armies += nb_new_armies; 			
 			this.reinforcements -= nb_new_armies; 			
@@ -217,8 +233,8 @@ public class Player {
 				!from_name.equalsIgnoreCase(to_name) && from.owner_name.equalsIgnoreCase(to.owner_name)) {
 			
 			if (Are_Connected_Territories (from_name, to_name)  && Has_Enough_Army_To_Move(from, number_of_units )) {
-				this.Add_Army_To_Territory(to_name, number_of_units);
-				this.Add_Army_To_Territory(from_name, (number_of_units * -1));
+				from.nb_armies -= number_of_units;
+				to.nb_armies += number_of_units;
 				return true;
 			}			
 		}			
@@ -253,11 +269,9 @@ public class Player {
 	
 	public int Total_Number_of_Armies_Of_Players() {
 		int total_Number_Of_Armies = 0;
-		
 		for (Territory t : owned_territories.values())
 			total_Number_Of_Armies += t.nb_armies;
 		return total_Number_Of_Armies;
-
 	}
 	
 	

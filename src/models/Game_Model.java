@@ -77,6 +77,7 @@ public class Game_Model extends Observable {
 			if (player_list.get(i).Is_Alive() && player_list.get(i).reinforcements > 0)
 				return player_list.get(i);
 		}
+		if (current_player.reinforcements > 0) return current_player;
 		return null;
 	}
 
@@ -91,24 +92,7 @@ public class Game_Model extends Observable {
 		}
 		return result;
 	}
-
-	/**
-	 * changes the current player to the next one based on the order of players in
-	 * the list if there is another active player
-	 * 
-	 * @return true if it is successfully changed
-	 */
-	public boolean Change_Player() {
-		Player next = Get_Next_Player();
-		if (next != null) {
-			current_player.current_state = State_Player.WAITING;
-			current_player = next;
-			current_player.current_state = State_Player.PLAYING;
-			return true;
-		}
-		return false;
-	}
-
+	
 	/**
 	 * 
 	 * @return number of all players in the game weather are active or dead
@@ -167,7 +151,6 @@ public class Game_Model extends Observable {
 	 */
 
 	public String Continent_Owner() {
-
 		return map.Continent_List();
 	}
 
@@ -303,7 +286,9 @@ public class Game_Model extends Observable {
 
 		if (response.ok) {
 			if (!current_player.Has_Extra_Army_To_Move()) {
-				new_state = State_Game.FORTIFICATION;
+				current_state = State_Game.FORTIFICATION;//the player can not fortify without army!!! => switch player
+				Move_To_Next_Phase();
+				return;
 			}
 		} else {
 			message = "Error: please enter valid data";
@@ -312,14 +297,44 @@ public class Game_Model extends Observable {
 		Update_State(new_state, message);
 	}
 
+	/**
+     * Reposition units for fortification before finishing turn. 
+     * @param from_name
+     * @param to_name
+     * @param nb_armies
+     */
+    public void Fortify (String from_name, String to_name, int nb_of_armies ) {   
+
+		Message_Handler response = current_player.Fortify(from_name, to_name, nb_of_armies);
+		State_Game new_state = current_state;
+
+		if (response.ok) {
+			//if (!current_player.Has_Extra_Army_To_Move()) {
+				Move_To_Next_Phase();
+			//}
+		} else {
+			message = "Error: please enter valid data";
+		}
+
+		Update_State(new_state, message);
+	}
+    
+
 	public void Move_To_Next_Phase() {
 		if (current_state == State_Game.ATTACKING)
 			Update_State(State_Game.FORTIFICATION, "");
 		else if (current_state == State_Game.FORTIFICATION) {
-			current_player = this.Get_Next_Player();
-			Update_State(State_Game.REINFORCEMENT, "");
+			Player next_player = this.Get_Next_Player();
+			if (next_player != null) {
+				current_player = next_player;
+				current_player.Set_Number_Territory_Reinforcements(); 
+				Update_State(State_Game.REINFORCEMENT, "");
+			}
+			else
+				Update_State(State_Game.OVER, current_player.name + " is the winner");
 		}
 	}
+
 
 	/**
 	 * Controls the game logic and process flow once the setup is complete and the
@@ -338,23 +353,23 @@ public class Game_Model extends Observable {
 	 */
 	public int Get_Number_StartUp_Reinforcements() {
 		int result = 0;
+		int nb_starting_territories= this.current_player.owned_territories.size();
 
 		switch (this.Number_Of_Players()) {
 		case 2:
-			result = 40;
-			break;
-		case 3:
-			result = 35;
-			break;
-		case 4:
-			result = 30;
-			break;
-		case 5:
-			result = 25;
-			break;
-		case 6:
-			result = 20;
-			break;
+            result = nb_starting_territories +4; //40;
+            break;
+        case 3:
+            result = nb_starting_territories +3; //35;
+            break;
+        case 4:
+            result = nb_starting_territories +3; // 30;
+            break;
+        case 5:
+            result = nb_starting_territories +2; //25;
+        case 6:
+            result = nb_starting_territories +2; //20;
+            break;
 		}
 		return result;
 	}

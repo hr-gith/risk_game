@@ -58,15 +58,67 @@ public class Game_View implements Observer{
      * number of movies and the destination country
      *
      * @param currentPlayer the instance of object of player.
-     */
-    public void Display_Menu_Reinforcements() {
-    
+     */      
+    public void Display_Menu_StartUp_Reinforcements() {
+        
 		System.out.println("Reinforcement =>player : " + current_player.name + 
 				"- Armies left: "+ current_player.reinforcements+ 
 				"\n countries :" + current_player.owned_territories.keySet().toString());
         System.out.println("\nEnter the To territory ");
         String to_territory = scanner.nextLine();
         System.out.println("\nEnter the Number of move armies");
+        int number_armies = Integer.valueOf(scanner.nextLine());
+        while (current_player.reinforcements < number_armies) {
+            System.out.println("the number of armies must less than " + current_player.reinforcements);
+            System.out.println("\nEnter the Number of armies");
+            number_armies = Integer.valueOf(scanner.nextLine());
+        }
+        game_controller.Reinforcement(to_territory, number_armies);
+    }
+    
+    
+    /**
+     * number of movies and the destination country
+     *
+     * @param currentPlayer the instance of object of player.
+     */
+    public void Display_Menu_Reinforcements() {
+    
+		System.out.println("Reinforcement =>player : " + current_player.name + 
+				"- Armies left: "+ current_player.reinforcements+ 
+				"\n countries :" + current_player.owned_territories.keySet().toString());
+		System.out.println("Cards Available: \n Infantry: " + current_player.cards.infantry + ", Cavalry: " + current_player.cards.cavalry + ", Artillery: " + current_player.cards.artillery); 
+        
+		while(current_player.cards.Is_Set_Available()){
+			
+			String decision;
+			if((current_player.cards.artillery + current_player.cards.cavalry + current_player.cards.infantry) < 5 ){
+				System.out.println("Do you want to play any reinforment cards? (y/n)" ); 
+				decision = scanner.nextLine();
+			}
+			else {  decision = "y"; }
+		 
+			if(decision.equals("y") || decision.equals("yes"))
+			{
+				System.out.println("Which cards do you want to play? (infantry, cavalry, artillery) For example, cavalry, cavalry, artillery" );
+				String played_cards = scanner.nextLine();
+				String[] played_cards_array = played_cards.split(",");
+				
+				if(current_player.cards.Are_Playable(played_cards_array)){
+					
+					current_player.reinforcements = current_player.reinforcements + current_player.cards.Get_Card_Reinforcement_Qty();
+					
+					System.out.println("Reinforcement =>player : " + current_player.name + 
+							"- Armies left: "+ current_player.reinforcements+ 
+							"\n countries :" + current_player.owned_territories.keySet().toString());
+					System.out.println("Cards Available: \n Infantry: " + current_player.cards.infantry + ", Cavalry: " + current_player.cards.cavalry + ", Artillery: " + current_player.cards.artillery); 
+				}		
+			} else break; 		
+		}		
+		
+		System.out.println("\nEnter the To territory ");
+        String to_territory = scanner.nextLine();
+        System.out.println("\nEnter the Number of armies to move");
         int number_armies = Integer.valueOf(scanner.nextLine());
         while (current_player.reinforcements < number_armies) {
             System.out.println("the number of armies must less than " + current_player.reinforcements);
@@ -120,6 +172,10 @@ public class Game_View implements Observer{
 	
 	        game_controller.Fortification(from_territory, to_territory, number_armies);
         }
+        else{
+        	game_controller.Move_To_Next_Phase();
+        }
+        
     }
     
     public void Display_Winner(String winner) {
@@ -127,15 +183,31 @@ public class Game_View implements Observer{
     }
 
     public void Update_Menu() {
-    	if (current_state == State_Game.STARTUP) {
+    	
+    	switch(current_state){
+    	
+    	case SETUP: 
+    		//modify the game_controller setup phase to go here
+    		break;
+    	case STARTUP: 
+    		Display_Menu_StartUp_Reinforcements();
+    		break;
+    	case REINFORCEMENT: 
     		Display_Menu_Reinforcements();
-    	}else if (current_state == State_Game.REINFORCEMENT) {
-    		Display_Menu_Reinforcements();
-    	}else if (current_state == State_Game.ATTACKING) {
+    		break;
+    	case ATTACKING:
     		Display_Menu_Attack();
-    	}else if (current_state == State_Game.FORTIFICATION) {
+    		break;
+    	case FORTIFICATION: 
     		Display_Menu_Fortification();
-    	}    		
+    		break;
+    	case POST_ATTACK: 
+    		//Don't know what post_attack is
+    		break;
+ 
+    	}
+    	
+       		
     }
     
 	@Override

@@ -69,7 +69,7 @@ public class Game_Controller {
 	}	
 	
 	public void Fortification (String from, String to, int nb_armies) {
-		game.current_player.Move_Army(from, to, nb_armies);
+		game.Fortify(from, to, nb_armies);
 	}
 	
 	public void Attack(String from, String to, int nb_dices, boolean all_out){
