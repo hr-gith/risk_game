@@ -283,9 +283,11 @@ public class Game_Model extends Observable {
 		this.attack_plan = new Attack_Model(current_player, defender, from, to, nb_dice, all_out);
 		Message_Handler response = current_player.Attack(this.attack_plan);
 		State_Game new_state = current_state;
-
+		
 		if (response.ok) {
-			if (!current_player.Has_Extra_Army_To_Move()) {
+			if (this.Get_Next_Player() == null) {
+				new_state = State_Game.OVER;
+			}else if (!current_player.Has_Extra_Army_To_Move()) {
 				current_state = State_Game.FORTIFICATION;//the player can not fortify without army!!! => switch player
 				Move_To_Next_Phase();
 				return;
@@ -422,26 +424,6 @@ public class Game_Model extends Observable {
 	private void Assign_Territories() {
 		HashMap<String, Territory> game_territories = map.Get_Territories();
 
-		// List keys = new ArrayList(game_territories.keySet());
-		// Collections.shuffle(keys);
-		//
-		// //add neutrals if needed
-		//
-		// int index = 0;
-		//
-		//
-		// for (Object obj : keys) {
-		// // Access keys/values in a random order
-		//
-		// if(index<(Game_Model.number_of_players -
-		// (game_territories.size()%Game_Model.number_of_players))){
-		// active_player_list.get((index%Game_Model.number_of_players)).Add_Territory(game_territories.get(obj));
-		// game_territories.get(obj).owner_id = index;
-		// }
-		//
-		// index++;
-		//
-		// }
 
 		int index = 0;
 		Iterator it = game_territories.entrySet().iterator();
@@ -449,7 +431,7 @@ public class Game_Model extends Observable {
 			java.util.Map.Entry entry = (Map.Entry) it.next();
 			Territory territory = (Territory) entry.getValue();
 
-			if (index < (game_territories.size() - (game_territories.size() % Number_Of_Players()))) {
+			if (index < (game_territories.size())) {// - (game_territories.size() % Number_Of_Players())
 				player_list.get((index % Number_Of_Players())).Add_Territory(territory);
 				territory.owner_name = player_list.get(index % Number_Of_Players()).name;
 			}

@@ -110,13 +110,16 @@ public class Attack_Model {
 			
 			defender.Delete_Territory(to.name);
 			attacker.Add_Territory(to);
-		
-			//TODO check if the defeated player is dead?
-			//TODO check for end of the game ?
-			
 			//move minimum army//?????????????
 			to.nb_armies = 1;
 			from.nb_armies -= 1;
+			
+			// if the defeated playee is dead
+			if (defender.owned_territories.size() == 0) {
+				defender.current_state = State_Player.DEAD;			
+				//TODO cards of the dead player is given to the conquerer 
+			}
+			
 			//TODO: move armies to new territory
 		}
 		//TODO: move as many army as they want?????????????

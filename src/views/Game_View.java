@@ -204,6 +204,9 @@ public class Game_View implements Observer{
     	case POST_ATTACK: 
     		//Don't know what post_attack is
     		break;
+    	case OVER: 
+    		System.out.println(current_player.name + " is the winner!!\n Game Over" );
+    		break;
  
     	}
     	
