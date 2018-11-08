@@ -1,4 +1,5 @@
 package utilities;
+
 /**
  * Keeps all the static values required in the project
  */

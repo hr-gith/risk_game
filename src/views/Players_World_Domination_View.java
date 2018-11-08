@@ -6,10 +6,9 @@ import javax.swing.*;
 import models.Game_Model;
 
 /**
- * player world domination view class is implemented observer and  extends JPrame from abstract view class for updating following fields
- * 1.total number of armies Of player
- * 2.continent owner
- * 3.percentage of world owner
+ * player world domination view class is implemented observer and extends JPrame
+ * from abstract view class for updating following fields 1.total number of
+ * armies Of player 2.continent owner 3.percentage of world owner
  */
 public class Players_World_Domination_View extends View {
 
@@ -21,19 +20,20 @@ public class Players_World_Domination_View extends View {
 	JLabel jLabel1;
 	JLabel jLabel2;
 	JLabel jLabel3;
-/**
- *constructor that create new object for JFrame, JPanel and JLabel 
- */
+
+	/**
+	 * constructor that create new object for JFrame, JPanel and JLabel
+	 */
 	public Players_World_Domination_View() {
 		jPanel = new JPanel();
 		jLabel1 = new JLabel();
 		jLabel2 = new JLabel();
 		jLabel3 = new JLabel();
 	}
-	
-/**
- * update method for observer
- */
+
+	/**
+	 * update method for observer
+	 */
 	@Override
 	public void update(Observable obs, Object arg1) {
 		this.total_number_of_armies_Of_player = ((Game_Model) obs).Armies_Of_Player();
@@ -41,34 +41,27 @@ public class Players_World_Domination_View extends View {
 		this.percentage_of_world_owner = ((Game_Model) obs).Percentage_of_world_Owner();
 		Draw_Players_World_Domination_View_Window();
 	}
-	
-	public void Redraw(){
+
+	/**
+	 * ReDraw JPanel
+	 */
+	public void Redraw() {
 		jPanel.repaint();
 	}
 
-	
-/**
- * Draw method for showing updated fields in the JFrame window
- */
+	/**
+	 * Draw method for showing updated fields in the JFrame window
+	 */
 	public void Draw_Players_World_Domination_View_Window() {
 		jPanel.add(this);
-//		jPanel.setSize(800, 800);
-//		jFrame.setBackground(Color.blue);
 		jPanel.setVisible(true);
 		jPanel.setLayout(null);
 
-//		jPanel.setLayout(new BoxLayout(jPanel, BoxLayout.X_AXIS));
-
-		
-//		jPanel.setLayout(new BoxLayout(jPanel, BoxLayout.X_AXIS));
 		jPanel.setBackground(Color.yellow);
 
-		
-		String tmpString = percentage_of_world_owner + "\n"; 
-		
-	    jLabel1.setText("<html><p><font color=green>"+percentage_of_world_owner+"</font></p>"+"<br>"+"<br>"+"<p><font color=red>"+continent_owner+"</font></p>"+"<br>"+"<br>"+"<p><font color=blue>"+total_number_of_armies_Of_player+"</font></p>"+"<br>"+"</html>");
-	    jLabel1.setBounds(0, 0, 200, 50);
-	    jPanel.add(jLabel1);
+		jLabel1.setText(percentage_of_world_owner);
+		jLabel1.setBounds(0, 0, 200, 50);
+		jPanel.add(jLabel1);
 
 		jLabel2.setText(continent_owner);
 		jLabel2.setBounds(0, 20, 200, 50);
@@ -80,13 +73,11 @@ public class Players_World_Domination_View extends View {
 
 	}
 
+	/**
+	 * close the JPanel
+	 */
 	public void Close() {
 		jPanel.setVisible(false);
-	}
-	@Override
-	public void Update_Display(String text) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

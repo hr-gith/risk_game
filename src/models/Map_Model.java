@@ -75,7 +75,7 @@ public class Map_Model {
 	
 	
 	public String Continent_List() {
-		StringBuilder sb = new StringBuilder(64);
+		StringBuilder sb = new StringBuilder(256);
 		
 		for ( Continent continent:continents.values() ){
 			sb.append(continent.name+ " : " + continent.Get_Owner()+"        ");
