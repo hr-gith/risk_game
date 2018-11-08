@@ -137,8 +137,10 @@ public class Game_Model extends Observable {
 		StringBuilder sb = new StringBuilder(64);
 		for (Player p : player_list) {
 			int sum = p.Total_Number_of_Armies_Of_Players();
-			sb.append(" Name Of Player: " + p.name + "    " +"Sum of Armies: "+ sum+"    ") ;
+			sb.append( p.name + "\t " ) ;
 			sb.append(System.getProperty("line.separator"));
+			sb.append(" Armies: "+ sum+ "\t ");
+			
 		}
 		
 		return sb.toString();
@@ -169,7 +171,7 @@ public class Game_Model extends Observable {
 			float player_territories = (float)player.owned_territories.size();
 			percentage =(100.0f * player_territories) / all_territories;
 			String formattedString = String.format("%.02f", percentage);
-			name = '\n' + player.name + ": " + "%" + formattedString;
+			name = '\n' + player.name + ": " + "%" + formattedString+"     ";
 			percentage_list.add(name);
 		}
 		for (int i = 0; i < percentage_list.size(); i++) {
@@ -288,6 +290,9 @@ public class Game_Model extends Observable {
 		if (response.ok) {
 			if (this.Get_Next_Player() == null) {
 				new_state = State_Game.OVER;
+			}else if (current_player.is_conquerer) {
+				new_state = State_Game.POST_ATTACK;
+				message = "You've conquered "+ attack_plan.to.name +" territoy";
 			}else if (!current_player.Has_Extra_Army_To_Move()) {
 				current_state = State_Game.FORTIFICATION;//the player can not fortify without army!!! => switch player
 				Move_To_Next_Phase();
@@ -297,6 +302,20 @@ public class Game_Model extends Observable {
 			message = "Error: please enter valid data";
 		}
 
+		Update_State(new_state, message);
+	}
+	
+	public void Post_Attack(int nb_armies) {
+		current_player.Move_Army(attack_plan.from.name, attack_plan.to.name, nb_armies);
+		State_Game new_state = current_state;
+		if (!current_player.Has_Extra_Army_To_Move()) {
+			current_state = State_Game.FORTIFICATION;//the player can not fortify without army!!! => switch player
+			Move_To_Next_Phase();
+			return;
+		}
+		else
+			new_state = State_Game.ATTACKING;
+		
 		Update_State(new_state, message);
 	}
 

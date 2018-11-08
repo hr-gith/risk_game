@@ -206,6 +206,13 @@ public class Game_View implements Observer{
         
     }
     
+    public void Display_Menu_Post_Attack(){
+    	System.out.println(this.message);
+    	System.out.println("\nEnter the number of armies to move to the new territory: ");
+    	int number_armies = Integer.valueOf(scanner.nextLine());
+    	game_controller.Post_Attack(number_armies);
+    }
+    
     public void Display_Winner(String winner) {
     	System.out.println("\n Congratulation "+winner+", you are the winner!!!");
     }
@@ -230,10 +237,10 @@ public class Game_View implements Observer{
     		Display_Menu_Fortification();
     		break;
     	case POST_ATTACK: 
-    		//Don't know what post_attack is
+    		Display_Menu_Post_Attack();
     		break;
     	case OVER: 
-    		System.out.println(current_player.name + " is the winner!!\n Game Over" );
+    		Display_Winner(current_player.name + " is the winner!!\n Game Over" );
     		break;
  
     	}
