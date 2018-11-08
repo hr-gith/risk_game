@@ -158,23 +158,51 @@ public class Game_View implements Observer{
      * @param currentPlayer instance of current player
      */
     public void Display_Menu_Fortification() {
-        System.out.println("Fortification =>player : " + current_player.name + " has countries :" + current_player.owned_territories.keySet().toString());
-        System.out.println("Do you want to move any units? (yes/no)");
-        String answer = scanner.nextLine(); 
+    	if(current_player.Has_Extra_Army_To_Move()) {
+
+            
+
+            System.out.println("Fortification =>player : " + current_player.name + " has countries :" + current_player.owned_territories.keySet().toString());
+
+            System.out.println("Do you want to fortify any units? (yes/no)");
+
+            String answer = scanner.nextLine();
+
+            
+
+            if(answer.equals("yes")){
+
+                System.out.println("\nEnter the From territory ");
+
+                String from_territory = scanner.nextLine();
+
+                System.out.println("\nEnter the To territory ");
+
+                String to_territory = scanner.nextLine();
+
+                System.out.println("\nEnter the Number of move armies");
+
+                int number_armies = Integer.valueOf(scanner.nextLine());
+
         
-        if(answer.equals("yes")){
-	        System.out.println("\nEnter the From territory ");
-	        String from_territory = scanner.nextLine();
-	        System.out.println("\nEnter the To territory ");
-	        String to_territory = scanner.nextLine();
-	        System.out.println("\nEnter the Number of move armies");
-	        int number_armies = Integer.valueOf(scanner.nextLine());
-	
-	        game_controller.Fortification(from_territory, to_territory, number_armies);
-        }
-        else{
-        	game_controller.Move_To_Next_Phase();
-        }
+
+                game_controller.Fortification(from_territory, to_territory, number_armies);
+
+            }
+
+            else{
+
+                game_controller.Move_To_Next_Phase();
+
+            }
+
+       }
+
+          else {
+
+              game_controller.Move_To_Next_Phase();
+
+          }
         
     }
     

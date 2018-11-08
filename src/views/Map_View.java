@@ -39,29 +39,76 @@ public class Map_View extends View{
 	@Override
 	public void paintComponent(Graphics g) {
 		Color[] colors = { Color.blue, Color.green, Color.red, Color.pink, Color.yellow, Color.orange };
-		HashMap<String, Color> player_color = new HashMap<>();
-		int current_color = 0;
-		for (Continent continent : map.continents.values()) {
-			for (Territory territory : continent.territories.values()) {
-				if (player_color.containsKey(territory.owner_name))
-					g.setColor(player_color.get(territory.owner_name));
-				else {
-					player_color.put(territory.owner_name, colors[current_color]);
-					g.setColor(colors[current_color]);
-					current_color++;
-				}
-				g.drawOval(territory.pos_x - 30, territory.pos_y - 15, 60, 30);
-				g.drawString(territory.name, territory.pos_x - 22, territory.pos_y + 2);
-				g.drawString(Integer.toString(territory.nb_armies), territory.pos_x - 10, territory.pos_y + 12);
-				// draw connections
-				for (Territory neighbour : territory.adj.values()) {
-					g.setColor(Color.BLACK);
-					g.drawLine(territory.pos_x, territory.pos_y + 15, neighbour.pos_x, neighbour.pos_y + 15);
-				}
-			}
 
-		}
+        HashMap<String, Color> player_color = new HashMap<>();
 
+        int current_color = 0;
+
+        for (Continent continent : map.continents.values()) {
+
+            
+
+            for (Territory territory : continent.territories.values()) {
+
+            
+
+            for (Territory neighbour : territory.adj.values()) {
+
+                g.setColor(Color.BLACK);
+
+                g.drawLine(territory.pos_x, territory.pos_y + 15, neighbour.pos_x, neighbour.pos_y + 15);
+
+            }
+
+            
+
+            }
+
+            
+
+            for (Territory territory : continent.territories.values()) {
+
+                
+
+            
+
+                
+
+                g.setColor(Color.white);
+
+                g.fillOval(territory.pos_x - 30, territory.pos_y - 15, 60, 30);
+
+                
+
+                if (player_color.containsKey(territory.owner_name))
+
+                    g.setColor(player_color.get(territory.owner_name));
+
+                else {
+
+                    player_color.put(territory.owner_name, colors[current_color]);
+
+                    g.setColor(colors[current_color]);
+
+                    current_color++;
+
+                }
+
+                
+
+                g.drawOval(territory.pos_x - 30, territory.pos_y - 15, 60, 30);
+
+                
+
+                g.drawString(territory.name, territory.pos_x - 22, territory.pos_y + 2);
+
+                g.drawString(Integer.toString(territory.nb_armies), territory.pos_x - 10, territory.pos_y + 12);
+
+                // draw connections
+
+            
+
+            }        }
 	}
 	@Override
 	public void paint(Graphics g)

@@ -312,9 +312,7 @@ public class Game_Model extends Observable {
 		State_Game new_state = current_state;
 
 		if (response.ok) {
-			//if (!current_player.Has_Extra_Army_To_Move()) {
-				Move_To_Next_Phase();
-			//}
+		
 		} else {
 			message = "Error: please enter valid data";
 		}
