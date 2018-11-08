@@ -3,6 +3,7 @@ package controllers;
 import models.Map_Helper;
 import models.Map_Model;
 import utilities.Config;
+import views.Game_View;
 import views.Map_Generator_View;
 import views.Map_View;
 
@@ -14,12 +15,14 @@ public class Map_Generator_Controller {
 
 	public Map_Generator_View map_generator_view;
 	public Map_View map_view;
+	public Game_View game_view;
 	public Map_Model map;
 	public Map_Helper io_map_helper;
 
 	public Map_Generator_Controller() {
 		this.map_generator_view = new Map_Generator_View();
 		this.map_view = new Map_View();
+		this.game_view = new Game_View(false); 
 		this.map = Map_Model.Get_Map();
 		this.io_map_helper = new Map_Helper();
 	}
@@ -57,6 +60,7 @@ public class Map_Generator_Controller {
 			case 3:// Edit map
 				this.map_generator_view.Display_Map_Designer();
 				map = map_generator_view.map;
+				
 				break;
 			case 4:// Save map in a file
 				if (map != null && io_map_helper.Export_Map(map))
@@ -66,10 +70,15 @@ public class Map_Generator_Controller {
 				break;
 			case 5:// Display map
 				if (map != null) {
+					this.game_view.Draw_Window();
+					this.game_view.Add_Panel(map_view.jPanel, 1);
 					this.map_generator_view.Display_Map(map);
 					this.map_view.Draw_Map(map);
 				}
 				break;
+			case 6:
+				this.game_view.Close();
+				break; 
 			case 7:
 				System.exit(0);
 			}
