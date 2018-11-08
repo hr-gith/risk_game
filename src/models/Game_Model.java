@@ -137,8 +137,10 @@ public class Game_Model extends Observable {
 		StringBuilder sb = new StringBuilder(64);
 		for (Player p : player_list) {
 			int sum = p.Total_Number_of_Armies_Of_Players();
-			sb.append(" Name Of Player: " + p.name + "    " +"Sum of Armies: "+ sum+"    ") ;
+			sb.append( p.name + "\t " ) ;
 			sb.append(System.getProperty("line.separator"));
+			sb.append(" Armies: "+ sum+ "\t ");
+			
 		}
 		
 		return sb.toString();
@@ -169,7 +171,7 @@ public class Game_Model extends Observable {
 			float player_territories = (float)player.owned_territories.size();
 			percentage =(100.0f * player_territories) / all_territories;
 			String formattedString = String.format("%.02f", percentage);
-			name = '\n' + player.name + ": " + "%" + formattedString;
+			name = '\n' + player.name + ": " + "%" + formattedString+"     ";
 			percentage_list.add(name);
 		}
 		for (int i = 0; i < percentage_list.size(); i++) {

@@ -1,6 +1,8 @@
 package views;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.util.Observable;
 import javax.swing.*;
 import models.Game_Model;
@@ -49,27 +51,23 @@ public class Players_World_Domination_View extends View {
  * Draw method for showing updated fields in the JFrame window
  */
 	public void Draw_Players_World_Domination_View_Window() {
-		jFrame.setSize(500, 500);
-		jFrame.setBackground(Color.blue);
+		
+		  Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	        
+		jFrame.setSize(screenSize.width/2, screenSize.height/2);
 		jFrame.setVisible(true);
 		jFrame.setLayout(null);
 
-		jpanel.setBounds(45, 40, 400, 400);
-		jpanel.setBackground(Color.yellow);
+		jpanel.setBounds(screenSize.width/50,screenSize.width/50, (screenSize.width/2)-(2*(screenSize.width/50)),  (screenSize.width/2)-((screenSize.width/50)*2));
+        jpanel.setBackground(Color.yellow);
 
 		jFrame.add(jpanel);
-		
-	    jLabel1.setText(percentage_of_world_owner);
+		jpanel.add(jLabel1);
+	    jLabel1.setText("<html><p><font color=green>"+percentage_of_world_owner+"</font></p>"+"<br>"+"<br>"+"<p><font color=red>"+continent_owner+"</font></p>"+"<br>"+"<br>"+"<p><font color=blue>"+total_number_of_armies_Of_player+"</font></p>"+"<br>"+"</html>");
 	    jLabel1.setBounds(0, 0, 200, 50);
-	    jpanel.add(jLabel1);
+	   
+	    
 
-		jLabel2.setText(continent_owner);
-		jLabel2.setBounds(0, 20, 200, 50);
-		jpanel.add(jLabel2);
-
-		jLabel3.setText(total_number_of_armies_Of_player);
-		jLabel3.setBounds(0, 40, 200, 50);
-		jpanel.add(jLabel3);
 
 	}
 
