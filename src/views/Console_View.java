@@ -156,6 +156,12 @@ public class Console_View implements Observer {
 			game_controller.Move_To_Next_Phase();
 	}
 
+    public void Display_Menu_Post_Attack(){
+    	System.out.println(this.message);
+    	System.out.println("\nEnter the number of armies to move to the new territory: ");
+    	int number_armies = Integer.valueOf(scanner.nextLine());
+    	game_controller.Post_Attack(number_armies);
+    }
 	/**
 	 * number or armies for replacement
 	 */
@@ -223,9 +229,14 @@ public class Console_View implements Observer {
 			Display_Menu_Fortification();
 
 			break;
-		case POST_ATTACK:
-			// Don't know what post_attack is
-			break;
+			
+		case POST_ATTACK: 
+    		Display_Menu_Post_Attack();
+    		break;
+    		
+		case OVER: 
+    		Display_Winner(current_player.name + " is the winner!!\n Game Over" );
+    		break;
 
 		}
 

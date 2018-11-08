@@ -162,7 +162,6 @@ public class Attack_Model {
 				// TODO cards of the dead player is given to the conquerer
 			}
 
-			// move armies to new territory
 		}
 		current_state = State.END;
 	}
