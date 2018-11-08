@@ -30,7 +30,15 @@ public class Map_Model {
 		this.author = "author";
 		this.warn = false;
     }
-    
+    /**
+     * private member of Map_Model class
+     * @param image 
+     * @param wrap
+     * @param scroll
+     * @param author
+     * @param warn
+     * @param continents
+     */
 	private Map_Model(String image, boolean wrap, String scroll, String author, boolean warn,HashMap<String,Continent> continents) {
 		this.image = image;
 		this.wrap = wrap;

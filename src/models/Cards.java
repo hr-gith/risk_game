@@ -13,11 +13,16 @@ public class Cards {
 	public Integer cavalry = 1; 
 	public Integer infantry = 1; 
 	public Integer artillery = 2; 
-	
+	/**
+	 * private member holding number of reinforcements for these cards
+	 */
 	private int card_reinforcements; 
 
 	
-	
+	/**
+	 * this method checks if there are any valid set amongst the cards
+	 * @return true if there is a valid set
+ 	 */
 	public boolean Is_Set_Available(){
 		// check if either cavalry, infantry, or, 
 		if((this.cavalry > 0 && this.infantry >0 && this.artillery > 0) || this.infantry >=3 || this.cavalry >= 3 || this.artillery >= 3){
@@ -25,7 +30,11 @@ public class Cards {
 		
 		}else return false; 
 	}
-	
+	/**
+	 * checks the current cards and trade in available sets
+	 * @param card1 string of cards entered by the player
+	 * @return true if valid and successful
+	 */
 	public boolean Are_Playable(String[] card1){
 		
 		int tmp_inf = 0; 
@@ -59,7 +68,9 @@ public class Cards {
 		
 		
 	}
-	
+	/**
+	 * calculate number of reinforcements for the traded set
+	 */
 	private void CalculateCardReinforcements(){
 		
 		//The first set traded in - 4 armies
@@ -99,7 +110,10 @@ public class Cards {
 
 		
 	}
-	
+	/**
+	 * gets card_reinforcements 
+	 * @return card_reinforcements
+	 */
 	public int Get_Card_Reinforcement_Qty(){
 		return this.card_reinforcements; 
 	}

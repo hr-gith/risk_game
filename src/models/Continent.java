@@ -55,7 +55,10 @@ public class Continent {
 		  }		  
 		  return false;
 	}
-	
+	/**
+	 * total number of territories
+	 * @return total number of territories
+	 */
 	public int Number_OF_Territory() {
 	int sum=territories.values().size();
 		

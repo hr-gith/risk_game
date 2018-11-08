@@ -1,10 +1,9 @@
 package models;
-
+/**
+ * The ENUMERATED states for the game phases
+ *
+ */
 public enum State_Game {
-
-	/** 
-	 * The ENUMERATED states for the game phases 
-	 */
 	
 	SETUP, STARTUP, REINFORCEMENT, ATTACKING, FORTIFICATION, POST_ATTACK, OVER
 

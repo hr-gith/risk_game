@@ -1,9 +1,15 @@
 package models;
 
 import java.util.ArrayList;
-
+/**
+ * enumeration of states inside an attack_Model
+ *
+ */
 enum State {NONE, VALIDATION, START, END, APPLY_RESULT};
-
+/**
+ * this class has the logic of a single attack from one territory to another
+ *
+ */
 public class Attack_Model {
 	public Player attacker;
 	public Player defender;
@@ -24,12 +30,22 @@ public class Attack_Model {
 	public int defender_loss;
 	
 	String message;
-	
+	/**
+	 * constructor of Attack_model without any argument
+	 */
 	public Attack_Model() {
 		current_state = State.NONE;
 		message = "";
 	}
-	
+	/**
+	 * constructor of attack_Model 
+	 * @param attacker Player object of attacker 
+	 * @param defender Player object of defender
+	 * @param from Attacking Territory object
+	 * @param to Defending Territory object
+	 * @param attacker_nb_dices number of dice attacker wish to use
+	 * @param all_out whether attacker chose All_out mode or not
+	 */
 	public Attack_Model(Player attacker, Player defender, Territory from, Territory to, int attacker_nb_dices, boolean all_out) {
 		current_state = State.NONE;
 		message = "";
@@ -47,7 +63,9 @@ public class Attack_Model {
 			this.defender_nb_dices = Get_Max_NB_Dices(to,false);
 		}
 	}
-	
+	/**
+	 * this method sets number of dice to its maximum
+	 */
 	public void Set_Max_NB_Dices() {
 		this.attacker_nb_dices = Get_Max_NB_Dices(from, true);
 		this.defender_nb_dices = Get_Max_NB_Dices(to,false);
@@ -80,7 +98,10 @@ public class Attack_Model {
 			current_state = State.APPLY_RESULT;
 		}
 	}
-	
+	/**
+	 * check if the current attack_model is valid or not 
+	 * @return true if it is valid, false otherwise
+	 */
 	public boolean Is_Valid_Attack() {
 		current_state = State.VALIDATION;
 		if (from != null && to != null &&
@@ -100,7 +121,10 @@ public class Attack_Model {
     
 		return false;
 	}
-	
+	/**
+	 * Apply result of a single battle to armies of attacker and defender
+	 * assign the conquered territory to the attacker
+	 */
 	public void Apply_Result () {
 		from.nb_armies += attacker_loss;
 		to.nb_armies += defender_loss;
@@ -120,12 +144,16 @@ public class Attack_Model {
 				//TODO cards of the dead player is given to the conquerer 
 			}
 			
-			//TODO: move armies to new territory
+			//move armies to new territory
 		}
-		//TODO: move as many army as they want?????????????
 		current_state = State.END;
 	}
-	
+	/**
+	 * gets max number of dice based on number of armies
+	 * @param territory_in_attack the territory which is in the battle
+	 * @param isAttacker true if the territory_in_attack belongs to the attacker, False if it belongs to defender
+	 * @return Max number of dice , which can be used
+	 */
 	public int Get_Max_NB_Dices(Territory territory_in_attack,boolean isAttacker) {
 		int result = 0;
 		int nb_armies = territory_in_attack.nb_armies;

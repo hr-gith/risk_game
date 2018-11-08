@@ -1,7 +1,6 @@
 package models;
 
 import java.util.ArrayList;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +9,10 @@ import java.util.List;
 import java.util.Observable;
 import models.Map_Model;
 import utilities.Config;
-
+/**
+ * This is the main model class, it goes through phases of the game
+ *
+ */
 public class Game_Model extends Observable {
 
 	public ArrayList<Player> player_list;
@@ -299,7 +301,10 @@ public class Game_Model extends Observable {
 
 		Update_State(new_state, message);
 	}
-	
+	/**
+	 * This method move armies from attacking territory to defeated territory
+	 * @param nb_armies number of armies to be moved, defined by attacking player
+	 */
 	public void Post_Attack(int nb_armies) {
 		current_player.Move_Army(attack_plan.from.name, attack_plan.to.name, nb_armies);
 		State_Game new_state = current_state;
@@ -463,7 +468,11 @@ public class Game_Model extends Observable {
 	public Boolean isStillFighting() {
 		return isFighting;
 	}
-
+	/**
+	 * this method update states of the game
+	 * @param new_state
+	 * @param new_message
+	 */
 	public void Update_State(State_Game new_state, String new_message) {
 		message = new_message;
 		current_state = new_state;

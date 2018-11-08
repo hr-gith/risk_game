@@ -34,7 +34,11 @@ public class Player {
 		this.cards = new Cards(); 
 		this.is_conquerer = false;
 	}
-	
+	/**
+	 * Constructor for the Player object
+	 * @param name name of the player
+	 * @param game object of this Gmae_Model
+	 */
 	public Player(String name, Game_Model game){
 		this(0, name, game);
 	}
@@ -46,17 +50,28 @@ public class Player {
 	public Player(Integer id, Game_Model game){
 		this(id, "Player " + id, game);  
 	}
-	
+	/**
+	 * this method checks if the player is still in the game or has been terminated
+	 * @return true if alive, false if terminated
+	 */
 	public boolean Is_Alive() {
 		if (current_state == State_Player.DEAD)
 			return false;
 		return true;
 	}
-	
+	/**
+	 * this method updates the sate of Player
+	 * @param new_state
+	 */
 	public void Update_State(State_Player new_state) {
 		current_state = new_state;
 	}
-	
+	/**
+	 * this method handles the player interaction to be used in reinforcement phase
+	 * @param to_territory territory recieving the armies
+	 * @param nb_armies number of armies
+	 * @return true if inputs are valid
+	 */
 	public Message_Handler Reinforcement(String to_territory, int nb_armies) {
 		if (this.Add_Army_To_Territory(to_territory, nb_armies)) {
 			return new Message_Handler(true);
@@ -70,23 +85,24 @@ public class Player {
     		return false;
         return true;*/
 	}
-	
+	/**
+	 * this method handles the player interaction to be used in attack phase
+	 * @param attack_plan Attack_Model object
+	 * @return
+	 */
 	public Message_Handler Attack (Attack_Model attack_plan) {
         Message_Handler response = new Message_Handler(true);
 		if (attack_plan.Is_Valid_Attack()) {
 			if (!attack_plan.all_out) {
 				attack_plan.Decide_Battle();
 				attack_plan.Apply_Result();
-				//TODO: move armies by winner
 			}
 			else {
-				//TODO: all out
-				// to be tested
+				//all out
 				while (attack_plan.from.nb_armies > 1 && attack_plan.from.owner_name != attack_plan.to.owner_name) {
 				attack_plan.Set_Max_NB_Dices();
 				attack_plan.Decide_Battle();
 				attack_plan.Apply_Result();
-				//TODO: if successful, movie all possible armies ?!
 				}
 			}
 			/*if (!Has_Extra_Army_To_Move()) {    		
@@ -119,7 +135,13 @@ public class Player {
 
         return  response;
     }
-	
+	/**
+	 * this method handles the player interaction to be used in Fortification phase
+	 * @param from_territory source territory of fortification
+	 * @param to_territory	destination of fortification
+	 * @param nb_armies number of armies to fortify
+	 * @return true if valid, false otherwise
+	 */
 	public Message_Handler Fortify(String from_territory, String to_territory, int nb_armies) {
 		is_conquerer = false;
 		if (this.Fortification(from_territory, to_territory, nb_armies)) {
@@ -134,7 +156,13 @@ public class Player {
     		return false;
         return true;*/
 	}
-	
+	/**
+	 * this method checks if the fortification move is valid
+	 * @param from string of the source territory
+	 * @param to	string of the destination territory
+	 * @param nb_armies number of armies to fortify
+	 * @return true if valid, false otherwise
+	 */
     public boolean Fortification(String from, String to, int nb_armies) {
         //Test if any units to fortify
         if (Has_Extra_Army_To_Move()) {
@@ -154,7 +182,10 @@ public class Player {
     	return true;
     }
     
-  
+    /**
+     * assign one army to each territory of a player at the startup phase
+     * @return true if successful, false if not
+      */
 	public boolean Assign_Min_Army_To_Territories() {
 		if (reinforcements >= owned_territories.size()) {
 			for(Territory t: owned_territories.values())
@@ -164,7 +195,11 @@ public class Player {
         }
 		return false;
 	}
-	
+	/**
+	 * assign number of reinforcements to territories of a player
+	 * @param territories_armies 
+	 * @return true if valid and successful, false if not
+	 */
 	public boolean Assign_Army_To_Territories(HashMap<String, Integer> territories_armies) {
         if (this.reinforcements > 0) {
         	for (String territory_name : territories_armies.keySet()) {
@@ -209,6 +244,11 @@ public class Player {
 			return false; 
 		}
 	}	
+	/**
+	 * this methods call Add_Army_To_Territory
+	 * @param territory_key string of the territory 
+	 * @return true if successful, false if not
+	 */
 	public Boolean Add_Army_To_Territory(String territory_key ){		
 		return Add_Army_To_Territory(territory_key, 1);
 	}	
@@ -229,8 +269,7 @@ public class Player {
 	 * @param Territory The finishing territory of the armies being moved 
 	 * @param Integer The number of units being moved between territories
 	 * @return A boolean corresponding to if the army movement is valid
-	 */
-	
+	 */	
 	public Boolean Move_Army(String from_name, String to_name, int number_of_units){
 		Territory from = this.owned_territories.get(from_name);
 		Territory to = this.owned_territories.get(to_name);
@@ -328,7 +367,6 @@ public class Player {
 	 * @param Player The current game player
 	 * @return A boolean value representing whether the player is capable of moving any units
 	 */
-    
     public Boolean Has_Extra_Army_To_Move() {
         for (String key : owned_territories.keySet()) {
             if (owned_territories.get(key).nb_armies > 1)
