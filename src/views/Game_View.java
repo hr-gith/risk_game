@@ -167,7 +167,7 @@ public class Game_View implements Observer{
 	        String from_territory = scanner.nextLine();
 	        System.out.println("\nEnter the To territory ");
 	        String to_territory = scanner.nextLine();
-	        System.out.println("\nEnter the Number of move armies");
+	        System.out.println("\nEnter the number of armies to move:");
 	        int number_armies = Integer.valueOf(scanner.nextLine());
 	
 	        game_controller.Fortification(from_territory, to_territory, number_armies);
@@ -176,6 +176,13 @@ public class Game_View implements Observer{
         	game_controller.Move_To_Next_Phase();
         }
         
+    }
+    
+    public void Display_Menu_Post_Attack(){
+    	System.out.println(this.message);
+    	System.out.println("\nEnter the number of armies to move to the new territory: ");
+    	int number_armies = Integer.valueOf(scanner.nextLine());
+    	game_controller.Post_Attack(number_armies);
     }
     
     public void Display_Winner(String winner) {
@@ -202,10 +209,10 @@ public class Game_View implements Observer{
     		Display_Menu_Fortification();
     		break;
     	case POST_ATTACK: 
-    		//Don't know what post_attack is
+    		Display_Menu_Post_Attack();
     		break;
     	case OVER: 
-    		System.out.println(current_player.name + " is the winner!!\n Game Over" );
+    		Display_Winner(current_player.name + " is the winner!!\n Game Over" );
     		break;
  
     	}

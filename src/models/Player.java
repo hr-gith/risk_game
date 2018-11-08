@@ -17,6 +17,7 @@ public class Player {
 	public HashMap<String,Territory> owned_territories;
 	public Integer reinforcements;
 	public Cards cards; 
+	public boolean is_conquerer;
 	
 	
 	/** 
@@ -31,6 +32,7 @@ public class Player {
 		this.current_state = State_Player.WAITING;
 		this.ref_game = game;
 		this.cards = new Cards(); 
+		this.is_conquerer = false;
 	}
 	
 	public Player(String name, Game_Model game){
@@ -119,6 +121,7 @@ public class Player {
     }
 	
 	public Message_Handler Fortify(String from_territory, String to_territory, int nb_armies) {
+		is_conquerer = false;
 		if (this.Fortification(from_territory, to_territory, nb_armies)) {
 			return new Message_Handler(true);
 		}

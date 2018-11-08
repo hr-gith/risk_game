@@ -288,6 +288,9 @@ public class Game_Model extends Observable {
 		if (response.ok) {
 			if (this.Get_Next_Player() == null) {
 				new_state = State_Game.OVER;
+			}else if (current_player.is_conquerer) {
+				new_state = State_Game.POST_ATTACK;
+				message = "You've conquered "+ attack_plan.to.name +" territoy";
 			}else if (!current_player.Has_Extra_Army_To_Move()) {
 				current_state = State_Game.FORTIFICATION;//the player can not fortify without army!!! => switch player
 				Move_To_Next_Phase();
@@ -297,6 +300,20 @@ public class Game_Model extends Observable {
 			message = "Error: please enter valid data";
 		}
 
+		Update_State(new_state, message);
+	}
+	
+	public void Post_Attack(int nb_armies) {
+		current_player.Move_Army(attack_plan.from.name, attack_plan.to.name, nb_armies);
+		State_Game new_state = current_state;
+		if (!current_player.Has_Extra_Army_To_Move()) {
+			current_state = State_Game.FORTIFICATION;//the player can not fortify without army!!! => switch player
+			Move_To_Next_Phase();
+			return;
+		}
+		else
+			new_state = State_Game.ATTACKING;
+		
 		Update_State(new_state, message);
 	}
 
