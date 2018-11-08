@@ -11,6 +11,8 @@ public class Game_Engine {
 	public static void main(String[] args) {
 		Map_Generator_Controller map_generator = new Map_Generator_Controller();
 
+		
+		
 		if (map_generator.start()) {
 			Game_Controller game = new Game_Controller(map_generator.map);
 			game.map_view = map_generator.map_view;

@@ -31,15 +31,20 @@ public class Game_View extends View {
 	/**
 	 * constructor to initiate JFrame and mainPanel
 	 */
-	public Game_View() {
+	public Game_View(boolean exit_on_close) {
 		jFrame = new JFrame();
+		
+		if(exit_on_close){
 		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		}
 		mainPanel = new JPanel();
 		mainPanel = (JPanel) jFrame.getContentPane();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
 
 	}
 
+
+	
 	/**
 	 * draw JFrame and set size and margin
 	 */
@@ -62,7 +67,7 @@ public class Game_View extends View {
 
 		switch (position) {
 		case 1: // top left
-			panel.setSize(screenSize.width / 2, screenSize.height / 2);
+//			panel.setSize(screenSize.width / 2, screenSize.height / 2);
 			// panel.setBounds(side_margin, top_margin, 11*side_margin, 11*top_margin);
 			// panel.setBounds(45, 40, 400, 400);
 			// panel.setBackground(Color.yellow);

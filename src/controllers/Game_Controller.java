@@ -33,7 +33,7 @@ public class Game_Controller {
 		game.addObserver(console_view);
 
 		if (map_view == null) {
-			game_view = new Game_View();
+			game_view = new Game_View(true);
 		}
 
 		game.addObserver(game_view);
@@ -58,10 +58,11 @@ public class Game_Controller {
 	public void Start() {
 
 		// map_view.Draw_Map(game.map);
-		//
 		// game_view.Add_Panel(map_view.jPanel, 1);
-		//
 		// game_view.Redraw();
+		
+//		game_view.Draw_Window();
+//		game_view.Add_Panel(map_view.jPanel, 1);
 
 		ArrayList<String> players_name = console_view.Display_Menu_Players();
 		if (game.Player_List_Setup(players_name)) {
