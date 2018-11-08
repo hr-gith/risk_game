@@ -114,7 +114,7 @@ public class Attack_Model {
 			to.nb_armies = 1;
 			from.nb_armies -= 1;
 			
-			// if the defeated playee is dead
+			// if the defeated player is dead
 			if (defender.owned_territories.size() == 0) {
 				defender.current_state = State_Player.DEAD;			
 				//TODO cards of the dead player is given to the conquerer 

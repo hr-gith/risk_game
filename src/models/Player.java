@@ -81,6 +81,7 @@ public class Player {
 				//TODO: all out
 				// to be tested
 				while (attack_plan.from.nb_armies > 1 && attack_plan.from.owner_name != attack_plan.to.owner_name) {
+				attack_plan.Set_Max_NB_Dices();
 				attack_plan.Decide_Battle();
 				attack_plan.Apply_Result();
 				//TODO: if successful, movie all possible armies ?!

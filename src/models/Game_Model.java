@@ -48,7 +48,7 @@ public class Game_Model extends Observable {
 
 		int cur_player_index = player_list.indexOf(current_player);
 		// check players after him/her in the list
-		for (int i = cur_player_index; i < player_list.size(); i++) {
+		for (int i = cur_player_index+1; i < player_list.size(); i++) {
 			if (player_list.get(i).Is_Alive())
 				return player_list.get(i);
 		}
