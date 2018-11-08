@@ -104,15 +104,22 @@ public class Attack_Model {
 	public void Apply_Result () {
 		from.nb_armies += attacker_loss;
 		to.nb_armies += defender_loss;
-		//check if one of territories is defeated
+		//check if attacked territory is defeated
 		if (to.nb_armies <= 0) {
 			//winner is the attacker
-			
+			attacker.is_conquerer = true;
 			defender.Delete_Territory(to.name);
 			attacker.Add_Territory(to);
 			//move minimum army//?????????????
 			to.nb_armies = 1;
 			from.nb_armies -= 1;
+			
+			// if the defeated player is dead
+			if (defender.owned_territories.size() == 0) {
+				defender.current_state = State_Player.DEAD;			
+				//TODO cards of the dead player is given to the conquerer 
+			}
+			
 			//TODO: move armies to new territory
 		}
 		//TODO: move as many army as they want?????????????

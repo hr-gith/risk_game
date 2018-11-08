@@ -66,7 +66,7 @@ public class Players_World_Domination_View extends View {
 		
 		String tmpString = percentage_of_world_owner + "\n"; 
 		
-	    jLabel1.setText(tmpString);
+	    jLabel1.setText("<html><p><font color=green>"+percentage_of_world_owner+"</font></p>"+"<br>"+"<br>"+"<p><font color=red>"+continent_owner+"</font></p>"+"<br>"+"<br>"+"<p><font color=blue>"+total_number_of_armies_Of_player+"</font></p>"+"<br>"+"</html>");
 	    jLabel1.setBounds(0, 0, 200, 50);
 	    jPanel.add(jLabel1);
 

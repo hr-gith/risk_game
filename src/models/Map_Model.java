@@ -70,7 +70,7 @@ public class Map_Model {
 		StringBuilder sb = new StringBuilder(64);
 		
 		for ( Continent continent:continents.values() ){
-			sb.append(continent.name+ " : " + continent.Get_Owner()+"    ");
+			sb.append(continent.name+ " : " + continent.Get_Owner()+"        ");
 			sb.append(System.getProperty("line.separator"));
 		}
 		
