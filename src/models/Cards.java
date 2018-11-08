@@ -10,9 +10,9 @@ public class Cards {
 	// type of cards: INFANTRY, CAVALRY, ARTILLERY
 	
 	public int Num_Sets_traded_In = 0;
-	public int cavalry = 1; 
-	public int infantry = 1; 
-	public int artillery = 2; 
+	public Integer cavalry = 1; 
+	public Integer infantry = 1; 
+	public Integer artillery = 2; 
 	
 	private int card_reinforcements; 
 

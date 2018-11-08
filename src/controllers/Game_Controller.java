@@ -4,6 +4,8 @@ import models.Game_Model;
 import models.Map_Model;
 import models.Player;
 import models.State_Game;
+import views.Card_View;
+import views.Console_View;
 import views.Game_View;
 import views.Map_View;
 import views.Phase_View;
@@ -20,24 +22,35 @@ import java.util.ArrayList;
 public class Game_Controller {
 	
 	public Game_Model game;
-	public Game_View game_view;
+
+	public Game_View game_view; 
+	public Console_View console_view;
 	public Map_View map_view;
 	public Phase_View phase_view;
 	public  Players_World_Domination_View players_world_domination_view ;
-	
-	
+	public Card_View card_view; 
+
 	
 	public Game_Controller(Map_Model map) {
 		game = new Game_Model(map);
-		game_view = new Game_View(this);
-		game.addObserver(game_view);
+	
+		
+		console_view = new Console_View(this);
+		game.addObserver(console_view);
 				
 		if (map_view == null)
+			
+			game_view = new Game_View();
+		game.addObserver(game_view);
+			
 			map_view =new Map_View();
 		game.addObserver(map_view);		
 
 		phase_view =new Phase_View();
 		game.addObserver(phase_view);
+		
+		card_view =new Card_View();
+		game.addObserver(card_view);
 		
 		players_world_domination_view =new Players_World_Domination_View ();
 		game.addObserver(players_world_domination_view);
@@ -46,8 +59,17 @@ public class Game_Controller {
 	
 	
 	public void Start() {
-		map_view.Draw_Map(game.map);
-		ArrayList<String> players_name = game_view.Display_Menu_Players();
+		
+		
+		
+		
+//		map_view.Draw_Map(game.map);
+//		
+//		game_view.Add_Panel(map_view.jPanel, 1);
+//		
+//		game_view.Redraw();
+		
+		ArrayList<String> players_name = console_view.Display_Menu_Players();
         if (game.Player_List_Setup(players_name)) {
         	game.Setup();
         	/*if (game.Setup()) {
@@ -78,5 +100,15 @@ public class Game_Controller {
 	
 	public void Move_To_Next_Phase() {
 		game.Move_To_Next_Phase();
+	}
+	
+	
+	public void RedrawViews(){
+		
+		map_view.Redraw();
+		phase_view.Redraw(); 
+		card_view.Redraw();
+		players_world_domination_view. Redraw();	
+		
 	}
 }

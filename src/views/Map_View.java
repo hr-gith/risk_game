@@ -6,7 +6,11 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.util.HashMap;
 import java.util.Observable;
+
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 import models.Continent;
 import models.Game_Model;
 import models.Map_Model;
@@ -15,10 +19,10 @@ import models.Territory;
 public class Map_View extends View{
 
 	private Map_Model map;
-	JFrame jFrame;
+	public JPanel jPanel;
 	
 	public Map_View() {
-		jFrame = new JFrame();	
+		jPanel = new JPanel();	
 	}
 	
 	/**
@@ -26,13 +30,21 @@ public class Map_View extends View{
 	 */
 	public void Draw_Map(Map_Model map) {
 		this.map = map;	
-		jFrame.add(this);
-		jFrame.setSize(800, 800);
-		jFrame.setVisible(true);
+		jPanel.add(this);
+//		jPanel.setSize(800, 800);
+		jPanel.setVisible(true);
+		
+		jPanel.setLayout(new BoxLayout(jPanel, BoxLayout.X_AXIS));
+		
+
+	}
+	
+	public void Redraw(){
+		jPanel.repaint();
 	}
 	
 	public void Close()	{
-		jFrame.setVisible(false);
+		jPanel.setVisible(false);
 	}
 
 
@@ -42,7 +54,23 @@ public class Map_View extends View{
 		HashMap<String, Color> player_color = new HashMap<>();
 		int current_color = 0;
 		for (Continent continent : map.continents.values()) {
+			
 			for (Territory territory : continent.territories.values()) {
+			
+			for (Territory neighbour : territory.adj.values()) {
+				g.setColor(Color.BLACK);
+				g.drawLine(territory.pos_x, territory.pos_y + 15, neighbour.pos_x, neighbour.pos_y + 15);
+			}
+			
+			}
+			
+			for (Territory territory : continent.territories.values()) {
+				
+			
+				
+				g.setColor(Color.white);
+				g.fillOval(territory.pos_x - 30, territory.pos_y - 15, 60, 30);
+				
 				if (player_color.containsKey(territory.owner_name))
 					g.setColor(player_color.get(territory.owner_name));
 				else {
@@ -50,18 +78,20 @@ public class Map_View extends View{
 					g.setColor(colors[current_color]);
 					current_color++;
 				}
+				
 				g.drawOval(territory.pos_x - 30, territory.pos_y - 15, 60, 30);
+				
 				g.drawString(territory.name, territory.pos_x - 22, territory.pos_y + 2);
 				g.drawString(Integer.toString(territory.nb_armies), territory.pos_x - 10, territory.pos_y + 12);
 				// draw connections
-				for (Territory neighbour : territory.adj.values()) {
-					g.setColor(Color.BLACK);
-					g.drawLine(territory.pos_x, territory.pos_y + 15, neighbour.pos_x, neighbour.pos_y + 15);
-				}
+			
+				
 			}
 
 		}
 
+		
+		
 	}
 	@Override
 	public void paint(Graphics g)
@@ -76,12 +106,15 @@ public class Map_View extends View{
 
 	@Override
 	public void update(Observable obs, Object arg1) {
-		this.map = ((Game_Model) obs).map;		
+		this.map = ((Game_Model) obs).map;	
+		
 	}
 
 	@Override
 	public void Update_Display(String text) {
 		// TODO Auto-generated method stub
+		
+		
 		
 	} 
 }
