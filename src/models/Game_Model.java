@@ -256,6 +256,7 @@ public class Game_Model extends Observable {
 					// End of StartUp => game is started
 					Change_Player(player_list.get(0));// get the first player to play the game
 					new_state = State_Game.REINFORCEMENT;
+					current_player.Set_Number_Territory_Reinforcements();
 				}
 			} else if (current_state == State_Game.REINFORCEMENT) {
 				if (current_player.reinforcements == 0) {
