@@ -1,4 +1,5 @@
 package models;
+
 /**
  * States of a player during the game
  */

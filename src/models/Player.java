@@ -34,6 +34,7 @@ public class Player {
 		this.cards = new Cards(); 
 		this.is_conquerer = false;
 	}
+	
 	/**
 	 * Constructor for the Player object
 	 * @param name name of the player
@@ -50,6 +51,7 @@ public class Player {
 	public Player(Integer id, Game_Model game){
 		this(id, "Player " + id, game);  
 	}
+	
 	/**
 	 * this method checks if the player is still in the game or has been terminated
 	 * @return true if alive, false if terminated
@@ -59,6 +61,7 @@ public class Player {
 			return false;
 		return true;
 	}
+	
 	/**
 	 * this method updates the sate of Player
 	 * @param new_state
@@ -66,6 +69,7 @@ public class Player {
 	public void Update_State(State_Player new_state) {
 		current_state = new_state;
 	}
+	
 	/**
 	 * this method handles the player interaction to be used in reinforcement phase
 	 * @param to_territory territory recieving the armies
@@ -85,6 +89,7 @@ public class Player {
     		return false;
         return true;*/
 	}
+	
 	/**
 	 * this method handles the player interaction to be used in attack phase
 	 * @param attack_plan Attack_Model object
@@ -135,6 +140,7 @@ public class Player {
 
         return  response;
     }
+	
 	/**
 	 * this method handles the player interaction to be used in Fortification phase
 	 * @param from_territory source territory of fortification
@@ -156,6 +162,7 @@ public class Player {
     		return false;
         return true;*/
 	}
+	
 	/**
 	 * this method checks if the fortification move is valid
 	 * @param from string of the source territory
@@ -195,6 +202,7 @@ public class Player {
         }
 		return false;
 	}
+	
 	/**
 	 * assign number of reinforcements to territories of a player
 	 * @param territories_armies 
@@ -244,6 +252,7 @@ public class Player {
 			return false; 
 		}
 	}	
+	
 	/**
 	 * this methods call Add_Army_To_Territory
 	 * @param territory_key string of the territory 
@@ -261,7 +270,6 @@ public class Player {
 		 this.reinforcements = 3 + this.owned_territories.size() / 3; 	
 		 //continents
 	}
-	
 	
 	/** 
 	 * Moves a number of armies between territories during the fortification phase
@@ -285,7 +293,6 @@ public class Player {
 		return false; 			
 	}
 	
-	
 	/** 
 	 * Adds a territory to the list of owned territories of a player
 	 * @param Territory The territory being added to the player
@@ -307,17 +314,15 @@ public class Player {
 	}
 	
 	/**
-	 * 
+	 * method for calculating total number of armies for players
 	 * @return Total_Number_of_Armies_Of_Players
 	 */
-	
 	public int Total_Number_of_Armies_Of_Players() {
 		int total_Number_Of_Armies = 0;
 		for (Territory t : owned_territories.values())
 			total_Number_Of_Armies += t.nb_armies;
 		return total_Number_Of_Armies;
 	}
-	
 	
 	/** 
 	 * Removes a territory to the list of owned territories of a player
@@ -336,7 +341,6 @@ public class Player {
 		  }
 		  return false;
 	}
-	
 	
 	/** 
 	 * A test to determine whether two territories are connected. 

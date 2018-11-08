@@ -107,7 +107,7 @@ public class Game_Controller {
 	}
 
 	/**
-	 * this method calling Post_Attack from Game Model to control if player has enough armies to attack or not
+	 * this method calling Post_Attack from Game Model to  move armies from attacking territory to defeated territory
 	 * @param nb_armies how many armies
 	 */
 	public void Post_Attack(int nb_armies) {

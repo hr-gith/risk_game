@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Observable;
 import models.Map_Model;
 import utilities.Config;
+
 /**
  * This is the main model class, it goes through phases of the game
- *
  */
 public class Game_Model extends Observable {
 
@@ -33,10 +33,20 @@ public class Game_Model extends Observable {
 		current_state = State_Game.SETUP;
 	}
 
+	/**
+	 * checking if game is over
+	 * 
+	 * @return boolean
+	 */
 	public Boolean Is_Game_Over() {
 		return (Get_Next_Player() == null);
 	}
 
+	/**
+	 * method for getting next player
+	 * 
+	 * @return Player Object
+	 */
 	private Player Get_Next_Player() {
 		if (player_list.isEmpty())
 			return null;
@@ -45,7 +55,7 @@ public class Game_Model extends Observable {
 
 		int cur_player_index = player_list.indexOf(current_player);
 		// check players after him/her in the list
-		for (int i = cur_player_index +1; i < player_list.size(); i++) {
+		for (int i = cur_player_index + 1; i < player_list.size(); i++) {
 			if (player_list.get(i).Is_Alive())
 				return player_list.get(i);
 		}
@@ -57,6 +67,11 @@ public class Game_Model extends Observable {
 		return null;
 	}
 
+	/**
+	 * method for getting next player for fortification
+	 * 
+	 * @return player object
+	 */
 	private Player Get_Next_Player_For_Reinforcement() {
 		if (player_list.isEmpty())
 			return null;
@@ -74,11 +89,14 @@ public class Game_Model extends Observable {
 			if (player_list.get(i).Is_Alive() && player_list.get(i).reinforcements > 0)
 				return player_list.get(i);
 		}
-		if (current_player.reinforcements > 0) return current_player;
+		if (current_player.reinforcements > 0)
+			return current_player;
 		return null;
 	}
 
 	/**
+	 * method for getting active player
+	 * 
 	 * @returns list of players who are active in the game
 	 */
 	public ArrayList<Player> Get_Active_Players() {
@@ -89,8 +107,9 @@ public class Game_Model extends Observable {
 		}
 		return result;
 	}
-	
+
 	/**
+	 * method for getting number of player
 	 * 
 	 * @return number of all players in the game weather are active or dead
 	 */
@@ -103,7 +122,7 @@ public class Game_Model extends Observable {
 	 * players
 	 * 
 	 * @param new_player
-	 * @return
+	 * @return boolean
 	 */
 	public boolean Add_Player(String new_player) {
 		if (new_player != "" && this.Number_Of_Players() < Config.max_nb_players) {
@@ -118,6 +137,12 @@ public class Game_Model extends Observable {
 		return false;
 	}
 
+	/**
+	 * method for searching player
+	 * 
+	 * @param name
+	 * @return player object
+	 */
 	public Player Search_Player(String name) {
 		for (Player p : player_list) {
 			if (p.name.equalsIgnoreCase(name))
@@ -127,6 +152,7 @@ public class Game_Model extends Observable {
 	}
 
 	/**
+	 * method for getting number of player armies
 	 * 
 	 * @return String the number of armies owned by each player
 	 */
@@ -134,16 +160,17 @@ public class Game_Model extends Observable {
 		StringBuilder sb = new StringBuilder(256);
 		for (Player p : player_list) {
 			int sum = p.Total_Number_of_Armies_Of_Players();
-			sb.append( p.name +"    "+ " Armies: "+ sum + "        ") ;
+			sb.append(p.name + "    " + " Armies: " + sum + "        ");
 			sb.append(System.getProperty("line.separator"));
-			
+
 		}
-		
+
 		return sb.toString();
 
 	}
 
 	/**
+	 * method for getting continent owner if all territories belong to one player
 	 * 
 	 * @return name of continent owner
 	 */
@@ -153,6 +180,7 @@ public class Game_Model extends Observable {
 	}
 
 	/**
+	 * method for calculating percentage of world that belong to each player
 	 * 
 	 * @return percentage of the map controlled by every player
 	 */
@@ -161,27 +189,25 @@ public class Game_Model extends Observable {
 		String name = "";
 		List<String> percentage_list = new ArrayList<String>();
 		StringBuilder sb = new StringBuilder(256);
-		float all_territories =(float) map.Number_Of_All_Territories();
+		float all_territories = (float) map.Number_Of_All_Territories();
 
 		for (Player player : player_list) {
-			float player_territories = (float)player.owned_territories.size();
-			percentage =(100.0f * player_territories) / all_territories;
+			float player_territories = (float) player.owned_territories.size();
+			percentage = (100.0f * player_territories) / all_territories;
 			String formattedString = String.format("%.02f", percentage);
-			name = '\n' + player.name + ": " + "%" + formattedString+"     ";
+			name = '\n' + player.name + ": " + "%" + formattedString + "     ";
 			percentage_list.add(name);
 		}
 		for (int i = 0; i < percentage_list.size(); i++) {
-	    	sb.append(percentage_list.get(i)+"\n");
-	    	sb.append(System.getProperty("line.separator"));
-		} 
-		
-		
+			sb.append(percentage_list.get(i) + "\n");
+			sb.append(System.getProperty("line.separator"));
+		}
+
 		return sb.toString();
 	}
 
 	/**
 	 * Controls the game logic for the game setup phase
-	 * 
 	 */
 	public boolean Setup() {
 		if (Number_Of_Players() < Config.min_nb_players || Number_Of_Players() > Config.max_nb_players || map == null
@@ -225,7 +251,7 @@ public class Game_Model extends Observable {
 	 * in the game otherwise will return false
 	 * 
 	 * @param next_player
-	 * @return
+	 * @return boolean
 	 */
 	public boolean Change_Player(Player next_player) {
 		if (next_player != null && next_player.current_state != State_Player.DEAD) {
@@ -282,15 +308,15 @@ public class Game_Model extends Observable {
 		this.attack_plan = new Attack_Model(current_player, defender, from, to, nb_dice, all_out);
 		Message_Handler response = current_player.Attack(this.attack_plan);
 		State_Game new_state = current_state;
-		
+
 		if (response.ok) {
 			if (this.Get_Next_Player() == null) {
 				new_state = State_Game.OVER;
-			}else if (current_player.is_conquerer) {
+			} else if (current_player.is_conquerer) {
 				new_state = State_Game.POST_ATTACK;
-				message = "You've conquered "+ attack_plan.to.name +" territoy";
-			}else if (!current_player.Has_Extra_Army_To_Move()) {
-				current_state = State_Game.FORTIFICATION;//the player can not fortify without army!!! => switch player
+				message = "You've conquered " + attack_plan.to.name + " territoy";
+			} else if (!current_player.Has_Extra_Army_To_Move()) {
+				current_state = State_Game.FORTIFICATION;// the player can not fortify without army!!! => switch player
 				Move_To_Next_Phase();
 				return;
 			}
@@ -300,47 +326,52 @@ public class Game_Model extends Observable {
 
 		Update_State(new_state, message);
 	}
+
 	/**
 	 * This method move armies from attacking territory to defeated territory
-	 * @param nb_armies number of armies to be moved, defined by attacking player
+	 * 
+	 * @param nb_armies
+	 *            number of armies to be moved, defined by attacking player
 	 */
 	public void Post_Attack(int nb_armies) {
 		current_player.Move_Army(attack_plan.from.name, attack_plan.to.name, nb_armies);
 		State_Game new_state = current_state;
 		if (!current_player.Has_Extra_Army_To_Move()) {
-			current_state = State_Game.FORTIFICATION;//the player can not fortify without army!!! => switch player
+			current_state = State_Game.FORTIFICATION;// the player can not fortify without army!!! => switch player
 			Move_To_Next_Phase();
 			return;
-		}
-		else
+		} else
 			new_state = State_Game.ATTACKING;
-		
+
 		Update_State(new_state, message);
 	}
 
 	/**
-     * Reposition units for fortification before finishing turn. 
-     * @param from_name
-     * @param to_name
-     * @param nb_armies
-     */
-    public void Fortify (String from_name, String to_name, int nb_of_armies ) {   
+	 * Reposition units for fortification before finishing turn.
+	 * 
+	 * @param from_name
+	 * @param to_name
+	 * @param nb_armies
+	 */
+	public void Fortify(String from_name, String to_name, int nb_of_armies) {
 
 		Message_Handler response = current_player.Fortify(from_name, to_name, nb_of_armies);
 		State_Game new_state = current_state;
 
 		if (response.ok) {
-			
-//				Move_To_Next_Phase();
-		
+
+			// Move_To_Next_Phase();
+
 		} else {
 			message = "Error: please enter valid data";
 		}
 
 		Update_State(new_state, message);
 	}
-    
 
+	/**
+	 * method for moving to the next phase
+	 */
 	public void Move_To_Next_Phase() {
 		if (current_state == State_Game.ATTACKING)
 			Update_State(State_Game.FORTIFICATION, "");
@@ -348,14 +379,12 @@ public class Game_Model extends Observable {
 			Player next_player = this.Get_Next_Player();
 			if (next_player != null) {
 				current_player = next_player;
-				current_player.Set_Number_Territory_Reinforcements(); 
+				current_player.Set_Number_Territory_Reinforcements();
 				Update_State(State_Game.REINFORCEMENT, "");
-			}
-			else
+			} else
 				Update_State(State_Game.OVER, current_player.name + " is the winner");
 		}
 	}
-
 
 	/**
 	 * Controls the game logic and process flow once the setup is complete and the
@@ -374,23 +403,23 @@ public class Game_Model extends Observable {
 	 */
 	public int Get_Number_StartUp_Reinforcements() {
 		int result = 0;
-		int nb_starting_territories= this.current_player.owned_territories.size();
+		int nb_starting_territories = this.current_player.owned_territories.size();
 
 		switch (this.Number_Of_Players()) {
 		case 2:
-            result = nb_starting_territories +4; //40;
-            break;
-        case 3:
-            result = nb_starting_territories +3; //35;
-            break;
-        case 4:
-            result = nb_starting_territories +3; // 30;
-            break;
-        case 5:
-            result = nb_starting_territories +2; //25;
-        case 6:
-            result = nb_starting_territories +2; //20;
-            break;
+			result = nb_starting_territories + 4; // 40;
+			break;
+		case 3:
+			result = nb_starting_territories + 3; // 35;
+			break;
+		case 4:
+			result = nb_starting_territories + 3; // 30;
+			break;
+		case 5:
+			result = nb_starting_territories + 2; // 25;
+		case 6:
+			result = nb_starting_territories + 2; // 20;
+			break;
 		}
 		return result;
 	}
@@ -398,10 +427,9 @@ public class Game_Model extends Observable {
 	/**
 	 * Sets up the Player list with their name and corresponding player name
 	 * 
-	 * @param ArrayList<Player>
+	 * @param ArrayList<Player
 	 *            the list of players in the game
 	 */
-
 	public boolean Player_List_Setup(ArrayList<String> players_name_list) {
 		boolean error = false;
 		for (String s : players_name_list) {
@@ -443,7 +471,6 @@ public class Game_Model extends Observable {
 	private void Assign_Territories() {
 		HashMap<String, Territory> game_territories = map.Get_Territories();
 
-
 		int index = 0;
 		Iterator it = game_territories.entrySet().iterator();
 		while (it.hasNext()) {
@@ -467,8 +494,10 @@ public class Game_Model extends Observable {
 	public Boolean isStillFighting() {
 		return isFighting;
 	}
+
 	/**
 	 * this method update states of the game
+	 * 
 	 * @param new_state
 	 * @param new_message
 	 */

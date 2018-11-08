@@ -3,8 +3,6 @@ package models;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
 
 /**
  * Map Class is a model 
@@ -19,8 +17,8 @@ public class Map_Model {
 	public boolean warn;
 	public HashMap<String,Continent> continents;
     
-    /**constructors
-     * 
+    /**
+     * constructors
      */
     private Map_Model() {
     	continents = new HashMap<>();
@@ -30,6 +28,7 @@ public class Map_Model {
 		this.author = "author";
 		this.warn = false;
     }
+    
     /**
      * private member of Map_Model class
      * @param image 
@@ -50,15 +49,12 @@ public class Map_Model {
 	
 	/**
 	 * Singleton Pattern
-	 * @author Leila
-	 *
 	 */
-	
 	private static class MapUniqueInstanceHolder{
 		private static final Map_Model THE_UNIQUE_MAP= new Map_Model();
 	}
+	
 	/**
-	 * 
 	 * @return unique map instance
 	 */
 	public static Map_Model Get_Map() {
@@ -86,9 +82,6 @@ public class Map_Model {
 		
 	}
 	
-	
-	
-	
 	/**
 	 * Adds a continent to the map
 	 * @param new_Continent
@@ -110,7 +103,7 @@ public class Map_Model {
 	/**
 	 * Delete a continent and its territories and all their connections from the map
 	 * @param continent_name
-	 * @return
+	 * @return boolean
 	 */
 	public boolean Delete_Continent(String continent_name) {
 		continent_name = continent_name.toLowerCase();
@@ -124,6 +117,10 @@ public class Map_Model {
 		  return false;
 	}
 	
+	/**
+	 * method for gathering sum of all territories
+	 * @return sum of all territories
+	 */
 	public int Number_Of_All_Territories() {
 		int sum=0;
 		for (Continent continent:continents.values()) {
@@ -132,8 +129,6 @@ public class Map_Model {
 		return sum;
 		
 	}
-	
-	
 	
 	/**
 	 * Search a territory name in the map and returns the territory
@@ -148,6 +143,7 @@ public class Map_Model {
 		}
 		return null;
 	}
+	
 	/**
 	 * check if the user_enter continent name is not repetitive
 	 * @param continent_name
