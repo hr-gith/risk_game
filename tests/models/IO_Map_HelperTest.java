@@ -20,7 +20,7 @@ public class IO_Map_HelperTest {
 		String path = Config.input_file;
 		Map_Helper io_map = new Map_Helper();
 		Map_Model map = io_map.Import_Map(path);
-		Assert.assertNull(map);
+		Assert.assertNotNull(map);
 	}
 
 }

@@ -53,4 +53,5 @@ public class Test_Player {
 			assertEquals(3, number_armies); 
 			assertEquals(1, temp_territory.nb_armies);		
 	}
+	
 }

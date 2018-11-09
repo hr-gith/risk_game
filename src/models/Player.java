@@ -51,7 +51,7 @@ public class Player {
 	 * @param Integer The player's game id  
 	 */
 	public Player(Integer id, Game_Model game){
-		this(id, "Player " + id, game);  
+		this(id, "p " + id, game);  
 	}
 	
 	/**
