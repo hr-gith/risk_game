@@ -150,6 +150,7 @@ public class Attack_Model {
 		if (to.nb_armies <= 0) {
 			// winner is the attacker
 			attacker.is_conquerer = true;
+			attacker.deserve_card = true;
 			defender.Delete_Territory(to.name);
 			attacker.Add_Territory(to);
 			// move minimum army//?????????????

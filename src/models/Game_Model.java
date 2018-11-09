@@ -310,14 +310,13 @@ public class Game_Model extends Observable {
 		State_Game new_state = current_state;
 
 		if (response.ok) {
-			if (this.Get_Next_Player() == null) {
+			if (this.Is_Game_Over()) {
 				new_state = State_Game.OVER;
 			} else if (current_player.is_conquerer) {
 				new_state = State_Game.POST_ATTACK;
 				message = "You've conquered " + attack_plan.to.name + " territoy";
-			} else if (!current_player.Has_Extra_Army_To_Move()) {
-				current_state = State_Game.FORTIFICATION;// the player can not fortify without army!!! => switch player
-				Move_To_Next_Phase();
+			} else {
+				Can_Attack();
 				return;
 			}
 		} else {
@@ -335,8 +334,18 @@ public class Game_Model extends Observable {
 	 */
 	public void Post_Attack(int nb_armies) {
 		current_player.Move_Army(attack_plan.from.name, attack_plan.to.name, nb_armies);
+		current_player.is_conquerer = false;
+		Can_Attack();
+	}
+	
+	/**
+	 * checks if the player can not attack anymore
+	 * if it is end of the attack gives a card to player in case of conquerer
+	 */
+	public void Can_Attack() {
 		State_Game new_state = current_state;
 		if (!current_player.Has_Extra_Army_To_Move()) {
+			current_player.Add_Card();
 			current_state = State_Game.FORTIFICATION;// the player can not fortify without army!!! => switch player
 			Move_To_Next_Phase();
 			return;
@@ -345,6 +354,8 @@ public class Game_Model extends Observable {
 
 		Update_State(new_state, message);
 	}
+	
+	
 
 	/**
 	 * Reposition units for fortification before finishing turn.
@@ -373,8 +384,10 @@ public class Game_Model extends Observable {
 	 * method for moving to the next phase
 	 */
 	public void Move_To_Next_Phase() {
-		if (current_state == State_Game.ATTACKING)
+		if (current_state == State_Game.ATTACKING) {
+			current_player.Add_Card();
 			Update_State(State_Game.FORTIFICATION, "");
+		}
 		else if (current_state == State_Game.FORTIFICATION) {
 			Player next_player = this.Get_Next_Player();
 			if (next_player != null) {

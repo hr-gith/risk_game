@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Random;
+
 /**
  * Cards Class is a model. This class handles the cards given to players at the
  * end of the attack phase, and calculate number of armies based on trade_in
@@ -119,6 +121,22 @@ public class Cards {
 	 */
 	public int Get_Card_Reinforcement_Qty() {
 		return this.card_reinforcements;
+	}
+	
+	public void Shuffle() {
+		Random random = new Random();
+		int card_index =  random.nextInt(3) + 1;
+		switch(card_index) {
+		case 1:
+			this.cavalry++;
+			break;
+		case 2:
+			this.infantry++;
+			break;
+		case 3: 
+			this.artillery++;
+			break;
+		}
 	}
 
 }

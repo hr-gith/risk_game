@@ -18,6 +18,7 @@ public class Player {
 	public Integer reinforcements;
 	public Cards cards; 
 	public boolean is_conquerer;
+	public boolean deserve_card;
 	
 	
 	/** 
@@ -33,6 +34,7 @@ public class Player {
 		this.ref_game = game;
 		this.cards = new Cards(); 
 		this.is_conquerer = false;
+		this.deserve_card = false;
 	}
 	
 	/**
@@ -187,6 +189,16 @@ public class Player {
         //player_flag = true;
     	//current_state_game = State_Game.REINFORCEMENT;//for the next player//??????????????????????
     	return true;
+    }
+    
+    /**
+     * Adds a random card to the player cards if at least got a new territory in attack phase
+     */
+    public void Add_Card() {
+    	if (deserve_card) {
+			cards.Shuffle();
+			deserve_card = false;
+		}
     }
     
     /**
