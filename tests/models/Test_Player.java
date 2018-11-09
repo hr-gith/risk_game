@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
+import junit.framework.Assert;
 import models.Player;
 import models.Territory;
 /**
@@ -16,7 +17,8 @@ public class Test_Player {
 	static Player testPlayer = new Player(0,new Game_Model(Map_Model.Get_Map())); 
 	static Integer number_territories = 14; 
 	static int number_armies;  
-	Territory temp_territory; 	
+	Territory temp_territory; 
+
 	/**
 	 * this method assign value to members before the test began
 	 */
@@ -53,5 +55,16 @@ public class Test_Player {
 			assertEquals(3, number_armies); 
 			assertEquals(1, temp_territory.nb_armies);		
 	}
+	/**
+	 * test for reinforcement calculation
+	 */
+	@Test
+	public void Test_Set_Number_Territory_Reinforcements() {
+		testPlayer.Set_Number_Territory_Reinforcements();
+		int i = testPlayer.reinforcements;
+		Assert.assertEquals(7, i);
+	}
+	
+
 	
 }
