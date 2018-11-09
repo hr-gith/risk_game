@@ -58,7 +58,7 @@ public class Console_View implements Observer {
 	public void Display_Menu_StartUp_Reinforcements() {
 
 		System.out.println(
-				"Reinforcement =>player : " + current_player.name + "- Armies left: " + current_player.reinforcements
+				"Start_up =>player : " + current_player.name + "- Armies left: " + current_player.reinforcements
 						+ "\n countries :" + current_player.owned_territories.keySet().toString());
 		System.out.println("\nEnter the To territory ");
 		String to_territory = scanner.nextLine();
@@ -231,10 +231,12 @@ public class Console_View implements Observer {
 			break;
 			
 		case POST_ATTACK: 
+			game_controller.card_view.jPanel.setVisible(false);
     		Display_Menu_Post_Attack();
     		break;
     		
 		case OVER: 
+			game_controller.card_view.jPanel.setVisible(false);
     		Display_Winner(current_player.name + " is the winner!!\n Game Over" );
     		break;
 

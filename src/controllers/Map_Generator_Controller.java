@@ -35,6 +35,7 @@ public class Map_Generator_Controller {
 
 	public boolean start() {
 		int choice = 0;
+	
 		do {
 			// generating map from file or by user design
 			choice = this.map_generator_view.Display_Menu();
@@ -54,12 +55,14 @@ public class Map_Generator_Controller {
 					this.map_generator_view.Display_Message("Map is imported successfully.");
 				break;
 			case 2: // design a new map
-				this.map_generator_view.Display_Map_Designer();
+				this.map_generator_view.Display_Map_Designer(game_view, map_view);
 				map = map_generator_view.map;
+			
 				break;
 			case 3:// Edit map
-				this.map_generator_view.Display_Map_Designer();
+				this.map_generator_view.Display_Map_Designer(game_view, map_view);
 				map = map_generator_view.map;
+
 				
 				break;
 			case 4:// Save map in a file
@@ -74,6 +77,7 @@ public class Map_Generator_Controller {
 					this.game_view.Add_Panel(map_view.jPanel, 1);
 					this.map_generator_view.Display_Map(map);
 					this.map_view.Draw_Map(map);
+					this.game_view.Redraw(); 
 				}
 				break;
 			case 6:
@@ -82,7 +86,9 @@ public class Map_Generator_Controller {
 			case 7:
 				System.exit(0);
 			}
-
+			
+			
+			
 		} while (choice != 6);
 
 		// display finalized map

@@ -64,13 +64,18 @@ public class Map_Generator_View {
 	/**
 	 * Creating different object of map
 	 */
-	public void Display_Map_Designer() {
+	public void Display_Map_Designer(Game_View game_view, Map_View map_view) {
 		scanner = new Scanner(System.in);
 		int choice;
+		
+		game_view.Draw_Window();
+		game_view.Add_Panel(map_view.jPanel, 1);
+		map_view.Draw_Map(map);
+
 
 		do {
 			choice = Display_Menu_Design_Map();
-
+	
 			switch (choice) {
 			case 1:// Add Continent to the map
 				Add_Continent_Map_Menu();
@@ -114,6 +119,11 @@ public class Map_Generator_View {
 				System.out.println("\n\t Error! Please Enter Your Choice(1 to 9)");
 				break;
 			}
+			
+			game_view.Draw_Window();
+			game_view.Add_Panel(map_view.jPanel, 1);
+			map_view.Draw_Map(map);
+			game_view.Redraw();
 
 		} while (choice != 9);
 
