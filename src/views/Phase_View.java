@@ -48,7 +48,7 @@ public class Phase_View extends View {
 		jPanel.setVisible(true);
 		jPanel.setLayout(null);
 
-		jPanel.setBackground(Color.blue);
+		jPanel.setBackground(Color.pink);
 
 		jLabel1.setText(current_player_name);
 		jLabel1.setBounds(0, 0, 200, 50);
