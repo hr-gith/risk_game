@@ -3,8 +3,6 @@ package models;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
 
 /**
  * Map Class is a model 
@@ -19,8 +17,8 @@ public class Map_Model {
 	public boolean warn;
 	public HashMap<String,Continent> continents;
     
-    /**constructors
-     * 
+    /**
+     * constructors
      */
     private Map_Model() {
     	continents = new HashMap<>();
@@ -31,6 +29,15 @@ public class Map_Model {
 		this.warn = false;
     }
     
+    /**
+     * private member of Map_Model class
+     * @param image 
+     * @param wrap
+     * @param scroll
+     * @param author
+     * @param warn
+     * @param continents
+     */
 	private Map_Model(String image, boolean wrap, String scroll, String author, boolean warn,HashMap<String,Continent> continents) {
 		this.image = image;
 		this.wrap = wrap;
@@ -42,15 +49,12 @@ public class Map_Model {
 	
 	/**
 	 * Singleton Pattern
-	 * @author Leila
-	 *
 	 */
-	
 	private static class MapUniqueInstanceHolder{
 		private static final Map_Model THE_UNIQUE_MAP= new Map_Model();
 	}
+	
 	/**
-	 * 
 	 * @return unique map instance
 	 */
 	public static Map_Model Get_Map() {
@@ -64,6 +68,19 @@ public class Map_Model {
 	public boolean Is_Empty() {
 		  return this.continents.isEmpty();
 	}	
+	
+	
+	public String Continent_List() {
+		StringBuilder sb = new StringBuilder(256);
+		
+		for ( Continent continent:continents.values() ){
+			sb.append(continent.name+ " : " + continent.Get_Owner()+"        ");
+			sb.append(System.getProperty("line.separator"));
+		}
+		
+		return sb.toString();
+		
+	}
 	
 	/**
 	 * Adds a continent to the map
@@ -86,7 +103,7 @@ public class Map_Model {
 	/**
 	 * Delete a continent and its territories and all their connections from the map
 	 * @param continent_name
-	 * @return
+	 * @return boolean
 	 */
 	public boolean Delete_Continent(String continent_name) {
 		continent_name = continent_name.toLowerCase();
@@ -98,6 +115,19 @@ public class Map_Model {
 			  }
 		  }
 		  return false;
+	}
+	
+	/**
+	 * method for gathering sum of all territories
+	 * @return sum of all territories
+	 */
+	public int Number_Of_All_Territories() {
+		int sum=0;
+		for (Continent continent:continents.values()) {
+			sum+=continent.Number_OF_Territory();
+		}
+		return sum;
+		
 	}
 	
 	/**
@@ -113,6 +143,7 @@ public class Map_Model {
 		}
 		return null;
 	}
+	
 	/**
 	 * check if the user_enter continent name is not repetitive
 	 * @param continent_name

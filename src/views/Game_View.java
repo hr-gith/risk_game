@@ -1,169 +1,131 @@
 package views;
 
-import controllers.Game_Controller;
-import models.Player;
-import models.State_Game;
-import models.Game_Model;
-
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.HashMap;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.util.Observable;
-import java.util.Observer;
-import java.lang.Object;
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import models.Game_Model;
+import models.Map_Model;
 
 /**
- * Information of players move Army and replace armies
+ * game view class implement observer and extends JPanel from abstract view
+ * class
+ *
  */
-public class Game_View implements Observer{
-    private Scanner scanner;
-    public Game_Controller game_controller;
-    public Player current_player;
-    public State_Game current_state;
-    public String message;
-    
-    public Game_View(Game_Controller game_ctrl) {
-    	game_controller = game_ctrl;
-    	scanner = new Scanner(System.in);
-    }
-    /**
-     * player info
-     */
-    public ArrayList<String> Display_Menu_Players() {
-        scanner = new Scanner(System.in);
-        System.out.println("\n\t Players Info ");
-        System.out.println("\nPlease insert the number of players: ");
+public class Game_View extends View {
 
-        int number_of_players = Integer.valueOf(scanner.nextLine());
-        while (number_of_players < 2 || number_of_players > 6) {
-            System.out.println("\n Number of players  has to be between 2 and 6 !!!");
-            number_of_players = Integer.valueOf(scanner.nextLine());
+	private Map_Model map;
+	private Map_View map_view;
+	private Phase_View phase_view;
+	private Players_World_Domination_View pwd_view;
 
-        }
-        
-        ArrayList<String> name_of_players = new ArrayList<>();
-        for (int i = 1; i <= number_of_players; i++) {
+	JFrame jFrame;
+	JPanel mainPanel;
 
-            System.out.println("\nEnter the name of player number " + i);
-            String name_of_player = scanner.nextLine();
-            name_of_players.add(name_of_player);
+	Dimension screenSize;
+	private int top_margin;
+	private int side_margin;
 
-        }
-        return name_of_players;
-    }
-    
+	/**
+	 * constructor to initiate JFrame and mainPanel
+	 */
+	public Game_View(boolean exit_on_close) {
+		jFrame = new JFrame();
+		
+		if(exit_on_close){
+		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		}
+		mainPanel = new JPanel();
+		mainPanel = (JPanel) jFrame.getContentPane();
+		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
 
-    /**
-     * number of movies and the destination country
-     *
-     * @param currentPlayer the instance of object of player.
-     */
-    public void Display_Menu_Reinforcements() {
-    
-		System.out.println("Reinforcement =>player : " + current_player.name + 
-				"- Armies left: "+ current_player.reinforcements+ 
-				"\n countries :" + current_player.owned_territories.keySet().toString());
-        System.out.println("\nEnter the To territory ");
-        String to_territory = scanner.nextLine();
-        System.out.println("\nEnter the Number of move armies");
-        int number_armies = Integer.valueOf(scanner.nextLine());
-        while (current_player.reinforcements < number_armies) {
-            System.out.println("the number of armies must less than " + current_player.reinforcements);
-            System.out.println("\nEnter the Number of armies");
-            number_armies = Integer.valueOf(scanner.nextLine());
-        }
-        game_controller.Reinforcement(to_territory, number_armies);
-    }
-    
-    public void Display_Menu_Attack() {
-        System.out.println("Attack =>player : " + current_player.name + " has countries :" + current_player.owned_territories.keySet().toString());
-        System.out.println("Enter your attacker territory:");
-        String from_territory = scanner.nextLine();
-        System.out.println("Enter a territory to attack: ");
-        String to_territory = scanner.nextLine();
-        System.out.println("Enter number of armies you want to attack with: ");
-        int number_armies = Integer.valueOf(scanner.nextLine());
-        System.out.println("Enter number of dices: ");
-        int number_dices = Integer.valueOf(scanner.nextLine());
-        System.out.println("Would you like to play in all out mode(y/n)? ");
-        String answer = scanner.nextLine();
-        boolean all_out = (answer.equalsIgnoreCase("y"));
-        game_controller.Attack(from_territory, to_territory, number_armies,number_dices, all_out);
-    }
-    
-    /**
-     * number or armies for replacement
-     * @param currentPlayer instance of current player
-     */
-    public void Display_Menu_Fortification() {
-        System.out.println("Fortification =>player : " + current_player.name + " has countries :" + current_player.owned_territories.keySet().toString());
-        System.out.println("Do you want to move any units? (yes/no)");
-        String answer = scanner.nextLine(); 
-        
-        if(answer.equals("yes")){
-	        System.out.println("\nEnter the From territory ");
-	        String from_territory = scanner.nextLine();
-	        System.out.println("\nEnter the To territory ");
-	        String to_territory = scanner.nextLine();
-	        System.out.println("\nEnter the Number of move armies");
-	        int number_armies = Integer.valueOf(scanner.nextLine());
-	
-	        game_controller.Fortification(from_territory, to_territory, number_armies);
-        }
-    }
-    
-    public void Display_Winner(String winner) {
-    	System.out.println("\n Congratulation "+winner+", you are the winner!!!");
-    }
-
-    public void Update_Menu() {
-    	if (current_state == State_Game.STARTUP) {
-    		Display_Menu_Reinforcements();
-    	}else if (current_state == State_Game.REINFORCEMENT) {
-    		Display_Menu_Reinforcements();
-    	}else if (current_state == State_Game.ATTACKING) {
-    		Display_Menu_Attack();
-    	}else if (current_state == State_Game.FORTIFICATION) {
-    		Display_Menu_Fortification();
-    	}    		
-    }
-    
-	@Override
-	public void update(Observable obs, Object arg1) {
-		current_player = ((Game_Model) obs).current_player;
-		current_state = ((Game_Model) obs).current_state;
-		message = ((Game_Model) obs).message;
-		Update_Menu();
 	}
 
-    /**
-     * it shows the Place army on their own countries
-     *
-     * @param currentPlayer
-     * @return boolean yes or no to show if the player wants to place armies in other country
-     *
-    public Boolean Display_Menu_Replace_army(Player currentPlayer) {
-        if (currentPlayer.owned_territories != null) {
-            System.out.println("Replace Army =>>player : " + currentPlayer.player_name + " has countries :" + currentPlayer.owned_territories.keySet().toString());
-            System.out.println("\nEnter the name of country ");
-            String to_territory = scanner.nextLine();
-            System.out.println("\nEnter the Number of place armies");
-            int number_armies = Integer.valueOf(scanner.nextLine());
 
-            game_controller.Set_Replace_To_Territory(to_territory);
-            game_controller.Set_Replace_Number_Of_Move_Armies(number_armies);
+	
+	/**
+	 * draw JFrame and set size and margin
+	 */
+	public void Draw_Window() {
 
+		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		side_margin = screenSize.width / 50;
+		top_margin = screenSize.height / 50;
 
-            System.out.println("\nDo you want to replace armies in another country ?(yes/no)");
-            String response = scanner.nextLine();
-            if (response.equalsIgnoreCase("yes"))
-                return Boolean.TRUE;
-        }
+		jFrame.setSize(screenSize.width / 2, screenSize.height / 2);
+		jFrame.setVisible(true);
+	}
 
-        return Boolean.FALSE;
+	/**
+	 * adding panel to the JFrame
+	 * @param panel for Map and Phase View and World domination
+	 * @param position for switch cases from 1 to 4 for adding different panel to main panel
+	 */
+	public void Add_Panel(JPanel panel, int position) {
 
-    }*/
+		switch (position) {
+		case 1: // top left
+//			panel.setSize(screenSize.width / 2, screenSize.height / 2);
+			// panel.setBounds(side_margin, top_margin, 11*side_margin, 11*top_margin);
+			// panel.setBounds(45, 40, 400, 400);
+			// panel.setBackground(Color.yellow);
+			mainPanel.add(panel);
+			// jFrame.pack();
+			jFrame.setVisible(true);
 
+			break;
 
+		case 2:
+
+			panel.setBounds(13 * side_margin, top_margin, 11 * side_margin, 11 * top_margin);
+			mainPanel.add(panel);
+			// jFrame.pack();
+			jFrame.setVisible(true);
+
+			break;
+
+		case 3:
+
+			panel.setBounds(side_margin, 13 * top_margin, 11 * side_margin, 11 * top_margin);
+			mainPanel.add(panel);
+			// jFrame.pack();
+			jFrame.setVisible(true);
+
+			break;
+
+		case 4:
+
+			panel.setBounds(13 * side_margin, 13 * top_margin, 11 * side_margin, 11 * top_margin);
+			jFrame.add(panel);
+
+			break;
+
+		}
+
+	}
+
+	/**
+	 * redraw for JFrame
+	 */
+	public void Redraw() {
+		jFrame.repaint();
+	}
+
+	/**
+	 * closing JFrame
+	 */
+	public void Close() {
+		jFrame.setVisible(false);
+	}
+
+	/**
+	 * overriding update for observer
+	 */
+	@Override
+	public void update(Observable obs, Object arg1) {
+		this.map = ((Game_Model) obs).map;
+
+	}
 }
