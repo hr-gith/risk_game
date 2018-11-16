@@ -61,19 +61,17 @@ public class Game_Controller {
 		// game_view.Add_Panel(map_view.jPanel, 1);
 		// game_view.Redraw();
 		
-//		game_view.Draw_Window();
-//		game_view.Add_Panel(map_view.jPanel, 1);
+		//		game_view.Draw_Window();
+		//		game_view.Add_Panel(map_view.jPanel, 1);
 
 		ArrayList<String> players_name = console_view.Display_Menu_Players();
-		if (game.Player_List_Setup(players_name)) {
-			game.Setup();
+		game.Setup(players_name);
 			/*
 			 * if (game.Setup()) { this.Start_Up_Reinforcement();
 			 * while(!game.Is_Game_Over()) { game.Play(); }
 			 * game_view.Display_Winner(game.current_player.name); } else { //TODO: display
 			 * error message }
 			 */
-		}
 
 	}
 

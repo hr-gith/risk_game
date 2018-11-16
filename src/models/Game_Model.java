@@ -1,7 +1,6 @@
 package models;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Iterator;
@@ -15,21 +14,18 @@ import utilities.Config;
  */
 public class Game_Model extends Observable {
 
-	public ArrayList<Player> player_list;
 	public Map_Model map;
-	public Player current_player;
 	public Attack_Model attack_plan;
+	public Player_Collection players;
+	public Player current_player;
 
 	public State_Game current_state;
 	public String message;
 
-	public boolean isFighting;// ???????????
-	public boolean player_flag = true;// ????????????????
-
 	public Game_Model(Map_Model map) {
 		this.map = map;
 		message = "";
-		player_list = new ArrayList<Player>();
+		players = new Player_Collection();//ArrayList<Player>();
 		current_state = State_Game.SETUP;
 	}
 
@@ -39,117 +35,12 @@ public class Game_Model extends Observable {
 	 * @return boolean
 	 */
 	public Boolean Is_Game_Over() {
-		return (Get_Next_Player() == null);
+		return (players.Get_Next_Player(current_player) == null);
 	}
 
-	/**
-	 * method for getting next player
-	 * 
-	 * @return Player Object
-	 */
-	private Player Get_Next_Player() {
-		if (player_list.isEmpty())
-			return null;
-		if (current_player == null)
-			return player_list.get(0);// game is just started
+	
 
-		int cur_player_index = player_list.indexOf(current_player);
-		// check players after him/her in the list
-		for (int i = cur_player_index + 1; i < player_list.size(); i++) {
-			if (player_list.get(i).Is_Alive())
-				return player_list.get(i);
-		}
-		// check players before him/her in the list
-		for (int i = 0; i < cur_player_index; i++) {
-			if (player_list.get(i).Is_Alive())
-				return player_list.get(i);
-		}
-		return null;
-	}
-
-	/**
-	 * method for getting next player for fortification
-	 * 
-	 * @return player object
-	 */
-	private Player Get_Next_Player_For_Reinforcement() {
-		if (player_list.isEmpty())
-			return null;
-		if (current_player == null)
-			return player_list.get(0);// game is just started
-
-		int cur_player_index = player_list.indexOf(current_player);
-		// check players after the current player in the list
-		for (int i = cur_player_index + 1; i < player_list.size(); i++) {
-			if (player_list.get(i).Is_Alive() && player_list.get(i).reinforcements > 0)
-				return player_list.get(i);
-		}
-		// check players before the current player in the list
-		for (int i = 0; i < cur_player_index; i++) {
-			if (player_list.get(i).Is_Alive() && player_list.get(i).reinforcements > 0)
-				return player_list.get(i);
-		}
-		if (current_player.reinforcements > 0)
-			return current_player;
-		return null;
-	}
-
-	/**
-	 * method for getting active player
-	 * 
-	 * @returns list of players who are active in the game
-	 */
-	public ArrayList<Player> Get_Active_Players() {
-		ArrayList<Player> result = new ArrayList<Player>();
-		for (Player p : player_list) {
-			if (p.Is_Alive())
-				result.add(p);
-		}
-		return result;
-	}
-
-	/**
-	 * method for getting number of player
-	 * 
-	 * @return number of all players in the game weather are active or dead
-	 */
-	public int Number_Of_Players() {
-		return player_list.size();
-	}
-
-	/**
-	 * adds a new player to the game checks duplication and maximum number of
-	 * players
-	 * 
-	 * @param new_player
-	 * @return boolean
-	 */
-	public boolean Add_Player(String new_player) {
-		if (new_player != "" && this.Number_Of_Players() < Config.max_nb_players) {
-			for (Player p : player_list) {
-				if (p.name.equalsIgnoreCase(new_player))
-					return false;
-			}
-			player_list.add(new Player(new_player, this));
-			return true;
-
-		}
-		return false;
-	}
-
-	/**
-	 * method for searching player
-	 * 
-	 * @param name
-	 * @return player object
-	 */
-	public Player Search_Player(String name) {
-		for (Player p : player_list) {
-			if (p.name.equalsIgnoreCase(name))
-				return p;
-		}
-		return null;
-	}
+	
 
 	/**
 	 * method for getting number of player armies
@@ -158,7 +49,7 @@ public class Game_Model extends Observable {
 	 */
 	public String Armies_Of_Player() {
 		StringBuilder sb = new StringBuilder(256);
-		for (Player p : player_list) {
+		for (Player p : players.player_list) {
 			int sum = p.Total_Number_of_Armies_Of_Players();
 			sb.append(p.name + "    " + " Armies: " + sum + "        ");
 			sb.append(System.getProperty("line.separator"));
@@ -191,7 +82,7 @@ public class Game_Model extends Observable {
 		StringBuilder sb = new StringBuilder(256);
 		float all_territories = (float) map.Number_Of_All_Territories();
 
-		for (Player player : player_list) {
+		for (Player player : players.player_list) {
 			float player_territories = (float) player.owned_territories.size();
 			percentage = (100.0f * player_territories) / all_territories;
 			String formattedString = String.format("%.02f", percentage);
@@ -209,14 +100,15 @@ public class Game_Model extends Observable {
 	/**
 	 * Controls the game logic for the game setup phase
 	 */
-	public boolean Setup() {
-		if (Number_Of_Players() < Config.min_nb_players || Number_Of_Players() > Config.max_nb_players || map == null
-				|| map.Is_Empty() || (map.Get_Territories().size() < Number_Of_Players()))
+	public boolean Setup(ArrayList<String> players_name) {
+		if (!players.Player_List_Setup(players_name, this)) return false;
+		if (players.Number_Of_Players() < Config.min_nb_players || players.Number_Of_Players() > Config.max_nb_players || map == null
+				|| map.Is_Empty() || (map.Get_Territories().size() < players.Number_Of_Players()))
 			return false;
 
 		// Set order of players
-		player_list = Player_List_Randomize();
-		current_player = player_list.get(0);
+		players.Player_List_Randomize();
+		current_player = players.Get_Next_Player(current_player);
 
 		Assign_Territories();
 
@@ -224,26 +116,7 @@ public class Game_Model extends Observable {
 		Startup_Reinforcement();
 		Update_State(State_Game.STARTUP, "");
 
-		isFighting = true;
 		return true;
-
-		// for (Player p : player_list) {
-		// if (p.owned_territories != null && p.owned_territories.size() > 0) {
-		// Boolean want_to_replace = Boolean.TRUE;
-		// while (want_to_replace) {
-		// want_to_replace = game_view.Display_Menu_Replace_army(p);
-		// String territory_name = game_controller.Get_Replace_To_Territory();
-		// Territory territory = map_generator.map.Get_Territory(territory_name);
-		// if (territory != null) {
-		// territory.nb_armies += game_controller.Get_Replace_Number_Of_Move_Armies();
-		// } else {
-		// System.out.println("the input territory is invalid");
-		// }
-		// }
-		//
-		// }
-		// }
-
 	}
 
 	/**
@@ -273,12 +146,12 @@ public class Game_Model extends Observable {
 		State_Game new_state = current_state;
 		if (response.ok) {
 			if (current_state == State_Game.STARTUP) {
-				Player next_player = this.Get_Next_Player_For_Reinforcement();
+				Player next_player = players.Get_Next_Player_For_Reinforcement(current_player);
 				if (next_player != null) {
 					Change_Player(next_player);
 				} else {
 					// End of StartUp => game is started
-					Change_Player(player_list.get(0));// get the first player to play the game
+					Change_Player(players.First());// get the first player to play the game
 					new_state = State_Game.REINFORCEMENT;
 					current_player.Set_Number_Territory_Reinforcements();
 				}
@@ -303,7 +176,7 @@ public class Game_Model extends Observable {
 	public void Attack(String from_name, String to_name, int nb_dice, boolean all_out) {
 		Territory from = this.map.Get_Territory(from_name);
 		Territory to = this.map.Get_Territory(to_name);
-		Player defender = this.Search_Player(to.owner_name);
+		Player defender = players.Search_Player(to.owner_name);
 
 		this.attack_plan = new Attack_Model(current_player, defender, from, to, nb_dice, all_out);
 		Message_Handler response = current_player.Attack(this.attack_plan);
@@ -353,8 +226,7 @@ public class Game_Model extends Observable {
 			new_state = State_Game.ATTACKING;
 
 		Update_State(new_state, message);
-	}
-	
+	}	
 	
 
 	/**
@@ -389,7 +261,7 @@ public class Game_Model extends Observable {
 			Update_State(State_Game.FORTIFICATION, "");
 		}
 		else if (current_state == State_Game.FORTIFICATION) {
-			Player next_player = this.Get_Next_Player();
+			Player next_player = players.Get_Next_Player(current_player);
 			if (next_player != null) {
 				current_player = next_player;
 				current_player.Set_Number_Territory_Reinforcements();
@@ -405,7 +277,7 @@ public class Game_Model extends Observable {
 	 */
 	public void Startup_Reinforcement() {
 		int nb_initial_armies = Get_Number_StartUp_Reinforcements();
-		for (Player p : this.player_list) {
+		for (Player p : players.player_list) {
 			p.reinforcements = nb_initial_armies;
 			p.Assign_Min_Army_To_Territories();
 		}
@@ -418,7 +290,7 @@ public class Game_Model extends Observable {
 		int result = 0;
 		int nb_starting_territories = this.current_player.owned_territories.size();
 
-		switch (this.Number_Of_Players()) {
+		switch (players.Number_Of_Players()) {
 		case 2:
 			result = nb_starting_territories + 4; // 40;
 			break;
@@ -437,45 +309,7 @@ public class Game_Model extends Observable {
 		return result;
 	}
 
-	/**
-	 * Sets up the Player list with their name and corresponding player name
-	 * 
-	 * @param ArrayList<Player
-	 *            the list of players in the game
-	 */
-	public boolean Player_List_Setup(ArrayList<String> players_name_list) {
-		boolean error = false;
-		for (String s : players_name_list) {
-			boolean result = this.Add_Player(s);
-			error = error && result;
-		}
-		return !error;
-	}
-
-	/**
-	 * Randomizes the player's turn order upon the setup of the game.
-	 * 
-	 * @param ArrayList<Player>
-	 *            the list of players in the game
-	 * @return A randomized order of players. Type: (ArrayList<Player>)
-	 */
-	private ArrayList<Player> Player_List_Randomize() {
-		ArrayList<Player> shuffled_player_list = new ArrayList<Player>(player_list);
-		Collections.shuffle(shuffled_player_list);
-		return shuffled_player_list;
-	}
-
-	/**
-	 * Prints the order of the players in the game
-	 * 
-	 * @param ArrayList<Player>
-	 *            the list of players in the game
-	 */
-	public void Print_Player_List_In_Order() {
-		for (int i = 0; i < player_list.size(); i++) {
-			System.out.println(i + 1 + ": " + player_list.get(i).name);
-		}
-	}
+	
 
 	/**
 	 * Assigns the game territories acrross the players playing the game during the
@@ -491,22 +325,13 @@ public class Game_Model extends Observable {
 			Territory territory = (Territory) entry.getValue();
 
 			if (index < (game_territories.size())) {// - (game_territories.size() % Number_Of_Players())
-				player_list.get((index % Number_Of_Players())).Add_Territory(territory);
-				territory.owner_name = player_list.get(index % Number_Of_Players()).name;
+				players.player_list.get((index % players.Number_Of_Players())).Add_Territory(territory);
+				territory.owner_name = players.player_list.get(index % players.Number_Of_Players()).name;
 			}
 			index++;
 		}
 	}
-
-	/**
-	 * Prints the current game phase of a player at the start of the phase
-	 * 
-	 * @return A boolean value corresponding to whether more than one player are
-	 *         still playing the game.
-	 */
-	public Boolean isStillFighting() {
-		return isFighting;
-	}
+	
 
 	/**
 	 * this method update states of the game
