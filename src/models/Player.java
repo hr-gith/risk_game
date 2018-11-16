@@ -78,7 +78,7 @@ public class Player {
 	 * @param nb_armies number of armies
 	 * @return true if inputs are valid
 	 */
-	public Message_Handler Reinforcement(String to_territory, int nb_armies) {
+	public Message_Handler Reinforce(String to_territory, int nb_armies) {
 		if (this.Add_Army_To_Territory(to_territory, nb_armies)) {
 			return new Message_Handler(true);
 		}
@@ -121,25 +121,7 @@ public class Player {
 		else {
 			response.ok = false;
 			response.message = attack_plan.message;
-		}
-        //check if user satisfies any territories to attack from
-        //y-> update map with potential attackers
-        //prompt attack move
-        // call attack method
-        // update army counts and army locations on map
-        // if defeated Player
-        //increment cards
-        //move to reinforcement phase
-
-        //or  end attack phase
-        // increment cards if conquered
-        //set phase to fortification
-
-
-        //n-> notify user they are finished attacking and are now ready to fortify
-        // increment cards if conquered
-        //set phase to fortification
-
+		}        
         return  response;
     }
 	
@@ -152,51 +134,24 @@ public class Player {
 	 */
 	public Message_Handler Fortify(String from_territory, String to_territory, int nb_armies) {
 		is_conquerer = false;
-		if (this.Fortification(from_territory, to_territory, nb_armies)) {
-			return new Message_Handler(true);
-		}
-		return new Message_Handler(false, "The territories are not connected, are invalid, or you have not left ample units.");
-		/*current_state = State_Player.PLAYING;
-        old_state_game = State_Game.REINFORCEMENT;
-    	if (old_state_game != State_Game.STARTUP)  
-            Set_Number_Territory_Reinforcements();          
-    	else
-    		return false;
-        return true;*/
-	}
-	
-	/**
-	 * this method checks if the fortification move is valid
-	 * @param from string of the source territory
-	 * @param to	string of the destination territory
-	 * @param nb_armies number of armies to fortify
-	 * @return true if valid, false otherwise
-	 */
-    public boolean Fortification(String from, String to, int nb_armies) {
-        //Test if any units to fortify
+		//Test if any units to fortify
         if (Has_Extra_Army_To_Move()) {
-    		if (!Move_Army(from, to, nb_armies))
-    			return false;                 
+    		if (!Move_Army(from_territory, to_territory, nb_armies))
+    			return new Message_Handler(false, "Error: The territories are not connected, are invalid.");                 
         } 
         else {
-        	return false;
+    		return new Message_Handler(false, "Error: you have not left ample units.");
         }
-
-    	//current_player_order = (current_player_order + 1) % Game_Model.number_of_players;
-        //player_flag = true;
-//    	current_state = State_Player.WAITING;  
-        //current_player_order = (current_player_order + 1) % Game_Model.number_of_players;
-        //player_flag = true;
-    	//current_state_game = State_Game.REINFORCEMENT;//for the next player//??????????????????????
-    	return true;
-    }
+        return new Message_Handler(true);
+	}	
+	
     
     /**
      * Adds a random card to the player cards if at least got a new territory in attack phase
      */
     public void Add_Card() {
     	if (deserve_card) {
-			cards.Shuffle();
+			cards.Add_A_Random_Card();
 			deserve_card = false;
 		}
     }
@@ -215,38 +170,6 @@ public class Player {
 		return false;
 	}
 	
-	/**
-	 * assign number of reinforcements to territories of a player
-	 * @param territories_armies 
-	 * @return true if valid and successful, false if not
-	 */
-	public boolean Assign_Army_To_Territories(HashMap<String, Integer> territories_armies) {
-        if (this.reinforcements > 0) {
-        	for (String territory_name : territories_armies.keySet()) {
-        		 if(!this.Add_Army_To_Territory(territory_name, territories_armies.get(territory_name)))   		
-        			return false;  		
-        	}
-        }
-        else
-        	return false;
-		
-        //current_state_game = State_Game.ATTACKING; //?????????
-        return true;
-
-        //check if card set can be used
-        //if so ask if user wants to play cards
-
-        //take input
-        //y-> add armies to reinforcement list, decrement cards, increase cards played
-
-        //if reinforcement list is empty
-        //n-> prompt user to place troops
-        //take input and update troop positions
-        // update map
-        //y -> notify user they are finished fortifying and are now ready to attack
-        // transition to attack phase
-
-    }
 	
 	/** 
 	 * Adds an army to a territory during the setup and reinforcement phase
@@ -284,7 +207,7 @@ public class Player {
 	}
 	
 	/** 
-	 * Moves a number of armies between territories during the fortification phase
+	 * Moves a number of armies between connected territories during the fortification phase
 	 * @param Territory The starting territory of the armies being moved 
 	 * @param Territory The finishing territory of the armies being moved 
 	 * @param Integer The number of units being moved between territories
@@ -326,10 +249,10 @@ public class Player {
 	}
 	
 	/**
-	 * method for calculating total number of armies for players
-	 * @return Total_Number_of_Armies_Of_Players
+	 * method for calculating total number of armies for the player
+	 * @return Total_Number_of_Armies
 	 */
-	public int Total_Number_of_Armies_Of_Players() {
+	public int Total_Number_of_Armies() {
 		int total_Number_Of_Armies = 0;
 		for (Territory t : owned_territories.values())
 			total_Number_Of_Armies += t.nb_armies;

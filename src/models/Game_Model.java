@@ -81,8 +81,8 @@ public class Game_Model extends Observable {
 	 * @param territory_name
 	 * @param nb_armies
 	 */
-	public void Reinforcement(String territory_name, int nb_armies) {
-		Message_Handler response = current_player.Reinforcement(territory_name, nb_armies);
+	public void Reinforce(String territory_name, int nb_armies) {
+		Message_Handler response = current_player.Reinforce(territory_name, nb_armies);
 		State_Game new_state = current_state;
 		if (response.ok) {
 			if (current_state == State_Game.STARTUP) {
@@ -182,13 +182,10 @@ public class Game_Model extends Observable {
 		State_Game new_state = current_state;
 
 		if (response.ok) {
-
 			// Move_To_Next_Phase();
-
 		} else {
 			message = "Error: please enter valid data";
 		}
-
 		Update_State(new_state, message);
 	}
 
@@ -293,7 +290,7 @@ public class Game_Model extends Observable {
 	public String Armies_Of_Players_To_String() {
 		StringBuilder sb = new StringBuilder(256);
 		for (Player p : players.player_list) {
-			int sum = p.Total_Number_of_Armies_Of_Players();
+			int sum = p.Total_Number_of_Armies();
 			sb.append(p.name + "    " + " Armies: " + sum + "        ");
 			sb.append(System.getProperty("line.separator"));
 		}

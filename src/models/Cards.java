@@ -123,7 +123,7 @@ public class Cards {
 		return this.card_reinforcements;
 	}
 	
-	public void Shuffle() {
+	public void Add_A_Random_Card() {
 		Random random = new Random();
 		int card_index =  random.nextInt(3) + 1;
 		switch(card_index) {

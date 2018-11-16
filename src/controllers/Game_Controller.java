@@ -81,7 +81,7 @@ public class Game_Controller {
 	 * @param nb_armies for number of armies for each territory
 	 */
 	public void Reinforcement(String territory_name, int nb_armies) {
-		game.Reinforcement(territory_name, nb_armies);
+		game.Reinforce(territory_name, nb_armies);
 	}
 
 	/**
