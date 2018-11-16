@@ -40,9 +40,9 @@ public class Players_World_Domination_View extends View {
 	 */
 	@Override
 	public void update(Observable obs, Object arg1) {
-		this.total_number_of_armies_Of_player = ((Game_Model) obs).Armies_Of_Player();
-		this.continent_owner = ((Game_Model) obs).Continent_Owner();
-		this.percentage_of_world_owner = ((Game_Model) obs).Percentage_of_world_Owner();
+		this.total_number_of_armies_Of_player = ((Game_Model) obs).Armies_Of_Players_To_String();
+		this.continent_owner = ((Game_Model) obs).Continent_Owner_To_String();
+		this.percentage_of_world_owner = ((Game_Model) obs).Percentage_Of_World_Owner_To_String();
 		Draw_Players_World_Domination_View_Window();
 		 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	//        setBounds(10,200,screenSize.width, screenSize.height);

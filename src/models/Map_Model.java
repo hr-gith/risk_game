@@ -70,16 +70,14 @@ public class Map_Model {
 	}	
 	
 	
-	public String Continent_List() {
+	public String Continent_List_To_String() {
 		StringBuilder sb = new StringBuilder(256);
 		
 		for ( Continent continent:continents.values() ){
 			sb.append(continent.name+ " : " + continent.Get_Owner()+"        ");
 			sb.append(System.getProperty("line.separator"));
-		}
-		
-		return sb.toString();
-		
+		}		
+		return sb.toString();		
 	}
 	
 	/**

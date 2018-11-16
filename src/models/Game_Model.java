@@ -36,66 +36,7 @@ public class Game_Model extends Observable {
 	 */
 	public Boolean Is_Game_Over() {
 		return (players.Get_Next_Player(current_player) == null);
-	}
-
-	
-
-	
-
-	/**
-	 * method for getting number of player armies
-	 * 
-	 * @return String the number of armies owned by each player
-	 */
-	public String Armies_Of_Player() {
-		StringBuilder sb = new StringBuilder(256);
-		for (Player p : players.player_list) {
-			int sum = p.Total_Number_of_Armies_Of_Players();
-			sb.append(p.name + "    " + " Armies: " + sum + "        ");
-			sb.append(System.getProperty("line.separator"));
-
-		}
-
-		return sb.toString();
-
-	}
-
-	/**
-	 * method for getting continent owner if all territories belong to one player
-	 * 
-	 * @return name of continent owner
-	 */
-
-	public String Continent_Owner() {
-		return map.Continent_List();
-	}
-
-	/**
-	 * method for calculating percentage of world that belong to each player
-	 * 
-	 * @return percentage of the map controlled by every player
-	 */
-	public String Percentage_of_world_Owner() {
-		float percentage = 0;
-		String name = "";
-		List<String> percentage_list = new ArrayList<String>();
-		StringBuilder sb = new StringBuilder(256);
-		float all_territories = (float) map.Number_Of_All_Territories();
-
-		for (Player player : players.player_list) {
-			float player_territories = (float) player.owned_territories.size();
-			percentage = (100.0f * player_territories) / all_territories;
-			String formattedString = String.format("%.02f", percentage);
-			name = '\n' + player.name + ": " + "%" + formattedString + "     ";
-			percentage_list.add(name);
-		}
-		for (int i = 0; i < percentage_list.size(); i++) {
-			sb.append(percentage_list.get(i) + "\n");
-			sb.append(System.getProperty("line.separator"));
-		}
-
-		return sb.toString();
-	}
+	}	
 
 	/**
 	 * Controls the game logic for the game setup phase
@@ -109,7 +50,6 @@ public class Game_Model extends Observable {
 		// Set order of players
 		players.Player_List_Randomize();
 		current_player = players.Get_Next_Player(current_player);
-
 		Assign_Territories();
 
 		// Calculate Reinforcement for each player
@@ -310,7 +250,6 @@ public class Game_Model extends Observable {
 	}
 
 	
-
 	/**
 	 * Assigns the game territories acrross the players playing the game during the
 	 * setup
@@ -345,5 +284,58 @@ public class Game_Model extends Observable {
 		setChanged();
 		notifyObservers(this);
 	}
+	
+	/**
+	 * method for getting number of player armies
+	 * 
+	 * @return String the number of armies owned by each player
+	 */
+	public String Armies_Of_Players_To_String() {
+		StringBuilder sb = new StringBuilder(256);
+		for (Player p : players.player_list) {
+			int sum = p.Total_Number_of_Armies_Of_Players();
+			sb.append(p.name + "    " + " Armies: " + sum + "        ");
+			sb.append(System.getProperty("line.separator"));
+		}
+		return sb.toString();
+	}
+	
+	/**
+	 * method for getting continent owner if all territories belong to one player
+	 * 
+	 * @return name of continent owner
+	 */
+
+	public String Continent_Owner_To_String() {
+		return map.Continent_List_To_String();
+	}
+
+	/**
+	 * method for calculating percentage of world that belong to each player
+	 * 
+	 * @return percentage of the map controlled by every player
+	 */
+	public String Percentage_Of_World_Owner_To_String() {
+		float percentage = 0;
+		String name = "";
+		List<String> percentage_list = new ArrayList<String>();
+		StringBuilder sb = new StringBuilder(256);
+		float all_territories = (float) map.Number_Of_All_Territories();
+
+		for (Player player : players.player_list) {
+			float player_territories = (float) player.owned_territories.size();
+			percentage = (100.0f * player_territories) / all_territories;
+			String formattedString = String.format("%.02f", percentage);
+			name = '\n' + player.name + ": " + "%" + formattedString + "     ";
+			percentage_list.add(name);
+		}
+		for (int i = 0; i < percentage_list.size(); i++) {
+			sb.append(percentage_list.get(i) + "\n");
+			sb.append(System.getProperty("line.separator"));
+		}
+
+		return sb.toString();
+	}
+
 
 }
