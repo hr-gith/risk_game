@@ -80,20 +80,16 @@ public class Map_Generator_Controller {
 					this.game_view.Redraw(); 
 				}
 				break;
-			case 6:
+			case 6://Back to main menu
 				this.game_view.Close();
-				break; 
-			case 7:
-				System.exit(0);
-			}
-			
-			
+				break; 			
+			}			
 			
 		} while (choice != 6);
 
 		// display finalized map
 		this.map_generator_view.Display_Map(map);
-		if (map.Is_Valid()) {
+		if (map.Get_Territories().size() > 2 &&  map.Is_Valid()) {
 			map.Set_Continents_Score();
 			return true;
 		} else

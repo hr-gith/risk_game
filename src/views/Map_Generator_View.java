@@ -29,9 +29,8 @@ public class Map_Generator_View {
 		System.out.println("\n 3. Edit The Map");
 		System.out.println("\n 4. Save The Map");
 		System.out.println("\n 5. Display The Map");
-		System.out.println("\n 6. Start Game");
-		System.out.println("\n 7. Exit ");
-		System.out.println("\n\n Please Enter Your Choice(1-7): ");
+		System.out.println("\n 6. Back to The Main Menu");
+		System.out.println("\n\n Please Enter Your Choice(1-6): ");
 		return scanner.nextInt();
 	}
 
