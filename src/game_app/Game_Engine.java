@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import controllers.Game_Controller;
 import controllers.Map_Generator_Controller;
+import controllers.Tournament_Controller;
 
 /**
  * class for calling to start Map generator and Game
@@ -33,6 +34,7 @@ public class Game_Engine {
 			case 4: //save game
 				break;
 			case 5: //Tournament
+				Setup_Tournament();				
 				break;
 			case 6://Exit
 				System.exit(0);
@@ -44,6 +46,14 @@ public class Game_Engine {
 			}
 			
 		} while (choice != 6);
+	}
+
+
+	private static void Setup_Tournament() {
+		Tournament_Controller tournament = new Tournament_Controller();
+		//TODO: get data for tournament
+		
+		tournament.Start();
 	}
 
 
