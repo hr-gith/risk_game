@@ -12,7 +12,7 @@ import models.Territory;
 public class Map_Generator_View {
 
 	Scanner scanner;
-	public Map_Model map = Map_Model.Get_Map();
+	public Map_Model map = new Map_Model();
 	boolean valid_result = false;
 
 	/**

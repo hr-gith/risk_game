@@ -20,7 +20,7 @@ public class Map_Model {
     /**
      * constructors
      */
-    private Map_Model() {
+    public Map_Model() {
     	continents = new HashMap<>();
     	this.image = "image";
 		this.wrap = true;
@@ -38,7 +38,7 @@ public class Map_Model {
      * @param warn
      * @param continents
      */
-	private Map_Model(String image, boolean wrap, String scroll, String author, boolean warn,HashMap<String,Continent> continents) {
+	public Map_Model(String image, boolean wrap, String scroll, String author, boolean warn,HashMap<String,Continent> continents) {
 		this.image = image;
 		this.wrap = wrap;
 		this.scroll = scroll;
@@ -47,19 +47,19 @@ public class Map_Model {
 		this.continents = continents;
 	}
 	
-	/**
-	 * Singleton Pattern
-	 */
-	private static class MapUniqueInstanceHolder{
-		private static final Map_Model THE_UNIQUE_MAP= new Map_Model();
-	}
-	
-	/**
-	 * @return unique map instance
-	 */
-	public static Map_Model Get_Map() {
-		return MapUniqueInstanceHolder.THE_UNIQUE_MAP;
-	}
+//	/**
+//	 * Singleton Pattern
+//	 */
+//	private static class MapUniqueInstanceHolder{
+//		private static final Map_Model THE_UNIQUE_MAP= new Map_Model();
+//	}
+//	
+//	/**
+//	 * @return unique map instance
+//	 */
+//	public static Map_Model Get_Map() {
+//		return MapUniqueInstanceHolder.THE_UNIQUE_MAP;
+//	}
 	    
 	/**
 	 * Checks if map has no continents

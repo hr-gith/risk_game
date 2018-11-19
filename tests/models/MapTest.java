@@ -11,7 +11,7 @@ import org.junit.Test;
  *
  */
 public class MapTest {
-	Map_Model map = Map_Model.Get_Map();
+	Map_Model map = new Map_Model();
 	Continent new_continent;
 	Territory new_territory;
 	Territory new_territory_neighbour_1;

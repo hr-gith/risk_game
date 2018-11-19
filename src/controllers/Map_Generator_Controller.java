@@ -23,7 +23,7 @@ public class Map_Generator_Controller {
 		this.map_generator_view = new Map_Generator_View();
 		this.map_view = new Map_View();
 		this.game_view = new Game_View(false); 
-		this.map = Map_Model.Get_Map();
+		this.map = new Map_Model();
 		this.io_map_helper = new Map_Helper();
 	}
 

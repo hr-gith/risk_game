@@ -13,7 +13,7 @@ import utilities.Config;
  *
  */
 public class Attack_ModelTest {
-	Map_Model map = Map_Model.Get_Map();
+	Map_Model map =new Map_Model();
 	Game_Model game_model1 = new Game_Model(map);
 	Player attacker = new Player(0, game_model1);
 	Player defender = new Player(1, game_model1);

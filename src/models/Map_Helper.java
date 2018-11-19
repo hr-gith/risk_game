@@ -26,7 +26,7 @@ public class Map_Helper {
 		ArrayList<String> map_text = File_Operations.Read_File(path);
 		if (map_text.isEmpty())
 			return map;
-		map = Map_Model.Get_Map();
+		map = new Map_Model();
 
 		int line_map = map_text.indexOf("[Map]");
 		int line_continents = map_text.indexOf("[Continents]");
