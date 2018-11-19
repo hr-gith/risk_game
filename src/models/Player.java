@@ -13,12 +13,14 @@ public class Player {
 	public Integer id; 	
 	public String name; 
 	public State_Player current_state;
+	public State_PlayerStrategy player_strategy; 
 	public Game_Model ref_game; 
 	public HashMap<String,Territory> owned_territories;
 	public Integer reinforcements;
 	public Cards cards; 
 	public boolean is_conquerer;
 	public boolean deserve_card;
+	private Attack_Model attack_plan; 
 	
 	
 	/** 
@@ -35,6 +37,7 @@ public class Player {
 		this.cards = new Cards(); 
 		this.is_conquerer = false;
 		this.deserve_card = false;
+		this.player_strategy =  State_PlayerStrategy.HUMAN;
 	}
 	
 	/**
@@ -314,5 +317,165 @@ public class Player {
         return false;
         
     }
+    
+    
+    public Message_Handler AI_Attack(State_Game current_state) {
+    	
+    	// calculate the attack model to pass to rest of function
+    	 attack_plan = new Attack_Model(); 
+    	
+		switch(player_strategy){
+		case AGGRESSIVE: 
+			
+			break; 
+		case BENEVOLENT: 
+			break; 
+		case RANDOM:
+			break; 
+		case CHEATER: 
+			break; 
+	
+		
+		}
+		
+		 Message_Handler response = new Message_Handler(true);
+			if (attack_plan.Is_Valid_Attack()) {
+				if (!attack_plan.all_out) {
+					attack_plan.Decide_Battle();
+					attack_plan.Apply_Result();
+				}
+				else {
+					//all out
+					while (attack_plan.from.nb_armies > 1 && attack_plan.from.owner_name != attack_plan.to.owner_name) {
+					attack_plan.Set_Max_NB_Dices();
+					attack_plan.Decide_Battle();
+					attack_plan.Apply_Result();
+					}
+				}
+				/*if (!Has_Extra_Army_To_Move()) {    		
+	       			ref_game.Update_State(State_Game.FORTIFICATION, "You can not attack any more!");
+	       		}else {
+	       			//go to post attack???? if there is a conquerer????
+	       		}*/
+			}
+			else {
+				response.ok = false;
+				response.message = attack_plan.message;
+			}        
+	        return  response;
+    	
+    }
+    
+    
+    public void AI_Startup() {
+    	
+		switch(player_strategy){
+		case AGGRESSIVE: 
+			
+			break; 
+		case BENEVOLENT: 
+			break; 
+		case RANDOM:
+			break; 
+		case CHEATER: 
+			break; 
+	
+		
+		}
+    	
+    }
+    
+    public Message_Handler AI_Reinforce( State_Game current_state) {
+    	
+    	
+    	// calculate the reinforcements depending on the strategy 
+    	String to_territory = new String(); 
+    	Integer nb_armies = new Integer(0); 
+    	
+		switch(player_strategy){
+		case AGGRESSIVE: 
+			
+			break; 
+		case BENEVOLENT: 
+			break; 
+		case RANDOM:
+			break; 
+		case CHEATER: 
+			break; 
+	
+		
+		}
+    	
+		if (this.Add_Army_To_Territory(to_territory, nb_armies)) {
+			return new Message_Handler(true);
+		}
+		return new Message_Handler(true, "The territory does not belong to you or your reinforcement is not enough.");
+		
+    }
+    
+    
+    public Message_Handler AI_Fortify(State_Game current_state) {
+    	
+    	String from_territory = new String(); 
+    	String to_territory = new String(); 
+    	Integer nb_armies = new Integer(0);
+    	
+		switch(player_strategy){
+		case AGGRESSIVE: 
+			
+			break; 
+		case BENEVOLENT: 
+			break; 
+		case RANDOM:
+			break; 
+		case CHEATER: 
+			break; 
+	
+		
+		}
+		
+		is_conquerer = false;
+		//Test if any units to fortify
+        if (Has_Extra_Army_To_Move()) {
+    		if (!Move_Army(from_territory, to_territory, nb_armies))
+    			return new Message_Handler(false, "Error: The territories are not connected, are invalid.");                 
+        } 
+        else {
+    		return new Message_Handler(false, "Error: you have not left ample units.");
+        }
+        return new Message_Handler(true);
+	}	
+    	
+    
+    
+    public Message_Handler AI_PostAttack(State_Game current_state) {
+    	
+    	Integer nb_armies = new Integer(0); // AI sets up the number of armies to move
+    	
+		switch(player_strategy){
+		case AGGRESSIVE: 
+			
+			break; 
+		case BENEVOLENT: 
+			break; 
+		case RANDOM:
+			break; 
+		case CHEATER: 
+			break; 
+	
+	
+		}
+		
+		if (this.Move_Army(this.attack_plan.from.name, this.attack_plan.to.name, nb_armies)) {
+			return new Message_Handler(true);
+		}
+		
+		
+		return new Message_Handler(true, "The AI generated and invalid move");
+			
+    	
+    }
+    
+
 	
 }

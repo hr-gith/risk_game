@@ -2,6 +2,7 @@ package controllers;
 
 import models.Game_Model;
 import models.Map_Model;
+import models.State_Game;
 import views.Card_View;
 import views.Console_View;
 import views.Game_View;
@@ -23,6 +24,8 @@ public class Game_Controller {
 	public Players_World_Domination_View players_world_domination_view;
 	public Card_View card_view;
 
+	
+	
 	/**
 	 * constructor for initiate the game and adding observers to the game
 	 */
@@ -131,4 +134,23 @@ public class Game_Controller {
 		players_world_domination_view.Redraw();
 
 	}
+	
+	public void AI_Reinforcement(State_Game current_state) {
+		
+		game.AI_Reinforce(current_state); 
+	}
+	
+	public void AI_Attack(State_Game current_state) {
+		game.AI_Attack(current_state);
+
+	}
+	
+	public void AI_Post_Attack(State_Game current_state) {
+		game.AI_Post_Attack( current_state);
+	}
+	
+	public void AI_Fortification(State_Game current_state) {
+		game.AI_Fortify(current_state);
+	}
+
 }

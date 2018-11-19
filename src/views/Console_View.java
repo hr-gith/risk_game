@@ -3,6 +3,7 @@ package views;
 import controllers.Game_Controller;
 import models.Player;
 import models.State_Game;
+import models.State_PlayerStrategy;
 import models.Game_Model;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -47,6 +48,7 @@ public class Console_View implements Observer {
 			System.out.println("\nEnter the name of player number " + i);
 			String name_of_player = scanner.nextLine();
 			name_of_players.add(name_of_player);
+			
 
 		}
 		return name_of_players;
@@ -57,6 +59,9 @@ public class Console_View implements Observer {
 	 */
 	public void Display_Menu_StartUp_Reinforcements() {
 
+		if (current_player.player_strategy == State_PlayerStrategy.HUMAN){
+			
+		
 		System.out.println(
 				"Start_up =>player : " + current_player.name + "- Armies left: " + current_player.reinforcements
 						+ "\n countries :" + current_player.owned_territories.keySet().toString());
@@ -69,13 +74,28 @@ public class Console_View implements Observer {
 			System.out.println("\nEnter the Number of armies");
 			number_armies = Integer.valueOf(scanner.nextLine());
 		}
+		
 		game_controller.Reinforcement(to_territory, number_armies);
+		
+		}else {
+			
+			
+		game_controller.AI_Reinforcement(current_state); 
+			
+			
+			
+		}
+		
+		
+	
 	}
 
 	/**
 	 * number of moves and the destination country
 	 */
 	public void Display_Menu_Reinforcements() {
+		
+		if (current_player.player_strategy == State_PlayerStrategy.HUMAN){
 
 		System.out.println(
 				"Reinforcement =>player : " + current_player.name + "- Armies left: " + current_player.reinforcements
@@ -127,12 +147,20 @@ public class Console_View implements Observer {
 			number_armies = Integer.valueOf(scanner.nextLine());
 		}
 		game_controller.Reinforcement(to_territory, number_armies);
+		
+		}else{
+			game_controller.AI_Reinforcement(current_state);
+		}
+		
 	}
 
 	/**
 	 * display attack menu
 	 */
 	public void Display_Menu_Attack() {
+		
+		if (current_player.player_strategy == State_PlayerStrategy.HUMAN){
+
 		System.out.println("Attack =>player : " + current_player.name + " has countries :"
 				+ current_player.owned_territories.keySet().toString());
 		System.out.println("Would you like to attack(y/n)?");
@@ -152,20 +180,44 @@ public class Console_View implements Observer {
 				number_dices = Integer.valueOf(scanner.nextLine());
 			}
 			game_controller.Attack(from_territory, to_territory, number_dices, all_out);
+			
+			
 		} else
 			game_controller.Move_To_Next_Phase();
+		}
+		
+	else {
+		
+		
+		game_controller.AI_Attack(current_state); 
+		
+		game_controller.Move_To_Next_Phase();
+		
+	}
+		
 	}
 
     public void Display_Menu_Post_Attack(){
+    	
+		if (current_player.player_strategy == State_PlayerStrategy.HUMAN){
+
+    
     	System.out.println(this.message);
     	System.out.println("\nEnter the number of armies to move to the new territory: ");
     	int number_armies = Integer.valueOf(scanner.nextLine());
     	game_controller.Post_Attack(number_armies);
     }
+    else{
+    	game_controller.AI_Post_Attack(current_state);
+    }
+    }
 	/**
 	 * number or armies for replacement
 	 */
 	public void Display_Menu_Fortification() {
+		
+		if (current_player.player_strategy == State_PlayerStrategy.HUMAN){
+
 
 		if (current_player.Has_Extra_Army_To_Move()) {
 
@@ -189,6 +241,11 @@ public class Console_View implements Observer {
 		} else {
 			game_controller.Move_To_Next_Phase();
 		}
+		}
+		else{
+			game_controller.AI_Fortification(current_state); 
+			game_controller.Move_To_Next_Phase();
+		}
 
 	}
 
@@ -203,8 +260,12 @@ public class Console_View implements Observer {
 
 	public void Update_Menu() {
 
+
+		
 		switch (current_state) {
 
+
+			
 		case SETUP:
 			// modify the game_controller setup phase to go here
 			break;
@@ -241,6 +302,7 @@ public class Console_View implements Observer {
     		break;
 
 		}
+	
 
 		game_controller.RedrawViews();
 	}

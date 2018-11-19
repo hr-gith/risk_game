@@ -334,5 +334,87 @@ public class Game_Model extends Observable {
 		return sb.toString();
 	}
 
+	
 
+	public void AI_Attack(State_Game current_state) {
+		
+		// from to defender 
+		
+
+//		this.attack_plan = new Attack_Model(current_player, defender, from, to, nb_dice, all_out);
+		Message_Handler response = current_player.AI_Attack(current_state);
+		State_Game new_state = current_state;
+
+		if (response.ok) {
+			if (this.Is_Game_Over()) {
+				new_state = State_Game.OVER;
+			} else if (current_player.is_conquerer) {
+				new_state = State_Game.POST_ATTACK;
+				message = "You've conquered " + attack_plan.to.name + " territoy";
+			} else {
+				Can_Attack();
+				return;
+			}
+		} else {
+			message = "Error: please enter valid data";
+		}
+
+		Update_State(new_state, message);
+	}
+	
+	
+	
+	
+
+	public void AI_Reinforce(State_Game current_state) {
+		
+		
+		Message_Handler response = current_player.AI_Reinforce(current_state);
+		State_Game new_state = current_state;
+
+		
+		if (response.ok) {
+			if (current_state == State_Game.STARTUP) {
+				Player next_player = players.Get_Next_Player_For_Reinforcement(current_player);
+				if (next_player != null) {
+					Change_Player(next_player);
+				} else {
+					// End of StartUp => game is started
+					Change_Player(players.First());// get the first player to play the game
+					new_state = State_Game.REINFORCEMENT;
+					current_player.Set_Number_Territory_Reinforcements();
+				}
+			} else if (current_state == State_Game.REINFORCEMENT) {
+				if (current_player.reinforcements == 0) {
+					// end of reinforcement
+					new_state = State_Game.ATTACKING;
+				}
+			}
+		}
+		Update_State(new_state, response.message);
+	}
+
+	
+	public void AI_Fortify(State_Game current_state) {
+
+		Message_Handler response = current_player.AI_Fortify(current_state);
+		State_Game new_state = current_state;
+
+		if (response.ok) {
+			// Move_To_Next_Phase();
+		} else {
+			message = "Error: please enter valid data";
+		}
+		Update_State(new_state, message);
+	}
+	
+	
+	
+	public void AI_Post_Attack(State_Game current_state) {
+		
+		Message_Handler response = current_player.AI_PostAttack(current_state); 
+		current_player.is_conquerer = false;
+		Can_Attack();
+	}
+	
 }
