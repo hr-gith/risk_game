@@ -7,6 +7,7 @@ import models.Game_Model;
 import models.Map_Helper;
 import models.Map_Model;
 import models.Player;
+import views.Tournament_View;
 
 public class Tournament_Controller {
 	private Set<Map_Model> maps;
@@ -14,11 +15,13 @@ public class Tournament_Controller {
 	public int nb_game;
 	public int max_nb_turn;
 	public Game_Model game;
+	public Tournament_View tournament_view;
 	public Map_Helper map_helper;
-	
+
 	public Tournament_Controller() {
 		maps = new HashSet<Map_Model>();
 		players = new HashSet<Player>();
+		tournament_view= new Tournament_View();
 	}
 	
 	public boolean Add_Map(String map_path) {

@@ -5,6 +5,7 @@ import java.util.Scanner;
 import controllers.Game_Controller;
 import controllers.Map_Generator_Controller;
 import controllers.Tournament_Controller;
+import views.Tournament_View;
 
 /**
  * class for calling to start Map generator and Game
@@ -34,7 +35,11 @@ public class Game_Engine {
 			case 4: //save game
 				break;
 			case 5: //Tournament
-				Setup_Tournament();				
+				Tournament_Controller tournament = new Tournament_Controller();
+				Tournament_View tournament_view = new Tournament_View();
+				
+				tournament.Start();
+				
 				break;
 			case 6://Exit
 				System.exit(0);
@@ -49,12 +54,12 @@ public class Game_Engine {
 	}
 
 
-	private static void Setup_Tournament() {
-		Tournament_Controller tournament = new Tournament_Controller();
-		//TODO: get data for tournament
-		
-		tournament.Start();
-	}
+//	private static void Setup_Tournament() {
+//		Tournament_Controller tournament = new Tournament_Controller();
+//		//TODO: get data for tournament
+//		
+//		tournament.Start();
+//	}
 
 
 	/**
@@ -70,7 +75,7 @@ public class Game_Engine {
 		System.out.println("\n 2. Start Game");
 		System.out.println("\n 3. Load Game");
 		System.out.println("\n 4. Save Game");
-		System.out.println("\n 5. Tornoment");
+		System.out.println("\n 5. Tournament");
 		System.out.println("\n 6. Exit ");
 		System.out.println("\n\n Please Enter Your Choice(1-6): ");
 		return scanner.nextInt();
