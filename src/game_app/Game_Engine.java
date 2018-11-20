@@ -5,7 +5,6 @@ import java.util.Scanner;
 import controllers.Game_Controller;
 import controllers.Map_Generator_Controller;
 import controllers.Tournament_Controller;
-import views.Tournament_View;
 
 /**
  * class for calling to start Map generator and Game
@@ -36,8 +35,8 @@ public class Game_Engine {
 				break;
 			case 5: //Tournament
 				Tournament_Controller tournament_controler = new Tournament_Controller();
-	
-				
+				tournament_controler.tournament_view.Setup_Tournament();
+
 				break;
 			case 6://Exit
 				System.exit(0);
