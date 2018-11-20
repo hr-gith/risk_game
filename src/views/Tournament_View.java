@@ -3,13 +3,14 @@ package views;
 import controllers.Tournament_Controller;
 
 public class Tournament_View {
-	Tournament_Controller tournament;
+	Tournament_Controller tournament_controler;
 	
-	public Tournament_View() {
-		tournament= new Tournament_Controller();
+	public Tournament_View(Tournament_Controller controler) {
+		this.tournament_controler = controler;
+		
 	}
 	
-	private static void Setup_Tournament() {
+	public void Setup_Tournament() {
 		
 		//TODO: get data for tournament
 		

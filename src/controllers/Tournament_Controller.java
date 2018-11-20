@@ -19,9 +19,9 @@ public class Tournament_Controller {
 	public Map_Helper map_helper;
 
 	public Tournament_Controller() {
+		tournament_view = new Tournament_View(this);
 		maps = new HashSet<Map_Model>();
 		players = new HashSet<Player>();
-		tournament_view= new Tournament_View();
 	}
 	
 	public boolean Add_Map(String map_path) {

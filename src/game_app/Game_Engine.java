@@ -35,10 +35,8 @@ public class Game_Engine {
 			case 4: //save game
 				break;
 			case 5: //Tournament
-				Tournament_Controller tournament = new Tournament_Controller();
-				Tournament_View tournament_view = new Tournament_View();
-				
-				tournament.Start();
+				Tournament_Controller tournament_controler = new Tournament_Controller();
+	
 				
 				break;
 			case 6://Exit
