@@ -27,7 +27,7 @@ public class Tournament_Controller {
 	public boolean Add_Map(String map_path) {
 		if (maps.size() < 5) {
 			Map_Model new_map = map_helper.Import_Map(map_path);
-			//TODO: Check if does not add to the previous map because of singlton map
+			//TODO: Check if does not add to the previous map because of singleton map
 			if (new_map == null)
 				return false;
 			maps.add(new_map);
