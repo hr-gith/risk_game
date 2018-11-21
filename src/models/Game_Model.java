@@ -76,81 +76,7 @@ public class Game_Model extends Observable {
 		return false;
 	}
 
-	/**
-	 * 
-	 * @param territory_name
-	 * @param nb_armies
-	 */
-	public void Reinforce(String territory_name, int nb_armies) {
-		Message_Handler response = current_player.Reinforce(territory_name, nb_armies);
-		State_Game new_state = current_state;
-		if (response.ok) {
-			if (current_state == State_Game.STARTUP) {
-				Player next_player = players.Get_Next_Player_For_Reinforcement(current_player);
-				if (next_player != null) {
-					Change_Player(next_player);
-				} else {
-					// End of StartUp => game is started
-					Change_Player(players.First());// get the first player to play the game
-					new_state = State_Game.REINFORCEMENT;
-					current_player.Set_Number_Territory_Reinforcements();
-				}
-			} else if (current_state == State_Game.REINFORCEMENT) {
-				if (current_player.reinforcements == 0) {
-					// end of reinforcement
-					new_state = State_Game.ATTACKING;
-				}
-			}
-		}
-		Update_State(new_state, response.message);
-	}
 
-	/**
-	 * the attacked player always plays with maximum number of dices
-	 * 
-	 * @param from_name
-	 * @param to_name
-	 * @param nb_dice
-	 * @param nb_armies
-	 */
-	public void Attack(String from_name, String to_name, int nb_dice, boolean all_out) {
-		Territory from = this.map.Get_Territory(from_name);
-		Territory to = this.map.Get_Territory(to_name);
-		Player defender = players.Search_Player(to.owner_name);
-
-		this.attack_plan = new Attack_Model(current_player, defender, from, to, nb_dice, all_out);
-		Message_Handler response = current_player.Attack(this.attack_plan);
-		State_Game new_state = current_state;
-
-		if (response.ok) {
-			if (this.Is_Game_Over()) {
-				new_state = State_Game.OVER;
-			} else if (current_player.is_conquerer) {
-				new_state = State_Game.POST_ATTACK;
-				message = "You've conquered " + attack_plan.to.name + " territoy";
-			} else {
-				Can_Attack();
-				return;
-			}
-		} else {
-			message = "Error: please enter valid data";
-		}
-
-		Update_State(new_state, message);
-	}
-
-	/**
-	 * This method move armies from attacking territory to defeated territory
-	 * 
-	 * @param nb_armies
-	 *            number of armies to be moved, defined by attacking player
-	 */
-	public void Post_Attack(int nb_armies) {
-		current_player.Move_Army(attack_plan.from.name, attack_plan.to.name, nb_armies);
-		current_player.is_conquerer = false;
-		Can_Attack();
-	}
-	
 	/**
 	 * checks if the player can not attack anymore
 	 * if it is end of the attack gives a card to player in case of conquerer
@@ -169,25 +95,7 @@ public class Game_Model extends Observable {
 	}	
 	
 
-	/**
-	 * Reposition units for fortification before finishing turn.
-	 * 
-	 * @param from_name
-	 * @param to_name
-	 * @param nb_armies
-	 */
-	public void Fortify(String from_name, String to_name, int nb_of_armies) {
 
-		Message_Handler response = current_player.Fortify(from_name, to_name, nb_of_armies);
-		State_Game new_state = current_state;
-
-		if (response.ok) {
-			// Move_To_Next_Phase();
-		} else {
-			message = "Error: please enter valid data";
-		}
-		Update_State(new_state, message);
-	}
 
 	/**
 	 * method for moving to the next phase
@@ -336,13 +244,13 @@ public class Game_Model extends Observable {
 
 	
 
-	public void AI_Attack(State_Game current_state) {
+	public void Attack() {
 		
 		// from to defender 
 		
 
 //		this.attack_plan = new Attack_Model(current_player, defender, from, to, nb_dice, all_out);
-		Message_Handler response = current_player.AI_Attack(current_state);
+		Message_Handler response = current_player.Attack();
 		State_Game new_state = current_state;
 
 		if (response.ok) {
@@ -366,10 +274,10 @@ public class Game_Model extends Observable {
 	
 	
 
-	public void AI_Reinforce(State_Game current_state) {
+	public void Reinforce() {
 		
 		
-		Message_Handler response = current_player.AI_Reinforce(current_state);
+		Message_Handler response = current_player.Reinforce();
 		State_Game new_state = current_state;
 
 		
@@ -395,9 +303,9 @@ public class Game_Model extends Observable {
 	}
 
 	
-	public void AI_Fortify(State_Game current_state) {
+	public void Fortify() {
 
-		Message_Handler response = current_player.AI_Fortify(current_state);
+		Message_Handler response = current_player.Fortify();
 		State_Game new_state = current_state;
 
 		if (response.ok) {
@@ -410,11 +318,111 @@ public class Game_Model extends Observable {
 	
 	
 	
-	public void AI_Post_Attack(State_Game current_state) {
+	public void Post_Attack() {
 		
-		Message_Handler response = current_player.AI_PostAttack(current_state); 
+		Message_Handler response = current_player.PostAttack(); 
 		current_player.is_conquerer = false;
 		Can_Attack();
 	}
 	
 }
+
+
+
+//
+//
+///**
+// * 
+// * @param territory_name
+// * @param nb_armies
+// */
+//public void Reinforce(String territory_name, int nb_armies) {
+//	Message_Handler response = current_player.Reinforce(territory_name, nb_armies);
+//	State_Game new_state = current_state;
+//	if (response.ok) {
+//		if (current_state == State_Game.STARTUP) {
+//			Player next_player = players.Get_Next_Player_For_Reinforcement(current_player);
+//			if (next_player != null) {
+//				Change_Player(next_player);
+//			} else {
+//				// End of StartUp => game is started
+//				Change_Player(players.First());// get the first player to play the game
+//				new_state = State_Game.REINFORCEMENT;
+//				current_player.Set_Number_Territory_Reinforcements();
+//			}
+//		} else if (current_state == State_Game.REINFORCEMENT) {
+//			if (current_player.reinforcements == 0) {
+//				// end of reinforcement
+//				new_state = State_Game.ATTACKING;
+//			}
+//		}
+//	}
+//	Update_State(new_state, response.message);
+//}
+//
+///**
+// * the attacked player always plays with maximum number of dices
+// * 
+// * @param from_name
+// * @param to_name
+// * @param nb_dice
+// * @param nb_armies
+// */
+//public void Attack(String from_name, String to_name, int nb_dice, boolean all_out) {
+//	Territory from = this.map.Get_Territory(from_name);
+//	Territory to = this.map.Get_Territory(to_name);
+//	Player defender = players.Search_Player(to.owner_name);
+//
+//	this.attack_plan = new Attack_Model(current_player, defender, from, to, nb_dice, all_out);
+//	Message_Handler response = current_player.Attack(this.attack_plan);
+//	State_Game new_state = current_state;
+//
+//	if (response.ok) {
+//		if (this.Is_Game_Over()) {
+//			new_state = State_Game.OVER;
+//		} else if (current_player.is_conquerer) {
+//			new_state = State_Game.POST_ATTACK;
+//			message = "You've conquered " + attack_plan.to.name + " territoy";
+//		} else {
+//			Can_Attack();
+//			return;
+//		}
+//	} else {
+//		message = "Error: please enter valid data";
+//	}
+//
+//	Update_State(new_state, message);
+//}
+//
+///**
+// * Reposition units for fortification before finishing turn.
+// * 
+// * @param from_name
+// * @param to_name
+// * @param nb_armies
+// */
+//public void Fortify(String from_name, String to_name, int nb_of_armies) {
+//
+//	Message_Handler response = current_player.Fortify(from_name, to_name, nb_of_armies);
+//	State_Game new_state = current_state;
+//
+//	if (response.ok) {
+//		// Move_To_Next_Phase();
+//	} else {
+//		message = "Error: please enter valid data";
+//	}
+//	Update_State(new_state, message);
+//}
+//
+//
+///**
+// * This method move armies from attacking territory to defeated territory
+// * 
+// * @param nb_armies
+// *            number of armies to be moved, defined by attacking player
+// */
+//public void Post_Attack(int nb_armies) {
+//	current_player.Move_Army(attack_plan.from.name, attack_plan.to.name, nb_armies);
+//	current_player.is_conquerer = false;
+//	Can_Attack();
+//}

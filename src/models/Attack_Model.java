@@ -16,6 +16,9 @@ enum State {
 public class Attack_Model {
 	public Player attacker;
 	public Player defender;
+	
+	public String from_territory;  //@hadi, can you update this class to use the string name rather than the territory class directly
+	public String to_territory; 
 
 	public Territory from;
 	public Territory to;
@@ -23,7 +26,7 @@ public class Attack_Model {
 	public int attacker_nb_dices;
 	public int defender_nb_dices;
 
-	boolean all_out;
+	public boolean all_out;
 	State current_state;
 
 	public ArrayList<Integer> attacker_dices;

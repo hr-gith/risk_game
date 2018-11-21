@@ -13,7 +13,6 @@ public class Player {
 	public Integer id; 	
 	public String name; 
 	public State_Player current_state;
-	public State_PlayerStrategy player_strategy; 
 	public Game_Model ref_game; 
 	public HashMap<String,Territory> owned_territories;
 	public Integer reinforcements;
@@ -21,6 +20,12 @@ public class Player {
 	public boolean is_conquerer;
 	public boolean deserve_card;
 	private Attack_Model attack_plan; 
+	
+	public State_PlayerStrategy player_strategy; 
+	
+	
+	public Behaviour behavior; 
+	
 	
 	
 	/** 
@@ -37,8 +42,9 @@ public class Player {
 		this.cards = new Cards(); 
 		this.is_conquerer = false;
 		this.deserve_card = false;
-		this.player_strategy =  State_PlayerStrategy.HUMAN;
+		Set_PlayerBehaviour(State_PlayerStrategy.HUMAN); // this needs to be called at the appropriate location @hamideh during the assignment of player names
 	}
+	
 	
 	/**
 	 * Constructor for the Player object
@@ -56,6 +62,56 @@ public class Player {
 	public Player(Integer id, Game_Model game){
 		this(id, "p " + id, game);  
 	}
+	
+	public Player(){}
+	
+	public void Set_PlayerBehaviour(State_PlayerStrategy ps){
+		
+		this.player_strategy = ps; 
+		
+		
+		switch(ps){
+		
+		case HUMAN: 
+			
+			behavior = new Human(); 
+		
+			
+		case AGGRESSIVE: 
+			
+			behavior = new AI_Aggressive(this); 
+			
+		
+			break; 
+			
+		case BENEVOLENT: 
+			
+			behavior = new AI_Benevolent(this); 
+			
+			break; 
+			
+		case RANDOM: 
+			
+			behavior = new AI_Random(this); 
+			
+			break; 
+			
+			
+		case CHEATER: 
+			behavior = new AI_Cheater(this); 
+			
+			break; 
+			
+		default: 
+			
+			
+		
+		}
+		
+	
+		
+	}
+	
 	
 	/**
 	 * this method checks if the player is still in the game or has been terminated
@@ -75,78 +131,7 @@ public class Player {
 		current_state = new_state;
 	}
 	
-	/**
-	 * this method handles the player interaction to be used in reinforcement phase
-	 * @param to_territory territory recieving the armies
-	 * @param nb_armies number of armies
-	 * @return true if inputs are valid
-	 */
-	public Message_Handler Reinforce(String to_territory, int nb_armies) {
-		if (this.Add_Army_To_Territory(to_territory, nb_armies)) {
-			return new Message_Handler(true);
-		}
-		return new Message_Handler(true, "The territory does not belong to you or your reinforcement is not enough.");
-		/*current_state = State_Player.PLAYING;
-        old_state_game = State_Game.REINFORCEMENT;
-    	if (old_state_game != State_Game.STARTUP)  
-            Set_Number_Territory_Reinforcements();          
-    	else
-    		return false;
-        return true;*/
-	}
-	
-	/**
-	 * this method handles the player interaction to be used in attack phase
-	 * @param attack_plan Attack_Model object
-	 * @return
-	 */
-	public Message_Handler Attack (Attack_Model attack_plan) {
-        Message_Handler response = new Message_Handler(true);
-		if (attack_plan.Is_Valid_Attack()) {
-			if (!attack_plan.all_out) {
-				attack_plan.Decide_Battle();
-				attack_plan.Apply_Result();
-			}
-			else {
-				//all out
-				while (attack_plan.from.nb_armies > 1 && attack_plan.from.owner_name != attack_plan.to.owner_name) {
-				attack_plan.Set_Max_NB_Dices();
-				attack_plan.Decide_Battle();
-				attack_plan.Apply_Result();
-				}
-			}
-			/*if (!Has_Extra_Army_To_Move()) {    		
-       			ref_game.Update_State(State_Game.FORTIFICATION, "You can not attack any more!");
-       		}else {
-       			//go to post attack???? if there is a conquerer????
-       		}*/
-		}
-		else {
-			response.ok = false;
-			response.message = attack_plan.message;
-		}        
-        return  response;
-    }
-	
-	/**
-	 * this method handles the player interaction to be used in Fortification phase
-	 * @param from_territory source territory of fortification
-	 * @param to_territory	destination of fortification
-	 * @param nb_armies number of armies to fortify
-	 * @return true if valid, false otherwise
-	 */
-	public Message_Handler Fortify(String from_territory, String to_territory, int nb_armies) {
-		is_conquerer = false;
-		//Test if any units to fortify
-        if (Has_Extra_Army_To_Move()) {
-    		if (!Move_Army(from_territory, to_territory, nb_armies))
-    			return new Message_Handler(false, "Error: The territories are not connected, are invalid.");                 
-        } 
-        else {
-    		return new Message_Handler(false, "Error: you have not left ample units.");
-        }
-        return new Message_Handler(true);
-	}	
+
 	
     
     /**
@@ -319,37 +304,28 @@ public class Player {
     }
     
     
-    public Message_Handler AI_Attack(State_Game current_state) {
+    public Message_Handler Attack() {
     	
     	// calculate the attack model to pass to rest of function
-    	 attack_plan = new Attack_Model(); 
     	
-		switch(player_strategy){
-		case AGGRESSIVE: 
-			
-			break; 
-		case BENEVOLENT: 
-			break; 
-		case RANDOM:
-			break; 
-		case CHEATER: 
-			break; 
-	
+    	
+    	 behavior.Attack(); 
+    	 
 		
-		}
+		
 		
 		 Message_Handler response = new Message_Handler(true);
-			if (attack_plan.Is_Valid_Attack()) {
-				if (!attack_plan.all_out) {
-					attack_plan.Decide_Battle();
-					attack_plan.Apply_Result();
+			if (behavior.am.Is_Valid_Attack()) {
+				if (!behavior.am.all_out) {
+					behavior.am.Decide_Battle();
+					behavior.am.Apply_Result();
 				}
 				else {
 					//all out
-					while (attack_plan.from.nb_armies > 1 && attack_plan.from.owner_name != attack_plan.to.owner_name) {
-					attack_plan.Set_Max_NB_Dices();
-					attack_plan.Decide_Battle();
-					attack_plan.Apply_Result();
+					while (behavior.am.from.nb_armies > 1 && behavior.am.from.owner_name != behavior.am.to.owner_name) {
+						behavior.am.Set_Max_NB_Dices();
+						behavior.am.Decide_Battle();
+						behavior.am.Apply_Result();
 					}
 				}
 				/*if (!Has_Extra_Army_To_Move()) {    		
@@ -360,53 +336,25 @@ public class Player {
 			}
 			else {
 				response.ok = false;
-				response.message = attack_plan.message;
+				response.message = behavior.am.message;
 			}        
 	        return  response;
     	
     }
     
+
     
-    public void AI_Startup() {
-    	
-		switch(player_strategy){
-		case AGGRESSIVE: 
-			
-			break; 
-		case BENEVOLENT: 
-			break; 
-		case RANDOM:
-			break; 
-		case CHEATER: 
-			break; 
-	
-		
-		}
-    	
-    }
-    
-    public Message_Handler AI_Reinforce( State_Game current_state) {
+    public Message_Handler Reinforce( ) {
     	
     	
     	// calculate the reinforcements depending on the strategy 
-    	String to_territory = new String(); 
-    	Integer nb_armies = new Integer(0); 
+     
     	
-		switch(player_strategy){
-		case AGGRESSIVE: 
-			
-			break; 
-		case BENEVOLENT: 
-			break; 
-		case RANDOM:
-			break; 
-		case CHEATER: 
-			break; 
+    	
+    	behavior.Reinforce(); 
 	
-		
-		}
     	
-		if (this.Add_Army_To_Territory(to_territory, nb_armies)) {
+		if (this.Add_Army_To_Territory(behavior.rm.to_territory, behavior.rm.nb_armies)) {
 			return new Message_Handler(true);
 		}
 		return new Message_Handler(true, "The territory does not belong to you or your reinforcement is not enough.");
@@ -414,30 +362,17 @@ public class Player {
     }
     
     
-    public Message_Handler AI_Fortify(State_Game current_state) {
+    public Message_Handler Fortify() {
     	
-    	String from_territory = new String(); 
-    	String to_territory = new String(); 
-    	Integer nb_armies = new Integer(0);
+
+    	 behavior.Fortify();
     	
-		switch(player_strategy){
-		case AGGRESSIVE: 
-			
-			break; 
-		case BENEVOLENT: 
-			break; 
-		case RANDOM:
-			break; 
-		case CHEATER: 
-			break; 
-	
-		
-		}
+
 		
 		is_conquerer = false;
 		//Test if any units to fortify
         if (Has_Extra_Army_To_Move()) {
-    		if (!Move_Army(from_territory, to_territory, nb_armies))
+    		if (!Move_Army(behavior.fm.from_territory, behavior.fm.to_territory, behavior.fm.nb_armies))
     			return new Message_Handler(false, "Error: The territories are not connected, are invalid.");                 
         } 
         else {
@@ -448,30 +383,18 @@ public class Player {
     	
     
     
-    public Message_Handler AI_PostAttack(State_Game current_state) {
+    public Message_Handler PostAttack() {
     	
-    	Integer nb_armies = new Integer(0); // AI sets up the number of armies to move
-    	
-		switch(player_strategy){
-		case AGGRESSIVE: 
-			
-			break; 
-		case BENEVOLENT: 
-			break; 
-		case RANDOM:
-			break; 
-		case CHEATER: 
-			break; 
-	
-	
-		}
-		
-		if (this.Move_Army(this.attack_plan.from.name, this.attack_plan.to.name, nb_armies)) {
+    
+    	behavior.PostAttack(); 
+    
+    		
+		if (this.Move_Army(behavior.am.from.name, behavior.am.to.name, behavior.pm.nb_armies)) {
 			return new Message_Handler(true);
 		}
 		
 		
-		return new Message_Handler(true, "The AI generated and invalid move");
+		return new Message_Handler(true, "There is an invalid move");
 			
     	
     }
@@ -479,3 +402,79 @@ public class Player {
 
 	
 }
+
+
+///**
+// * this method handles the player interaction to be used in reinforcement phase
+// * @param to_territory territory recieving the armies
+// * @param nb_armies number of armies
+// * @return true if inputs are valid
+// */
+//public Message_Handler Reinforce(String to_territory, int nb_armies) {
+//	if (this.Add_Army_To_Territory(to_territory, nb_armies)) {
+//		return new Message_Handler(true);
+//	}
+//	return new Message_Handler(true, "The territory does not belong to you or your reinforcement is not enough.");
+//	/*current_state = State_Player.PLAYING;
+//    old_state_game = State_Game.REINFORCEMENT;
+//	if (old_state_game != State_Game.STARTUP)  
+//        Set_Number_Territory_Reinforcements();          
+//	else
+//		return false;
+//    return true;*/
+//}
+//
+///**
+// * this method handles the player interaction to be used in attack phase
+// * @param attack_plan Attack_Model object
+// * @return
+// */
+//public Message_Handler Attack (Attack_Model attack_plan) {
+//    Message_Handler response = new Message_Handler(true);
+//	if (attack_plan.Is_Valid_Attack()) {
+//		if (!attack_plan.all_out) {
+//			attack_plan.Decide_Battle();
+//			attack_plan.Apply_Result();
+//		}
+//		else {
+//			//all out
+//			while (attack_plan.from.nb_armies > 1 && attack_plan.from.owner_name != attack_plan.to.owner_name) {
+//			attack_plan.Set_Max_NB_Dices();
+//			attack_plan.Decide_Battle();
+//			attack_plan.Apply_Result();
+//			}
+//		}
+//		/*if (!Has_Extra_Army_To_Move()) {    		
+//   			ref_game.Update_State(State_Game.FORTIFICATION, "You can not attack any more!");
+//   		}else {
+//   			//go to post attack???? if there is a conquerer????
+//   		}*/
+//	}
+//	else {
+//		response.ok = false;
+//		response.message = attack_plan.message;
+//	}        
+//    return  response;
+//}
+//
+///**
+// * this method handles the player interaction to be used in Fortification phase
+// * @param from_territory source territory of fortification
+// * @param to_territory	destination of fortification
+// * @param nb_armies number of armies to fortify
+// * @return true if valid, false otherwise
+// */
+//public Message_Handler Fortify(String from_territory, String to_territory, int nb_armies) {
+//	
+//	
+//	is_conquerer = false;
+//	//Test if any units to fortify
+//    if (Has_Extra_Army_To_Move()) {
+//		if (!Move_Army(from_territory, to_territory, nb_armies))
+//			return new Message_Handler(false, "Error: The territories are not connected, are invalid.");                 
+//    } 
+//    else {
+//		return new Message_Handler(false, "Error: you have not left ample units.");
+//    }
+//    return new Message_Handler(true);
+//}	
