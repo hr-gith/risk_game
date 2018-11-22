@@ -20,10 +20,6 @@ public class Player {
 	public boolean is_conquerer;
 	public boolean deserve_card;
 	private Attack_Model attack_plan; 
-	
-	public State_PlayerStrategy player_strategy; 
-	
-	
 	public Behaviour behavior; 
 	
 	
@@ -34,7 +30,7 @@ public class Player {
 	 * @param String The player's name 
 	 */
 	
-	public Player(Integer id, String name, Game_Model game){
+	public Player(Integer id, String name,State_Player_Strategy behaviour, Game_Model game){
 		this.id = id; 
 		this.name = name;  
 		this.current_state = State_Player.WAITING;
@@ -42,7 +38,7 @@ public class Player {
 		this.cards = new Cards(); 
 		this.is_conquerer = false;
 		this.deserve_card = false;
-		Set_PlayerBehaviour(State_PlayerStrategy.HUMAN); // this needs to be called at the appropriate location @hamideh during the assignment of player names
+		Set_PlayerBehaviour(behaviour); 
 	}
 	
 	
@@ -51,65 +47,41 @@ public class Player {
 	 * @param name name of the player
 	 * @param game object of this Gmae_Model
 	 */
-	public Player(String name, Game_Model game){
-		this(0, name, game);
+	public Player(String name,State_Player_Strategy behaviour, Game_Model game){
+		this(0, name,behaviour, game);
 	}
 	
 	/** 
 	 * An overloaded constructor object that automatically assigns a player name corresponding to "Player" + player_id
 	 * @param Integer The player's game id  
 	 */
-	public Player(Integer id, Game_Model game){
-		this(id, "p " + id, game);  
+	public Player(Integer id, State_Player_Strategy behaviour, Game_Model game){
+		this(id, "p " + id,behaviour, game);  
 	}
 	
-	public Player(){}
 	
-	public void Set_PlayerBehaviour(State_PlayerStrategy ps){
-		
-		this.player_strategy = ps; 
-		
+	public void Set_PlayerBehaviour(State_Player_Strategy ps){
 		
 		switch(ps){
 		
-		case HUMAN: 
-			
+		case HUMAN: 			
 			behavior = new Human(); 
-		
-			
-		case AGGRESSIVE: 
-			
-			behavior = new AI_Aggressive(this); 
-			
-		
-			break; 
-			
-		case BENEVOLENT: 
-			
-			behavior = new AI_Benevolent(this); 
-			
-			break; 
-			
-		case RANDOM: 
-			
-			behavior = new AI_Random(this); 
-			
-			break; 
-			
-			
+			break;
+		case AGGRESSIVE: 			
+			behavior = new AI_Aggressive(this);		
+			break; 			
+		case BENEVOLENT: 			
+			behavior = new AI_Benevolent(this); 			
+			break; 			
+		case RANDOM:			
+			behavior = new AI_Random(this);			
+			break; 			
 		case CHEATER: 
-			behavior = new AI_Cheater(this); 
-			
-			break; 
-			
+			behavior = new AI_Cheater(this);			
+			break; 			
 		default: 
-			
-			
-		
-		}
-		
-	
-		
+			break;		
+		}		
 	}
 	
 	
@@ -129,10 +101,7 @@ public class Player {
 	 */
 	public void Update_State(State_Player new_state) {
 		current_state = new_state;
-	}
-	
-
-	
+	}	
     
     /**
      * Adds a random card to the player cards if at least got a new territory in attack phase
@@ -306,14 +275,9 @@ public class Player {
     
     public Message_Handler Attack() {
     	
-    	// calculate the attack model to pass to rest of function
+    	// calculate the attack model to pass to rest of function  	
     	
-    	
-    	 behavior.Attack(); 
-    	 
-		
-		
-		
+    	 behavior.Attack(); 		
 		 Message_Handler response = new Message_Handler(true);
 			if (behavior.am.Is_Valid_Attack()) {
 				if (!behavior.am.all_out) {
@@ -346,14 +310,8 @@ public class Player {
     
     public Message_Handler Reinforce( ) {
     	
-    	
     	// calculate the reinforcements depending on the strategy 
-     
-    	
-    	
-    	behavior.Reinforce(); 
-	
-    	
+     	behavior.Reinforce(); 
 		if (this.Add_Army_To_Territory(behavior.rm.to_territory, behavior.rm.nb_armies)) {
 			return new Message_Handler(true);
 		}
@@ -363,13 +321,8 @@ public class Player {
     
     
     public Message_Handler Fortify() {
-    	
-
-    	 behavior.Fortify();
-    	
-
-		
-		is_conquerer = false;
+    	behavior.Fortify();
+    	is_conquerer = false;
 		//Test if any units to fortify
         if (Has_Extra_Army_To_Move()) {
     		if (!Move_Army(behavior.fm.from_territory, behavior.fm.to_territory, behavior.fm.nb_armies))
@@ -384,23 +337,15 @@ public class Player {
     
     
     public Message_Handler PostAttack() {
-    	
-    
     	behavior.PostAttack(); 
-    
     		
 		if (this.Move_Army(behavior.am.from.name, behavior.am.to.name, behavior.pm.nb_armies)) {
 			return new Message_Handler(true);
 		}
 		
-		
 		return new Message_Handler(true, "There is an invalid move");
 			
-    	
-    }
-    
-
-	
+    }	
 }
 
 

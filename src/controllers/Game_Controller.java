@@ -3,12 +3,15 @@ package controllers;
 import models.Game_Model;
 import models.Map_Model;
 import models.State_Game;
+import models.State_Player_Strategy;
 import views.Card_View;
 import views.Console_View;
 import views.Game_View;
 import views.Map_View;
 import views.Phase_View;
 import views.Players_World_Domination_View;
+
+import java.util.AbstractMap;
 import java.util.ArrayList;
 
 /**
@@ -67,7 +70,7 @@ public class Game_Controller {
 		//		game_view.Draw_Window();
 		//		game_view.Add_Panel(map_view.jPanel, 1);
 
-		ArrayList<String> players_name = console_view.Display_Menu_Players();
+		ArrayList<AbstractMap.SimpleEntry<String,State_Player_Strategy>> players_name = console_view.Display_Menu_Players();
 		game.Setup(players_name);
 			/*
 			 * if (game.Setup()) { this.Start_Up_Reinforcement();
@@ -135,9 +138,9 @@ public class Game_Controller {
 
 	}
 	
-	public void AI_Reinforcement(State_Game current_state) {
+	/*public void AI_Reinforcement(State_Game current_state) {
 		
-		game.AI_Reinforce(current_state); 
+		game.AI_Reinforce(current_state) 
 	}
 	
 	public void AI_Attack(State_Game current_state) {
@@ -151,6 +154,6 @@ public class Game_Controller {
 	
 	public void AI_Fortification(State_Game current_state) {
 		game.AI_Fortify(current_state);
-	}
+	}*/
 
 }

@@ -3,8 +3,11 @@ package views;
 import controllers.Game_Controller;
 import models.Player;
 import models.State_Game;
-import models.State_PlayerStrategy;
+import models.State_Player_Strategy;
 import models.Game_Model;
+import models.Human;
+
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Observable;
@@ -30,7 +33,7 @@ public class Console_View implements Observer {
 	/**
 	 * player menu
 	 */
-	public ArrayList<String> Display_Menu_Players() {
+	public ArrayList<AbstractMap.SimpleEntry<String,State_Player_Strategy>> Display_Menu_Players() {
 		scanner = new Scanner(System.in);
 		System.out.println("\n\t Players Info ");
 		System.out.println("\nPlease insert the number of players: ");
@@ -42,16 +45,16 @@ public class Console_View implements Observer {
 
 		}
 
-		ArrayList<String> name_of_players = new ArrayList<>();
+		ArrayList<AbstractMap.SimpleEntry<String,State_Player_Strategy>> players = new ArrayList<AbstractMap.SimpleEntry<String,State_Player_Strategy>>();
 		for (int i = 1; i <= number_of_players; i++) {
 
 			System.out.println("\nEnter the name of player number " + i);
 			String name_of_player = scanner.nextLine();
-			name_of_players.add(name_of_player);
-			
-
+			System.out.println("\n What is the player's strategy (HUMAN, AGGRESSIVE, BENEVOLENT, RANDOM, CHEATER): ");			
+			String strategy = scanner.nextLine().trim().toUpperCase();//TODO: Check if is valid
+			players.add(new AbstractMap.SimpleEntry<String,State_Player_Strategy>(name_of_player, State_Player_Strategy.valueOf(strategy)));
 		}
-		return name_of_players;
+		return players;
 	}
 
 	/**
@@ -59,35 +62,25 @@ public class Console_View implements Observer {
 	 */
 	public void Display_Menu_StartUp_Reinforcements() {
 
-		if (current_player.player_strategy == State_PlayerStrategy.HUMAN){
-			
-		
-		System.out.println(
-				"Start_up =>player : " + current_player.name + "- Armies left: " + current_player.reinforcements
-						+ "\n countries :" + current_player.owned_territories.keySet().toString());
-		System.out.println("\nEnter the To territory ");
-		String to_territory = scanner.nextLine();
-		System.out.println("\nEnter the Number of move armies");
-		int number_armies = Integer.valueOf(scanner.nextLine());
-		while (current_player.reinforcements < number_armies) {
-			System.out.println("the number of armies must less than " + current_player.reinforcements);
-			System.out.println("\nEnter the Number of armies");
-			number_armies = Integer.valueOf(scanner.nextLine());
+		if ( current_player.behavior instanceof Human){		
+			System.out.println(
+					"Start_up =>player : " + current_player.name + "- Armies left: " + current_player.reinforcements
+							+ "\n countries :" + current_player.owned_territories.keySet().toString());
+			System.out.println("\nEnter the To territory ");
+			String to_territory = scanner.nextLine();
+			System.out.println("\nEnter the Number of move armies");
+			int number_armies = Integer.valueOf(scanner.nextLine());
+			while (current_player.reinforcements < number_armies) {
+				System.out.println("the number of armies must less than " + current_player.reinforcements);
+				System.out.println("\nEnter the Number of armies");
+				number_armies = Integer.valueOf(scanner.nextLine());
 		}
 		
 		game_controller.Reinforcement(to_territory, number_armies);
 		
 		}else {
-			
-			
-		game_controller.AI_Reinforcement(current_state); 
-			
-			
-			
+			game_controller.AI_Reinforcement(current_state);			
 		}
-		
-		
-	
 	}
 
 	/**
@@ -95,59 +88,59 @@ public class Console_View implements Observer {
 	 */
 	public void Display_Menu_Reinforcements() {
 		
-		if (current_player.player_strategy == State_PlayerStrategy.HUMAN){
+		if (current_player.behavior instanceof Human){
 
-		System.out.println(
-				"Reinforcement =>player : " + current_player.name + "- Armies left: " + current_player.reinforcements
-						+ "\n countries :" + current_player.owned_territories.keySet().toString());
-		System.out.println("Cards Available: \n Infantry: " + current_player.cards.infantry + ", Cavalry: "
-				+ current_player.cards.cavalry + ", Artillery: " + current_player.cards.artillery);
-
-		while (current_player.cards.Is_Set_Available()) {
-
-			String decision;
-			if ((current_player.cards.artillery + current_player.cards.cavalry + current_player.cards.infantry) < 5) {
-				System.out.println("Do you want to play any reinforment cards? (y/n)");
-				decision = scanner.nextLine();
-			} else {
-				decision = "y";
-			}
-
-			if (decision.equals("y") || decision.equals("yes")) {
-				System.out.println(
-						"Which cards do you want to play? (infantry, cavalry, artillery) For example, cavalry, cavalry, artillery");
-				String played_cards = scanner.nextLine();
-				String[] played_cards_array = played_cards.split(",");
-
-				if (current_player.cards.Are_Playable(played_cards_array)) {
-
-					current_player.reinforcements = current_player.reinforcements
-							+ current_player.cards.Get_Card_Reinforcement_Qty();
-
-					System.out.println("Reinforcement =>player : " + current_player.name + "- Armies left: "
-							+ current_player.reinforcements + "\n countries :"
-							+ current_player.owned_territories.keySet().toString());
-					System.out.println("Cards Available: \n Infantry: " + current_player.cards.infantry + ", Cavalry: "
-							+ current_player.cards.cavalry + ", Artillery: " + current_player.cards.artillery);
-
-					game_controller.game.Update_State(current_state, "");
-
+			System.out.println(
+					"Reinforcement =>player : " + current_player.name + "- Armies left: " + current_player.reinforcements
+							+ "\n countries :" + current_player.owned_territories.keySet().toString());
+			System.out.println("Cards Available: \n Infantry: " + current_player.cards.infantry + ", Cavalry: "
+					+ current_player.cards.cavalry + ", Artillery: " + current_player.cards.artillery);
+	
+			while (current_player.cards.Is_Set_Available()) {
+	
+				String decision;
+				if ((current_player.cards.artillery + current_player.cards.cavalry + current_player.cards.infantry) < 5) {
+					System.out.println("Do you want to play any reinforment cards? (y/n)");
+					decision = scanner.nextLine();
+				} else {
+					decision = "y";
 				}
-			} else
-				break;
-		}
-
-		System.out.println("\nEnter the To territory ");
-		String to_territory = scanner.nextLine();
-		System.out.println("\nEnter the Number of armies to move");
-		int number_armies = Integer.valueOf(scanner.nextLine());
-		while (current_player.reinforcements < number_armies) {
-			System.out.println("the number of armies must less than " + current_player.reinforcements);
-			System.out.println("\nEnter the Number of armies");
-			number_armies = Integer.valueOf(scanner.nextLine());
-		}
-		game_controller.Reinforcement(to_territory, number_armies);
-		
+	
+				if (decision.equals("y") || decision.equals("yes")) {
+					System.out.println(
+							"Which cards do you want to play? (infantry, cavalry, artillery) For example, cavalry, cavalry, artillery");
+					String played_cards = scanner.nextLine();
+					String[] played_cards_array = played_cards.split(",");
+	
+					if (current_player.cards.Are_Playable(played_cards_array)) {
+	
+						current_player.reinforcements = current_player.reinforcements
+								+ current_player.cards.Get_Card_Reinforcement_Qty();
+	
+						System.out.println("Reinforcement =>player : " + current_player.name + "- Armies left: "
+								+ current_player.reinforcements + "\n countries :"
+								+ current_player.owned_territories.keySet().toString());
+						System.out.println("Cards Available: \n Infantry: " + current_player.cards.infantry + ", Cavalry: "
+								+ current_player.cards.cavalry + ", Artillery: " + current_player.cards.artillery);
+	
+						game_controller.game.Update_State(current_state, "");
+	
+					}
+				} else
+					break;
+			}
+	
+			System.out.println("\nEnter the To territory ");
+			String to_territory = scanner.nextLine();
+			System.out.println("\nEnter the Number of armies to move");
+			int number_armies = Integer.valueOf(scanner.nextLine());
+			while (current_player.reinforcements < number_armies) {
+				System.out.println("the number of armies must less than " + current_player.reinforcements);
+				System.out.println("\nEnter the Number of armies");
+				number_armies = Integer.valueOf(scanner.nextLine());
+			}
+			game_controller.Reinforcement(to_territory, number_armies);
+			
 		}else{
 			game_controller.AI_Reinforcement(current_state);
 		}
@@ -159,88 +152,76 @@ public class Console_View implements Observer {
 	 */
 	public void Display_Menu_Attack() {
 		
-		if (current_player.player_strategy == State_PlayerStrategy.HUMAN){
-
-		System.out.println("Attack =>player : " + current_player.name + " has countries :"
-				+ current_player.owned_territories.keySet().toString());
-		System.out.println("Would you like to attack(y/n)?");
-		String answer = scanner.nextLine();
-		if (answer.equalsIgnoreCase("y")) {
-			System.out.println("Enter your attacker territory:");
-			String from_territory = scanner.nextLine();
-			System.out.println("Enter a territory to attack: ");
-			String to_territory = scanner.nextLine();
-
-			System.out.println("Would you like to play in all out mode(y/n)? ");
-			answer = scanner.nextLine();
-			boolean all_out = (answer.equalsIgnoreCase("y"));
-			int number_dices = 0;
-			if (!all_out) {
-				System.out.println("Enter number of dices: ");
-				number_dices = Integer.valueOf(scanner.nextLine());
-			}
-			game_controller.Attack(from_territory, to_territory, number_dices, all_out);
+		if (current_player.behavior instanceof Human){
+			System.out.println("Attack =>player : " + current_player.name + " has countries :"
+					+ current_player.owned_territories.keySet().toString());
+			System.out.println("Would you like to attack(y/n)?");
+			String answer = scanner.nextLine();
+			if (answer.equalsIgnoreCase("y")) {
+				System.out.println("Enter your attacker territory:");
+				String from_territory = scanner.nextLine();
+				System.out.println("Enter a territory to attack: ");
+				String to_territory = scanner.nextLine();
+	
+				System.out.println("Would you like to play in all out mode(y/n)? ");
+				answer = scanner.nextLine();
+				boolean all_out = (answer.equalsIgnoreCase("y"));
+				int number_dices = 0;
+				if (!all_out) {
+					System.out.println("Enter number of dices: ");
+					number_dices = Integer.valueOf(scanner.nextLine());
+				}
+				game_controller.Attack(from_territory, to_territory, number_dices, all_out);			
 			
-			
-		} else
-			game_controller.Move_To_Next_Phase();
-		}
-		
-	else {
-		
-		
-		game_controller.AI_Attack(current_state); 
-		
-		game_controller.Move_To_Next_Phase();
-		
-	}
-		
+			} else
+				game_controller.Move_To_Next_Phase();
+			}		
+		else {		
+			game_controller.AI_Attack(current_state); 		
+			game_controller.Move_To_Next_Phase();			
+		}		
 	}
 
     public void Display_Menu_Post_Attack(){
     	
-		if (current_player.player_strategy == State_PlayerStrategy.HUMAN){
-
-    
-    	System.out.println(this.message);
-    	System.out.println("\nEnter the number of armies to move to the new territory: ");
-    	int number_armies = Integer.valueOf(scanner.nextLine());
-    	game_controller.Post_Attack(number_armies);
-    }
-    else{
-    	game_controller.AI_Post_Attack(current_state);
-    }
+		if (current_player.behavior instanceof Human){    
+	    	System.out.println(this.message);
+	    	System.out.println("\nEnter the number of armies to move to the new territory: ");
+	    	int number_armies = Integer.valueOf(scanner.nextLine());
+	    	game_controller.Post_Attack(number_armies);
+	    }
+	    else{
+	    	game_controller.AI_Post_Attack(current_state);
+	    }
     }
 	/**
 	 * number or armies for replacement
 	 */
 	public void Display_Menu_Fortification() {
 		
-		if (current_player.player_strategy == State_PlayerStrategy.HUMAN){
-
-
-		if (current_player.Has_Extra_Army_To_Move()) {
-
-			System.out.println("Fortification =>player : " + current_player.name + " has countries :"
-					+ current_player.owned_territories.keySet().toString());
-			System.out.println("Do you want to fortify any units? (yes/no)");
-			String answer = scanner.nextLine();
-
-			if (answer.equals("yes")) {
-				System.out.println("\nEnter the From territory ");
-				String from_territory = scanner.nextLine();
-				System.out.println("\nEnter the To territory ");
-				String to_territory = scanner.nextLine();
-				System.out.println("\nEnter the Number of move armies");
-				int number_armies = Integer.valueOf(scanner.nextLine());
-
-				game_controller.Fortification(from_territory, to_territory, number_armies);
+		if (current_player.behavior instanceof Human){
+			if (current_player.Has_Extra_Army_To_Move()) {
+	
+				System.out.println("Fortification =>player : " + current_player.name + " has countries :"
+						+ current_player.owned_territories.keySet().toString());
+				System.out.println("Do you want to fortify any units? (yes/no)");
+				String answer = scanner.nextLine();
+	
+				if (answer.equals("yes")) {
+					System.out.println("\nEnter the From territory ");
+					String from_territory = scanner.nextLine();
+					System.out.println("\nEnter the To territory ");
+					String to_territory = scanner.nextLine();
+					System.out.println("\nEnter the Number of move armies");
+					int number_armies = Integer.valueOf(scanner.nextLine());
+	
+					game_controller.Fortification(from_territory, to_territory, number_armies);
+				} else {
+					game_controller.Move_To_Next_Phase();
+				}
 			} else {
 				game_controller.Move_To_Next_Phase();
 			}
-		} else {
-			game_controller.Move_To_Next_Phase();
-		}
 		}
 		else{
 			game_controller.AI_Fortification(current_state); 
@@ -258,14 +239,8 @@ public class Console_View implements Observer {
 		System.out.println("\n Congratulation " + winner + ", you are the winner!!!");
 	}
 
-	public void Update_Menu() {
-
-
-		
-		switch (current_state) {
-
-
-			
+	public void Update_Menu() {		
+		switch (current_state) {			
 		case SETUP:
 			// modify the game_controller setup phase to go here
 			break;
@@ -300,10 +275,7 @@ public class Console_View implements Observer {
 			game_controller.card_view.jPanel.setVisible(false);
     		Display_Winner(current_player.name + " is the winner!!\n Game Over" );
     		break;
-
 		}
-	
-
 		game_controller.RedrawViews();
 	}
 

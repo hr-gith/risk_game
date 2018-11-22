@@ -1,5 +1,6 @@
 package models;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -97,13 +98,13 @@ public class Player_Collection {
 	 * @param new_player
 	 * @return boolean
 	 */
-	public boolean Add_Player(String new_player, Game_Model game) {
+	public boolean Add_Player(String new_player,State_Player_Strategy behaviour, Game_Model game) {
 		if (new_player != "" && this.Number_Of_Players() < Config.max_nb_players) {
 			for (Player p : player_list) {
 				if (p.name.equalsIgnoreCase(new_player))
 					return false;
 			}
-			player_list.add(new Player(new_player, game));
+			player_list.add(new Player(new_player,behaviour, game));
 			return true;
 
 		}
@@ -130,10 +131,11 @@ public class Player_Collection {
 	 * @param ArrayList<Player
 	 *            the list of players in the game
 	 */
-	public boolean Player_List_Setup(ArrayList<String> players_name_list, Game_Model game) {
+	public boolean Player_List_Setup(ArrayList<AbstractMap.SimpleEntry<String,State_Player_Strategy>> players_list, Game_Model game) {
 		boolean error = false;
-		for (String s : players_name_list) {
-			boolean result = this.Add_Player(s, game);
+		for (AbstractMap.SimpleEntry<String,State_Player_Strategy> p : players_list) {
+			boolean result = this.Add_Player(p.getKey(),p.getValue(), game);
+			
 			error = error && result;
 		}
 		return !error;

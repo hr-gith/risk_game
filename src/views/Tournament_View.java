@@ -3,7 +3,7 @@ package views;
 
 import java.util.Scanner;
 import controllers.Tournament_Controller;
-import models.State_PlayerStrategy;
+import models.State_Player_Strategy;
 
 
 public class Tournament_View {
@@ -86,7 +86,7 @@ public class Tournament_View {
 					
 					String strategy = scanner.nextLine().toUpperCase();
 					
-					if(State_PlayerStrategy.values().equals(strategy)) {
+					if(State_Player_Strategy.values().equals(strategy)) {
 						// how to assign strategies that user select to payer
 						
 					}else {
