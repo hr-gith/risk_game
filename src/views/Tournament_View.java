@@ -81,14 +81,13 @@ public class Tournament_View {
 					return;
 				}
 				for (int i = 0; i < strategies_number; i++) {
-					System.out.println("AGGRESSIVE, BENEVOLENT, RANDOM, CHEATER");
-					System.out.println("\n Enter Name of Strategies: ");
-					
+					System.out.println("\n Enter player name: ");
+					String name = scanner.nextLine().toLowerCase();
+					System.out.println("\n Enter the player's Strategy(AGGRESSIVE, BENEVOLENT, RANDOM, CHEATER): ");					
 					String strategy = scanner.nextLine().toUpperCase();
 					
 					if(State_Player_Strategy.values().equals(strategy)) {
-						// how to assign strategies that user select to payer
-						
+						tournament_controler.Add_Player(name, State_Player_Strategy.valueOf(strategy));//check if return false						
 					}else {
 						// msg for entering correct strategy
 					}
