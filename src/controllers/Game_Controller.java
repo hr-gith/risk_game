@@ -3,12 +3,15 @@ package controllers;
 import models.Game_Model;
 import models.Map_Model;
 import models.State_Game;
+import models.State_Player_Strategy;
 import views.Card_View;
 import views.Console_View;
 import views.Game_View;
 import views.Map_View;
 import views.Phase_View;
 import views.Players_World_Domination_View;
+
+import java.util.AbstractMap;
 import java.util.ArrayList;
 
 /**
@@ -67,7 +70,8 @@ public class Game_Controller {
 		//		game_view.Draw_Window();
 		//		game_view.Add_Panel(map_view.jPanel, 1);
 
-		ArrayList<String> players_name = console_view.Display_Menu_Players();
+		ArrayList<AbstractMap.SimpleEntry<String,State_Player_Strategy>> players_name = console_view.Display_Menu_Players();
+		
 		game.Setup(players_name);
 			/*
 			 * if (game.Setup()) { this.Start_Up_Reinforcement();
@@ -83,8 +87,8 @@ public class Game_Controller {
 	 * @param territory_name
 	 * @param nb_armies for number of armies for each territory
 	 */
-	public void Reinforcement(String territory_name, int nb_armies) {
-		game.Reinforce(territory_name, nb_armies);
+	public void Reinforcement() {
+		game.Reinforce();
 	}
 
 	/**
@@ -93,8 +97,8 @@ public class Game_Controller {
 	 * @param to which territory
 	 * @param nb_armies for moving how many armies
 	 */
-	public void Fortification(String from, String to, int nb_armies) {
-		game.Fortify(from, to, nb_armies);
+	public void Fortification() {
+		game.Fortify();
 	}
 
 	/**
@@ -104,16 +108,16 @@ public class Game_Controller {
 	 * @param nb_armies with how many armies
 	 * @param all_out 
 	 */
-	public void Attack(String from, String to, int nb_dices, boolean all_out) {
-		game.Attack(from, to, nb_dices, all_out);
+	public void Attack() {
+		game.Attack();
 	}
 
 	/**
 	 * this method calling Post_Attack from Game Model to  move armies from attacking territory to defeated territory
 	 * @param nb_armies how many armies
 	 */
-	public void Post_Attack(int nb_armies) {
-		game.Post_Attack(nb_armies);
+	public void Post_Attack() {
+		game.Post_Attack();
 	}
 
 	/**
@@ -135,22 +139,6 @@ public class Game_Controller {
 
 	}
 	
-	public void AI_Reinforcement(State_Game current_state) {
-		
-		game.AI_Reinforce(current_state); 
-	}
-	
-	public void AI_Attack(State_Game current_state) {
-		game.AI_Attack(current_state);
 
-	}
-	
-	public void AI_Post_Attack(State_Game current_state) {
-		game.AI_Post_Attack( current_state);
-	}
-	
-	public void AI_Fortification(State_Game current_state) {
-		game.AI_Fortify(current_state);
-	}
 
 }

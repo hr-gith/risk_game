@@ -2,7 +2,7 @@ package models;
 
 public class Reinforce_Model {
 	
-	public String to_territory = new String(); 
-	public Integer nb_armies = new Integer(0);
+	public String to_territory = ""; 
+	public int nb_armies = 0;
 
 }

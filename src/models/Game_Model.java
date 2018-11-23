@@ -1,5 +1,6 @@
 package models;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,8 +42,16 @@ public class Game_Model extends Observable {
 	/**
 	 * Controls the game logic for the game setup phase
 	 */
-	public boolean Setup(ArrayList<String> players_name) {
-		if (!players.Player_List_Setup(players_name, this)) return false;
+	public boolean Setup(ArrayList<AbstractMap.SimpleEntry<String,State_Player_Strategy>> player_list) {
+		if (!players.Player_List_Setup(player_list, this)) return false;
+		return this.Setup(players);		
+	}
+	
+	/**
+	 * Controls the game logic for the game setup phase
+	 */
+	public boolean Setup(Player_Collection player_list) {
+		if (player_list == null) return false;
 		if (players.Number_Of_Players() < Config.min_nb_players || players.Number_Of_Players() > Config.max_nb_players || map == null
 				|| map.Is_Empty() || (map.Get_Territories().size() < players.Number_Of_Players()))
 			return false;
@@ -58,6 +67,7 @@ public class Game_Model extends Observable {
 
 		return true;
 	}
+
 
 	/**
 	 * set the current player to the next player if there is another active player

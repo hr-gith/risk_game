@@ -3,6 +3,7 @@ package views;
 
 import java.util.Scanner;
 import controllers.Tournament_Controller;
+import models.State_Player_Strategy;
 
 
 public class Tournament_View {
@@ -23,7 +24,7 @@ public class Tournament_View {
 		System.out.println("\n 2. For Entering Number of Games at each Map");
 		System.out.println("\n 3. For Entering Your Players Strategies");
 		System.out.println("\n 4. For Entering Number of Turn at each Game");
-		System.out.println("\n 5. Back to The Main Menu");
+		System.out.println("\n 5. Exit ");
 		System.out.println("\n\n Please Enter Your Choice(1-5): ");
 
 		int result = Integer.valueOf(scanner.nextLine());
@@ -31,19 +32,21 @@ public class Tournament_View {
 	}
 
 	public void Setup_Tournament() {
-		scanner = new Scanner(System.in);
+		
 		int choice;
 
 		do {
 			choice = Display_Tournament_Menu();
 
 			switch (choice) {
+			
 			case 1:// Map Files between 1 to 5
+				scanner = new Scanner(System.in);
 				System.out.println("\n Enter Number of Map: ");
 				int map_number = Integer.valueOf(scanner.nextLine());
 				String map_path = "";
 
-				if (map_number < 0 && map_number > 5) {
+				if (map_number < 1 && map_number > 5) {
 					// msg to select between 1 to 5
 					return;
 				}
@@ -59,9 +62,10 @@ public class Tournament_View {
 				break;
 
 			case 2: // number of games to be played on each map between 1 to 5
+				scanner = new Scanner(System.in);
 				System.out.println("\n Enter Number of Game on each Map: ");
 				int game_number = Integer.valueOf(scanner.nextLine());
-				if (game_number < 0 && game_number > 5) {
+				if (game_number < 1 && game_number > 5) {
 					// msg to select between 1 to 5
 					return;
 				}
@@ -69,22 +73,30 @@ public class Tournament_View {
 				break;
 
 			case 3: // Player Strategies between 2 to 4
+				scanner = new Scanner(System.in);
 				System.out.println("\n Enter Number of Strategies: ");
 				int strategies_number = Integer.valueOf(scanner.nextLine());
-				if (strategies_number < 1 && strategies_number > 4) {
+				if (strategies_number < 2 && strategies_number > 4) {
 					// msg to select between 1 to 5
 					return;
 				}
 				for (int i = 0; i < strategies_number; i++) {
-					System.out.println("\n Enter Name of Strategies: ");
-					System.out.println("AGGRESSIVE, BENEVOLENT, RANDOM, CHEATER");
+					System.out.println("\n Enter player name: ");
+					String name = scanner.nextLine().toLowerCase();
+					System.out.println("\n Enter the player's Strategy(AGGRESSIVE, BENEVOLENT, RANDOM, CHEATER): ");					
 					String strategy = scanner.nextLine().toUpperCase();
-					// how to assign strategies that user select to payer
+					
+					if(State_Player_Strategy.values().equals(strategy)) {
+						tournament_controler.Add_Player(name, State_Player_Strategy.valueOf(strategy));//check if return false						
+					}else {
+						// msg for entering correct strategy
+					}
 				}
 
 				break;
 
 			case 4:// number of turn at each game 10 to 50
+				scanner = new Scanner(System.in);
 				System.out.println("\n Enter Number of Turn at each Game: ");
 				int turn_number = Integer.valueOf(scanner.nextLine());
 				if (turn_number < 10 && turn_number > 50) {
@@ -93,15 +105,14 @@ public class Tournament_View {
 				}
 				tournament_controler.max_nb_turn = turn_number;
 				break;
-
-			case 5: // return to main menu
-				break;
-
-			case 6:// Exit!
+				
+			case 5://Exit
+				System.exit(0);
 				break;
 
 			default:
-				
+				System.out.println("\n==================================");
+				System.out.println("\n\t Error! Please Enter Your Choice(1 to 5)");	
 				break;
 			}
 		} while (choice != 6);

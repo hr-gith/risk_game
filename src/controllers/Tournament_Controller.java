@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -7,11 +9,13 @@ import models.Game_Model;
 import models.Map_Helper;
 import models.Map_Model;
 import models.Player;
+import models.Player_Collection;
+import models.State_Player_Strategy;
 import views.Tournament_View;
 
 public class Tournament_Controller {
 	private Set<Map_Model> maps;
-	public Set<Player> players;
+	public Player_Collection player_list;
 	public int nb_game;
 	public int max_nb_turn;
 	public Game_Model game;
@@ -21,7 +25,7 @@ public class Tournament_Controller {
 	public Tournament_Controller() {
 		tournament_view = new Tournament_View(this);
 		maps = new HashSet<Map_Model>();
-		players = new HashSet<Player>();
+		player_list = new Player_Collection();
 	}
 	
 	public boolean Add_Map(String map_path) {
@@ -36,15 +40,23 @@ public class Tournament_Controller {
 		return false;		
 	}
 	
+	public boolean Add_Player(String name, State_Player_Strategy strategy) {
+		if (player_list.Number_Of_Players() < 6) {
+			player_list.Add_Player(name, strategy, game);
+			return true;		
+		}
+		return false;		
+	}
+	
 	public boolean Start() {
 		if (maps.size() >= 1 && maps.size() <= 5 && 
-				players.size() >= 2 &&  players.size() <= 4 &&
+				player_list.Number_Of_Players() >= 2 &&  player_list.Number_Of_Players() <= 4 &&
 				nb_game >= 1 && nb_game <= 5 &&
 				max_nb_turn >= 10 && max_nb_turn <= 50)
 		{
 			for(Map_Model map : maps) {
 				game = new Game_Model(map);
-				//game.Setup(players);
+				game.Setup(player_list);
 				//game.Start();
 			}			
 			return true;
