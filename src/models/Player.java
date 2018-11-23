@@ -21,6 +21,7 @@ public class Player {
 	public boolean deserve_card;
 	private Attack_Model attack_plan; 
 	public Behaviour behavior; 
+
 	
 	
 	
@@ -39,6 +40,7 @@ public class Player {
 		this.is_conquerer = false;
 		this.deserve_card = false;
 		Set_PlayerBehaviour(behaviour); 
+
 	}
 	
 	
