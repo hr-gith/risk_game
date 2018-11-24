@@ -108,6 +108,8 @@ public class Game_Controller {
 	 * @param all_out 
 	 */
 	public void Attack() {
+		
+		
 		game.Attack();
 	}
 

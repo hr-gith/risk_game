@@ -2,9 +2,21 @@ package models;
 
 public class Human implements Behaviour{
 
+	
+	public Player current_player;
+	
+
+	public Human(Player cp){
+		this.current_player = cp; 
+
+		
+	}
 
 	
 	public void Attack(){
+		
+		
+
 		
 	}
 	
@@ -20,4 +32,7 @@ public class Human implements Behaviour{
 		
 	}
 	
+	public void PlayCards(){
+		
+	}
 }

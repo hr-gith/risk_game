@@ -1,6 +1,8 @@
 package models;
 
 public interface Behaviour {
+	
+	public boolean continue_move = false; 
 
 	public Attack_Model am = new Attack_Model(); 
 	public Fortify_Model fm = new Fortify_Model(); 
@@ -12,6 +14,7 @@ public interface Behaviour {
 	public void Fortify();
 	public void Reinforce(); 
 	public void PostAttack(); 
+	public void PlayCards(); 
 		
 }
 	

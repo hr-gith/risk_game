@@ -14,12 +14,12 @@ enum State {
  * this class has the logic of a single attack from one territory to another
  */
 public class Attack_Model {
+	
+	
+	
 	public Player attacker;
 	public Player defender;
 	
-	public String from_territory;  //@hadi, can you update this class to use the string name rather than the territory class directly
-	public String to_territory; 
-
 	public Territory from;
 	public Territory to;
 
@@ -36,6 +36,8 @@ public class Attack_Model {
 	public int defender_loss;
 
 	String message;
+	public String to_territory;
+	public String from_territory;
 
 	/**
 	 * constructor of Attack_model without any argument
@@ -147,6 +149,10 @@ public class Attack_Model {
 	 * conquered territory to the attacker
 	 */
 	public void Apply_Result() {
+		
+		
+		
+		
 		from.nb_armies += attacker_loss;
 		to.nb_armies += defender_loss;
 		// check if attacked territory is defeated
@@ -193,5 +199,9 @@ public class Attack_Model {
 		}
 		return result;
 	}
+	
+	
+
+	
 
 }

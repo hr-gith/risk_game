@@ -67,7 +67,7 @@ public class Player {
 		switch(ps){
 		
 		case HUMAN: 			
-			behavior = new Human(); 
+			behavior = new Human(this); 
 			break;
 		case AGGRESSIVE: 			
 			behavior = new AI_Aggressive(this);		
@@ -278,6 +278,7 @@ public class Player {
     public Message_Handler Attack() {
     	
     	// calculate the attack model to pass to rest of function  	
+    	
     	
     	 behavior.Attack(); 		
 		 Message_Handler response = new Message_Handler(true);

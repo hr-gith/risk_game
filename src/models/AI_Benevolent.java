@@ -4,12 +4,13 @@ public class AI_Benevolent implements Behaviour{
 	
 	public Player current_player;
 
+
 	public AI_Benevolent(Player cp){
 		this.current_player = cp; 
 	}
 	
-	
 	public void Attack(){
+		
 		
 	}
 	
@@ -22,6 +23,10 @@ public class AI_Benevolent implements Behaviour{
 	}
 	
 	public void PostAttack(){
+		
+	}
+	
+	public void PlayCards(){
 		
 	}
 		

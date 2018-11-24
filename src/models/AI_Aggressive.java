@@ -1,17 +1,22 @@
 package models;
 
+import java.util.Map;
+
 public class AI_Aggressive implements Behaviour{
 
 	public Player current_player;
 
+
 	public AI_Aggressive(Player cp){
 		this.current_player = cp; 
+		
 	}
 	
 	
 	public void Attack(){
 		
 
+		
 		
 	}
 	
@@ -24,6 +29,10 @@ public class AI_Aggressive implements Behaviour{
 	}
 	
 	public void PostAttack(){
+		
+	}
+	
+	public void PlayCards(){
 		
 	}
 	
