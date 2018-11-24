@@ -67,19 +67,19 @@ public class Player {
 		switch(ps){
 		
 		case HUMAN: 			
-			behavior = new Human(this); 
+			behavior = new Human(this, ref_game); 
 			break;
 		case AGGRESSIVE: 			
-			behavior = new AI_Aggressive(this);		
+			behavior = new AI_Aggressive(this, ref_game);		
 			break; 			
 		case BENEVOLENT: 			
-			behavior = new AI_Benevolent(this); 			
+			behavior = new AI_Benevolent(this, ref_game); 			
 			break; 			
 		case RANDOM:			
-			behavior = new AI_Random(this);			
+			behavior = new AI_Random(this, ref_game);			
 			break; 			
 		case CHEATER: 
-			behavior = new AI_Cheater(this);			
+			behavior = new AI_Cheater(this, ref_game);			
 			break; 			
 		default: 
 			break;		

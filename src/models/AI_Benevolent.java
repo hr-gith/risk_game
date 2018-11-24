@@ -4,12 +4,22 @@ public class AI_Benevolent implements Behaviour{
 	
 	public Player current_player;
 
-
-	public AI_Benevolent(Player cp){
-		this.current_player = cp; 
-	}
+	Game_Model game; 
 	
+
+	public AI_Benevolent(Player cp, Game_Model game){
+		this.current_player = cp; 
+		this.game = game; 
+
+		
+	}
 	public void Attack(){
+		
+		Territory from = game.map.Get_Territory(this.am.from_territory);
+		Territory to = game.map.Get_Territory(this.am.to_territory);
+		Player defender = game.players.Search_Player(to.owner_name);
+
+		this.am.Attack_Model_Update(current_player, defender, from, to);
 		
 		
 	}

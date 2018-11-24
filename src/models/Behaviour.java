@@ -3,6 +3,7 @@ package models;
 public interface Behaviour {
 	
 	public boolean continue_move = false; 
+	
 
 	public Attack_Model am = new Attack_Model(); 
 	public Fortify_Model fm = new Fortify_Model(); 
