@@ -24,8 +24,9 @@ public class Test_Game_Model {
 	@BeforeClass public static void setUp(){
 		
 		for(int i = 0; i<number_of_players; i++){
-		
-		player_list.add(new Player(i,State_Player_Strategy.HUMAN,new Game_Model(new Map_Model())));
+		Game_Model game = Game_Model.Get_Game();
+		game.map = new Map_Model();
+		player_list.add(new Player(i,State_Player_Strategy.HUMAN,game));
 		
 		}
 	}

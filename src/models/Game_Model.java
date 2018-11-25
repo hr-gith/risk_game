@@ -15,6 +15,7 @@ import utilities.Config;
  */
 public class Game_Model extends Observable {
 
+	private static Game_Model game;
 	public Map_Model map;
 	public Attack_Model attack_plan;
 	public Player_Collection players;
@@ -23,11 +24,17 @@ public class Game_Model extends Observable {
 	public State_Game current_state;
 	public String message;
 
-	public Game_Model(Map_Model map) {
-		this.map = map;
+	private Game_Model() {
+		this.map = null;
 		message = "";
 		players = new Player_Collection();//ArrayList<Player>();
 		current_state = State_Game.SETUP;
+	}
+	
+	public static Game_Model Get_Game() {
+		if (game != null)
+			return game;
+		return new Game_Model();
 	}
 
 	/**

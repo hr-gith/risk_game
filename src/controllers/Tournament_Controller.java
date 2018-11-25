@@ -11,6 +11,12 @@ import models.Map_Model;
 import models.Player;
 import models.Player_Collection;
 import models.State_Player_Strategy;
+import views.Card_View;
+import views.Console_View;
+import views.Game_View;
+import views.Map_View;
+import views.Phase_View;
+import views.Players_World_Domination_View;
 import views.Tournament_View;
 
 public class Tournament_Controller {
@@ -19,14 +25,39 @@ public class Tournament_Controller {
 	public int nb_game;
 	public int max_nb_turn;
 	public Game_Model game;
-	public Tournament_View tournament_view;
 	public Map_Helper map_helper;
+	
+	public Game_View game_view;
+	public Tournament_View tournament_view;
+	public Map_View map_view;
+	public Phase_View phase_view;
+	public Players_World_Domination_View players_world_domination_view;
+	public Card_View card_view;
 
 	public Tournament_Controller() {
-		tournament_view = new Tournament_View(this);
+		game = Game_Model.Get_Game();
 		maps = new HashSet<Map_Model>();
 		player_list = new ArrayList<AbstractMap.SimpleEntry<String,State_Player_Strategy>>();
 		map_helper = new Map_Helper();
+		
+		//set views
+		tournament_view = new Tournament_View(this);
+
+		map_view = new Map_View();
+		game.addObserver(map_view);
+
+		game_view = new Game_View(true);
+		game.addObserver(game_view);
+		
+		phase_view = new Phase_View();
+		game.addObserver(phase_view);
+
+		card_view = new Card_View();
+		game.addObserver(card_view);
+
+		players_world_domination_view = new Players_World_Domination_View();
+		game.addObserver(players_world_domination_view);
+
 	}
 	
 	public boolean Add_Map(String map_name) {
@@ -62,7 +93,7 @@ public class Tournament_Controller {
 		{
 			for(Map_Model map : maps) {
 				for (int i = 0; i < this.nb_game; i++) {
-					game = new Game_Model(map);
+					game.map = map;
 					game.Setup(player_list);
 					System.out.println("End of game "+ (i+1)+ " for "+ map.name +" map");
 					Thread.sleep(1000);

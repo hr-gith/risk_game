@@ -14,7 +14,7 @@ import utilities.Config;
  */
 public class Attack_ModelTest {
 	Map_Model map =new Map_Model();
-	Game_Model game_model1 = new Game_Model(map);
+	Game_Model game_model1 = Game_Model.Get_Game();
 	Player attacker = new Player(0,State_Player_Strategy.HUMAN, game_model1);
 	Player defender = new Player(1,State_Player_Strategy.HUMAN, game_model1);
 	Territory from;
@@ -25,6 +25,7 @@ public class Attack_ModelTest {
 	 */
 	@Before
 	public void Set_Attack_Plan() {
+		game_model1.map = map;
 		Continent new_continent = new Continent("new_continent_name", 1);
 		map.Add_Continent(new_continent);
 

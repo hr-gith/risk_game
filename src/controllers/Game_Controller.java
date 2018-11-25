@@ -33,7 +33,8 @@ public class Game_Controller {
 	 * constructor for initiate the game and adding observers to the game
 	 */
 	public Game_Controller(Map_Model map) {
-		game = new Game_Model(map);
+		game = Game_Model.Get_Game();
+		game.map = map;
 
 		console_view = new Console_View(this);
 		game.addObserver(console_view);

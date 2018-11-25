@@ -17,9 +17,6 @@ import models.Map_Model;
 public class Game_View extends View {
 
 	private Map_Model map;
-	private Map_View map_view;
-	private Phase_View phase_view;
-	private Players_World_Domination_View pwd_view;
 
 	JFrame jFrame;
 	JPanel mainPanel;

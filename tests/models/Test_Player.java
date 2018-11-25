@@ -13,8 +13,8 @@ import models.Territory;
  *
  */
 public class Test_Player {
-	
-	static Player testPlayer = new Player(0,State_Player_Strategy.HUMAN,new Game_Model(new Map_Model())); 
+	static Game_Model game = Game_Model.Get_Game();
+	static Player testPlayer = new Player(0,State_Player_Strategy.HUMAN,game); 
 	static Integer number_territories = 14; 
 	static int number_armies;  
 	Territory temp_territory; 
@@ -23,7 +23,7 @@ public class Test_Player {
 	 * this method assign value to members before the test began
 	 */
 	@Before public void setUp(){
-		
+		game.map =  new Map_Model();
 		for(int i = 0; i< number_territories; i++){
 			Territory new_territory= new Territory(i, "Territory" + i, 0, 0, "");
 			testPlayer.Add_Territory(new_territory);		   	
