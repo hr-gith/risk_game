@@ -14,7 +14,7 @@ import models.Territory;
  */
 public class Test_Player {
 	
-	static Player testPlayer = new Player(0,new Game_Model(new Map_Model())); 
+	static Player testPlayer = new Player(0,State_Player_Strategy.HUMAN,new Game_Model(new Map_Model())); 
 	static Integer number_territories = 14; 
 	static int number_armies;  
 	Territory temp_territory; 

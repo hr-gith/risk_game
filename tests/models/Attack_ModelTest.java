@@ -15,8 +15,8 @@ import utilities.Config;
 public class Attack_ModelTest {
 	Map_Model map =new Map_Model();
 	Game_Model game_model1 = new Game_Model(map);
-	Player attacker = new Player(0, game_model1);
-	Player defender = new Player(1, game_model1);
+	Player attacker = new Player(0,State_Player_Strategy.HUMAN, game_model1);
+	Player defender = new Player(1,State_Player_Strategy.HUMAN, game_model1);
 	Territory from;
 	Territory to;
 
@@ -51,7 +51,7 @@ public class Attack_ModelTest {
 	@Test
 	public void testIs_Valid_Attack() {
 
-		Attack_Model attack_model = new Attack_Model(attacker, defender, from, to, 3, false);
+		Attack_Model attack_model = new Attack_Model();
 		Assert.assertTrue(attack_model.Is_Valid_Attack());
 	}
 
@@ -60,7 +60,7 @@ public class Attack_ModelTest {
 	 */
 	@Test
 	public void testGet_Max_NB_Dices() {
-		Attack_Model attack_model = new Attack_Model(attacker, defender, from, to, 3, false);
+		Attack_Model attack_model = new Attack_Model();
 		Assert.assertEquals(3, attack_model.Get_Max_NB_Dices(from, true));
 	}
 
