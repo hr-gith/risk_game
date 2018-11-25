@@ -3,7 +3,6 @@ package models;
 public class AI_Aggressive implements Behaviour{
 
 	public Player current_player;
-	
 
 	public boolean continue_move; 
 	Game_Model game; 
@@ -14,11 +13,14 @@ public class AI_Aggressive implements Behaviour{
 	public AI_Aggressive(Player cp, Game_Model game){
 		this.current_player = cp; 
 		this.game = game; 
+
 	}
 	
 	public void Attack(){
 		
+
 		int units = 0; 
+
 		
 		//find territory with most units 
 		for(String str : current_player.owned_territories.keySet()){
@@ -135,5 +137,7 @@ public class AI_Aggressive implements Behaviour{
 		current_player.reinforcements = current_player.reinforcements
 				+ current_player.cards.Get_Card_Reinforcement_Qty();
 	}
+	
+	
 	
 }

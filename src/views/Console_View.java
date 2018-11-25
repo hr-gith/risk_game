@@ -188,10 +188,12 @@ public class Console_View implements Observer {
 		
 		else{
 			// Does AI only attack once? 
+
 			if(current_player.behavior.am.continue_attack){
 				game_controller.Attack();
 			}else{
 				current_player.behavior.am.continue_attack = true; 
+
 				game_controller.Move_To_Next_Phase();
 			}
 			
@@ -250,10 +252,12 @@ public class Console_View implements Observer {
 		else{
 			
 			//AI does single move
+
 			if(current_player.behavior.fm.continue_fortify){
 				game_controller.Fortification(); 
 			}else{
 				current_player.behavior.fm.continue_fortify = true; 
+
 				game_controller.Move_To_Next_Phase();
 			}
 		}

@@ -2,6 +2,7 @@ package models;
 
 public interface Behaviour {
 
+
 	public Attack_Model am = new Attack_Model(); 
 	public Fortify_Model fm = new Fortify_Model(); 
 	public Reinforce_Model rm = new Reinforce_Model(); 
@@ -12,6 +13,7 @@ public interface Behaviour {
 	public void Fortify();
 	public void Reinforce(); 
 	public void PostAttack(); 
+	public void PlayCards(); 
 		
 }
 	

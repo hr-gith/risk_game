@@ -62,6 +62,8 @@ public class Phase_View extends View {
 		jLabel3.setBounds(0, 40, 200, 50);
 		jPanel.add(jLabel3);
 
+		
+		
 	}
 
 	/**

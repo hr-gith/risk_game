@@ -70,8 +70,8 @@ public class Game_Controller {
 		//		game_view.Draw_Window();
 		//		game_view.Add_Panel(map_view.jPanel, 1);
 
+
 		ArrayList<AbstractMap.SimpleEntry<String,State_Player_Strategy>> players_name = console_view.Display_Menu_Players();
-		
 		game.Setup(players_name);
 			/*
 			 * if (game.Setup()) { this.Start_Up_Reinforcement();
@@ -109,6 +109,7 @@ public class Game_Controller {
 	 * @param all_out 
 	 */
 	public void Attack() {
+
 		game.Attack();
 	}
 
@@ -139,6 +140,5 @@ public class Game_Controller {
 
 	}
 	
-
 
 }

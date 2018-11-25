@@ -5,24 +5,29 @@ public class AI_Benevolent implements Behaviour{
 public Player current_player;
 	
 
+
 	public boolean continue_move; 
 	Game_Model game; 
 	
 	String territory_min = ""; 
+
 	
 
 	public AI_Benevolent(Player cp, Game_Model game){
 		this.current_player = cp; 
 		this.game = game; 
+
 	}
-	
+
 	public void Attack(){
 		
+
 
 		
 		
 				this.am.continue_attack = false; 
 			
+
 		
 	}
 	
@@ -65,9 +70,10 @@ public Player current_player;
 	
 	public void PostAttack(){
 		
-		
-		
+
 	}
+	
+
 	
 	public void PlayCards(){
 		String[] tmpCards = new String[3];

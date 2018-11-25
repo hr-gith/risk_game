@@ -19,6 +19,7 @@ public class Player {
 	public Cards cards; 
 	public boolean is_conquerer;
 	public boolean deserve_card;
+
 	public Behaviour behavior; 
 
 	

@@ -38,7 +38,9 @@ public class Attack_Model {
 	String message;
 	public String to_territory;
 	public String from_territory;
+
 	public boolean continue_attack = false;
+
 
 	/**
 	 * constructor of Attack_model without any argument
