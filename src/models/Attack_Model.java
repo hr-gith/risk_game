@@ -150,10 +150,7 @@ public class Attack_Model {
 	 * Apply result of a single battle to armies of attacker and defender assign the
 	 * conquered territory to the attacker
 	 */
-	public void Apply_Result() {
-		
-		
-		
+	public void Apply_Result() {	
 		
 		from.nb_armies += attacker_loss;
 		to.nb_armies += defender_loss;

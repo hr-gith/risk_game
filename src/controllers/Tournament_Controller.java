@@ -42,22 +42,6 @@ public class Tournament_Controller {
 		
 		//set views
 		tournament_view = new Tournament_View(this);
-
-		map_view = new Map_View();
-		game.addObserver(map_view);
-
-		game_view = new Game_View(true);
-		game.addObserver(game_view);
-		
-		phase_view = new Phase_View();
-		game.addObserver(phase_view);
-
-		card_view = new Card_View();
-		game.addObserver(card_view);
-
-		players_world_domination_view = new Players_World_Domination_View();
-		game.addObserver(players_world_domination_view);
-
 	}
 	
 	public boolean Add_Map(String map_name) {
@@ -93,8 +77,10 @@ public class Tournament_Controller {
 		{
 			for(Map_Model map : maps) {
 				for (int i = 0; i < this.nb_game; i++) {
-					game.map = map;
-					game.Setup(player_list);
+					//game.map = map;
+					//game.Setup(player_list);
+					Game_Controller game_ctrl = new Game_Controller(map);
+					game_ctrl.Start(player_list);
 					System.out.println("End of game "+ (i+1)+ " for "+ map.name +" map");
 					Thread.sleep(1000);
 				}
@@ -105,5 +91,15 @@ public class Tournament_Controller {
 			return false;
 	}
 	
+	/**
+	 * this method for calling ReDraw method for  view classes
+	 */
+	public void RedrawViews() {
 
+		map_view.Redraw();
+		phase_view.Redraw();
+		card_view.Redraw();
+		players_world_domination_view.Redraw();
+
+	}
 }

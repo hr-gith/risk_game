@@ -131,31 +131,31 @@ public class Tournament_View {
 
 									System.out.println(
 											"\n Enter the player's Strategy(AGGRESSIVE, BENEVOLENT, RANDOM, CHEATER): ");
-									String strategy = scanner.nextLine().trim().toUpperCase();
+									String strategy = scanner.nextLine().trim().toUpperCase();									
 									
-									if (!State_Player_Strategy.values().equals(strategy)) {
+									/*if (!State_Player_Strategy.values().equals(strategy)) {
 										System.out.println("\n==================================");
 										System.out.println("\n\t Please enter correct strategy ");
 										System.out.println("\n==================================");
 										System.out.println("\n\t Do you want to try again(y,n):");
 										new_strategy_input = scanner.nextLine().toLowerCase();
-									}else {
+									}else {*/
 										add_player_result = tournament_controler.Add_Player(name,State_Player_Strategy.valueOf(strategy));
 										
 										if (add_player_result != true) {
 											
 											System.out.println("\n==================================");
-											System.out.println("\n\t Player does not add successfully ");
+											System.out.println("\n\tError: Failed to add the player! ");
 											System.out.println("\n==================================");
 											System.out.println("\n\t Do you want to try again(y,n):");
 											new_strategy_input = scanner.nextLine().toLowerCase();
 											
 										}else {
 											System.out.println("\n==================================");
-											System.out.println("\n\t Player does not add successfully ");
+											System.out.println("\n\t Player is added successfully ");
 											new_strategy_input ="n";
 										}
-									}
+									//}
 									
 								}while(new_strategy_input.equals("y"));	
 							}

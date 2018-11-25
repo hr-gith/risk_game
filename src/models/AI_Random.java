@@ -6,7 +6,7 @@ import java.util.Set;
 public class AI_Random implements Behaviour{
 
 	public Player current_player;
-
+	private Random rand = new Random(); 
 	public boolean continue_move; 
 	Game_Model game; 
 	
@@ -20,13 +20,7 @@ public class AI_Random implements Behaviour{
 	}
 	
 	public void Attack(){
-		
-		
-		Random r = new Random(); 
-
-		int units = 0; 
-
-		
+		int units = 0; 		
 		//find territory with most units 
 		for(String str : current_player.owned_territories.keySet()){
 			
@@ -46,24 +40,18 @@ public class AI_Random implements Behaviour{
 				this.am.from_territory = territory_max; 
 				this.am.to_territory = str; 
 				this.am.all_out = false; 
-				
-				
-//				if(r.nextInt(current_player.owned_territories.get(territory_max).adj.get(str).nb_armies) > (current_player.owned_territories.get(territory_max).adj.get(str).nb_armies)/3){
-				if(r.nextBoolean()){
-				this.am.continue_attack  = true; 
-				}
-				this.am.attacker_nb_dices = r.nextInt(4); // TODO: select dice according to rules
-				
 				Territory from = game.map.Get_Territory(this.am.from_territory);
 				Territory to = game.map.Get_Territory(this.am.to_territory);
 				Player defender = game.players.Search_Player(to.owner_name);
-
-				this.am.Attack_Model_Update(current_player, defender, from, to);
 				
+//				if(r.nextInt(current_player.owned_territories.get(territory_max).adj.get(str).nb_armies) > (current_player.owned_territories.get(territory_max).adj.get(str).nb_armies)/3){
+				if(rand.nextBoolean()){
+					this.am.continue_attack  = true; 
+				}
+				this.am.attacker_nb_dices = this.Get_Random_Int(1,this.am.Get_Max_NB_Dices(from, true)); 	
 				
-					
-				break; 
-				
+				this.am.Attack_Model_Update(current_player, defender, from, to);					
+				break; 				
 			}
 			else {
 				this.am.continue_attack = false; 
@@ -93,40 +81,19 @@ public class AI_Random implements Behaviour{
 	public void Reinforce(){
 		
 		while(game.current_state == State_Game.REINFORCEMENT && current_player.cards.Is_Set_Available()){
-			
 				this.PlayCards();
-			
 		}
-		
-	
 		//find territory with most units 
 		String[] territory_array  = current_player.owned_territories.keySet().toArray(new String[current_player.owned_territories.size()]); 
-		
-		
-			
-		Random r = new Random(); 
-		
-		int random_element= r.nextInt(current_player.owned_territories.size()); 
-		
-			
-		
+					
+		int random_element= this.Get_Random_Int(0,current_player.owned_territories.size() - 1);
 		current_player.behavior.rm.to_territory = territory_array[random_element]; 
 		current_player.behavior.rm.nb_armies = current_player.reinforcements; 
-
-		
-		
 	}
 	
 	public void PostAttack(){
-		
-		Random r = new Random(); 
-		
-		int random_num_armies= r.nextInt(this.current_player.owned_territories.get(this.am.from_territory).nb_armies ); 
-		
-		
-		this.pm.nb_armies =  random_num_armies;
-		
-		
+		int random_num_armies= this.Get_Random_Int(1, this.current_player.owned_territories.get(this.am.from_territory).nb_armies -1); 
+		this.pm.nb_armies =  random_num_armies;			
 	}
 	
 	public void PlayCards(){
@@ -153,5 +120,12 @@ public class AI_Random implements Behaviour{
 				+ current_player.cards.Get_Card_Reinforcement_Qty();
 	}
 	
+	private int Get_Random_Int(int min, int max) {
+		if (min < max)
+			return min + rand.nextInt(max);
+		else if (min == max)
+			return min;
+		else return 0;
+	}	
 	
 }

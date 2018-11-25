@@ -63,24 +63,12 @@ public class Game_Controller {
 	 * method for starting game 
 	 */
 	public void Start() {
-
-		// map_view.Draw_Map(game.map);
-		// game_view.Add_Panel(map_view.jPanel, 1);
-		// game_view.Redraw();
-		
-		//		game_view.Draw_Window();
-		//		game_view.Add_Panel(map_view.jPanel, 1);
-
-
 		ArrayList<AbstractMap.SimpleEntry<String,State_Player_Strategy>> players_name = console_view.Display_Menu_Players();
+		this.Start(players_name);
+	}
+	
+	public void Start(ArrayList<AbstractMap.SimpleEntry<String,State_Player_Strategy>> players_name) {
 		game.Setup(players_name);
-			/*
-			 * if (game.Setup()) { this.Start_Up_Reinforcement();
-			 * while(!game.Is_Game_Over()) { game.Play(); }
-			 * game_view.Display_Winner(game.current_player.name); } else { //TODO: display
-			 * error message }
-			 */
-
 	}
 
 	/**

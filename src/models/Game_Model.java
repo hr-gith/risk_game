@@ -264,9 +264,6 @@ public class Game_Model extends Observable {
 	public void Attack() {
 		
 		// from to defender 
-
-	
-
 //		this.attack_plan = new Attack_Model(current_player, defender, from, to, nb_dice, all_out);
 		Message_Handler response = current_player.Attack();
 		State_Game new_state = current_state;
@@ -276,10 +273,7 @@ public class Game_Model extends Observable {
 				new_state = State_Game.OVER;
 			} else if (current_player.is_conquerer) {
 				new_state = State_Game.POST_ATTACK;
-
 				message = "You've conquered a new territoy!!!";
-
-
 			} else {
 				Can_Attack();
 				return;
@@ -291,16 +285,10 @@ public class Game_Model extends Observable {
 		Update_State(new_state, message);
 	}
 	
-	
-	
-	
-
 	public void Reinforce() {
-		
 		
 		Message_Handler response = current_player.Reinforce();
 		State_Game new_state = current_state;
-
 		
 		if (response.ok) {
 			if (current_state == State_Game.STARTUP) {
