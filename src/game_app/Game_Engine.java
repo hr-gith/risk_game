@@ -35,7 +35,7 @@ public class Game_Engine {
 				break;
 			case 5: //Tournament
 				Tournament_Controller tournament_controler = new Tournament_Controller();
-				tournament_controler.tournament_view.Display_Tournament_Menu();
+				tournament_controler.Setup();
 
 				break;
 			case 6://Exit

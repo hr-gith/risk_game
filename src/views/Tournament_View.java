@@ -20,12 +20,13 @@ public class Tournament_View {
 		System.out.println("\n==================================");
 		System.out.println("\n\t Tournament Mode");
 		System.out.println("\n==================================");
-		System.out.println("\n 1. For Entering Number of Maps");
+		System.out.println("\n 1. For Entering Maps");
 		System.out.println("\n 2. For Entering Number of Games at each Map");
 		System.out.println("\n 3. For Entering Your Players Strategies");
 		System.out.println("\n 4. For Entering Number of Turn at each Game");
-		System.out.println("\n 5. Exit ");
-		System.out.println("\n\n Please Enter Your Choice(1-5): ");
+		System.out.println("\n 5. Start tournament ");
+		System.out.println("\n 6. Back to main menu ");
+		System.out.println("\n\n Please Enter Your Choice(1-6): ");
 
 		int result = Integer.valueOf(scanner.nextLine());
 		return result;
@@ -44,7 +45,7 @@ public class Tournament_View {
 				scanner = new Scanner(System.in);
 				System.out.println("\n Enter Number of Map: ");
 				int map_number = Integer.valueOf(scanner.nextLine());
-				String map_path = "";
+				String map_name = "";
 
 				if (map_number < 1 && map_number > 5) {
 					// msg to select between 1 to 5
@@ -52,11 +53,9 @@ public class Tournament_View {
 				}
 
 				for (int i = 0; i < map_number; i++) {
-					System.out.println("\n Enter address of your Map: ");
-					map_path = scanner.nextLine();
-					tournament_controler.Add_Map(map_path);
-					// do I check for result of adding map?
-
+					System.out.println("\nMap"+(i+1)+": Enter the Name: ");
+					map_name = scanner.nextLine();
+					tournament_controler.Add_Map(map_name);
 				}
 
 				break;
@@ -74,7 +73,7 @@ public class Tournament_View {
 
 			case 3: // Player Strategies between 2 to 4
 				scanner = new Scanner(System.in);
-				System.out.println("\n Enter Number of Strategies: ");
+				System.out.println("\n Enter Number of Players: ");
 				int strategies_number = Integer.valueOf(scanner.nextLine());
 				if (strategies_number < 2 && strategies_number > 4) {
 					// msg to select between 1 to 5
@@ -84,13 +83,13 @@ public class Tournament_View {
 					System.out.println("\n Enter player name: ");
 					String name = scanner.nextLine().toLowerCase();
 					System.out.println("\n Enter the player's Strategy(AGGRESSIVE, BENEVOLENT, RANDOM, CHEATER): ");					
-					String strategy = scanner.nextLine().toUpperCase();
+					String strategy = scanner.nextLine().trim().toUpperCase();
 					
-					if(State_Player_Strategy.values().equals(strategy)) {
+					//if(State_Player_Strategy.values().equals(strategy)) {
 						tournament_controler.Add_Player(name, State_Player_Strategy.valueOf(strategy));//check if return false						
-					}else {
+					//}else {
 						// msg for entering correct strategy
-					}
+					//}
 				}
 
 				break;
@@ -106,19 +105,24 @@ public class Tournament_View {
 				tournament_controler.max_nb_turn = turn_number;
 				break;
 				
-			case 5://Exit
-				System.exit(0);
+			case 5://Start tournament
+				try {
+					if (!this.tournament_controler.Start())
+						System.out.println("Error: Tournament can not be started...");
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				break;
+
+			case 6://Back to main menu
 				break;
 
 			default:
 				System.out.println("\n==================================");
-				System.out.println("\n\t Error! Please Enter Your Choice(1 to 5)");	
+				System.out.println("\n\t Error! Please Enter Your Choice(1 to 6)");	
 				break;
 			}
 		} while (choice != 6);
-
-		// TODO: get data for tournament
-
 	}
 
 }

@@ -27,7 +27,10 @@ public class Map_Helper {
 		if (map_text.isEmpty())
 			return map;
 		map = new Map_Model();
-
+		//set map's name
+		map.name = path.substring(path.lastIndexOf('\\') + 1);
+		map.name = map.name.substring(0, map.name.lastIndexOf('.'));
+		//read from file
 		int line_map = map_text.indexOf("[Map]");
 		int line_continents = map_text.indexOf("[Continents]");
 		int line_territories = map_text.indexOf("[Territories]");

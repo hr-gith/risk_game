@@ -50,7 +50,7 @@ public class Game_Model extends Observable {
 	/**
 	 * Controls the game logic for the game setup phase
 	 */
-	public boolean Setup(Player_Collection player_list) {
+	private boolean Setup(Player_Collection player_list) {
 		if (player_list == null) return false;
 		if (players.Number_Of_Players() < Config.min_nb_players || players.Number_Of_Players() > Config.max_nb_players || map == null
 				|| map.Is_Empty() || (map.Get_Territories().size() < players.Number_Of_Players()))

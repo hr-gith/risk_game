@@ -10,6 +10,7 @@ import java.util.Objects;
  */
 
 public class Map_Model {
+	public String name;
 	public String image;
 	public boolean wrap;
 	public String scroll;
