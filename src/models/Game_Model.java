@@ -23,12 +23,16 @@ public class Game_Model extends Observable {
 
 	public State_Game current_state;
 	public String message;
+	
+	public int max_nb_turns;
+	public int turns_counter;
 
 	private Game_Model() {
 		this.map = null;
 		message = "";
 		players = new Player_Collection();//ArrayList<Player>();
 		current_state = State_Game.SETUP;
+		max_nb_turns = Integer.MAX_VALUE;
 	}
 	
 	public static Game_Model Get_Game() {
@@ -43,9 +47,21 @@ public class Game_Model extends Observable {
 	 * @return boolean
 	 */
 	public Boolean Is_Game_Over() {
-		return (players.Get_Next_Player(current_player) == null);
+		if (players.Get_Next_Player(current_player) != null)
+			return false;
+		this.current_state = State_Game.OVER;
+		this.message = current_player.name + " is the winner";
+		return true;
 	}	
-
+	
+	public Boolean Is_Game_Draw() {
+		if (turns_counter < this.max_nb_turns)
+			return false;
+		this.current_state = State_Game.DRAW;
+		this.message = "End of the Game: DRAW";
+		return true;
+	}
+	
 	/**
 	 * Controls the game logic for the game setup phase
 	 */
@@ -123,14 +139,17 @@ public class Game_Model extends Observable {
 			Update_State(State_Game.FORTIFICATION, "");
 		}
 		else if (current_state == State_Game.FORTIFICATION) {
-			Player next_player = players.Get_Next_Player(current_player);
-			if (next_player != null) {
+			turns_counter ++;
+			if (!Is_Game_Over() && !Is_Game_Draw()) {
+				Player next_player = players.Get_Next_Player(current_player);
 				current_player = next_player;
 				current_player.Set_Number_Territory_Reinforcements();
 				Update_State(State_Game.REINFORCEMENT, "");
-			} else
-				Update_State(State_Game.OVER, current_player.name + " is the winner");
-		}
+			}
+			else {
+				Update_State(this.current_state, this.message);
+			}
+		}			
 	}
 
 	/**

@@ -197,12 +197,7 @@ public class Console_View implements Observer {
 				game_controller.Move_To_Next_Phase();
 			}
 			
-		}
-		
-		
-		
-
-		
+		}		
 	}
 
     public void Display_Menu_Post_Attack(){
@@ -274,13 +269,7 @@ public class Console_View implements Observer {
 	}
 
 	public void Update_Menu() {
-
-
-		
 		switch (current_state) {
-
-
-			
 		case SETUP:
 			// modify the game_controller setup phase to go here
 			break;
@@ -315,10 +304,11 @@ public class Console_View implements Observer {
 			game_controller.card_view.jPanel.setVisible(false);
     		Display_Winner(current_player.name + " is the winner!!\n Game Over" );
     		break;
-
-		}
-	
-
+		case DRAW:
+			game_controller.card_view.jPanel.setVisible(false);
+    		System.out.println(this.message);
+    		break;
+    	}
 		game_controller.RedrawViews();
 	}
 

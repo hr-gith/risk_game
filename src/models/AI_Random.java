@@ -92,7 +92,7 @@ public class AI_Random implements Behaviour{
 	}
 	
 	public void PostAttack(){
-		int random_num_armies= this.Get_Random_Int(1, this.current_player.owned_territories.get(this.am.from_territory).nb_armies -1); 
+		int random_num_armies= this.Get_Random_Int(1, this.am.from.nb_armies -1); 
 		this.pm.nb_armies =  random_num_armies;			
 	}
 	

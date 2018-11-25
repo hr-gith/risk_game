@@ -77,9 +77,8 @@ public class Tournament_Controller {
 		{
 			for(Map_Model map : maps) {
 				for (int i = 0; i < this.nb_game; i++) {
-					//game.map = map;
-					//game.Setup(player_list);
 					Game_Controller game_ctrl = new Game_Controller(map);
+					game_ctrl.game.max_nb_turns = this.max_nb_turn;
 					game_ctrl.Start(player_list);
 					System.out.println("End of game "+ (i+1)+ " for "+ map.name +" map");
 					Thread.sleep(1000);
@@ -89,17 +88,6 @@ public class Tournament_Controller {
 		}
 		else
 			return false;
-	}
+	}	
 	
-	/**
-	 * this method for calling ReDraw method for  view classes
-	 */
-	public void RedrawViews() {
-
-		map_view.Redraw();
-		phase_view.Redraw();
-		card_view.Redraw();
-		players_world_domination_view.Redraw();
-
-	}
 }
