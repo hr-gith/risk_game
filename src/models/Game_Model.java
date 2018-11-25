@@ -268,7 +268,7 @@ public class Game_Model extends Observable {
 				new_state = State_Game.OVER;
 			} else if (current_player.is_conquerer) {
 				new_state = State_Game.POST_ATTACK;
-				message = "You've conquered " + attack_plan.to.name + " territoy";
+				message = "You've conquered a new territoy";
 			} else {
 				Can_Attack();
 				return;

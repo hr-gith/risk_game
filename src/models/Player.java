@@ -19,7 +19,6 @@ public class Player {
 	public Cards cards; 
 	public boolean is_conquerer;
 	public boolean deserve_card;
-	private Attack_Model attack_plan; 
 	public Behaviour behavior; 
 
 	
@@ -67,19 +66,19 @@ public class Player {
 		switch(ps){
 		
 		case HUMAN: 			
-			behavior = new Human(); 
+			behavior = new Human(this, ref_game); 
 			break;
 		case AGGRESSIVE: 			
-			behavior = new AI_Aggressive(this);		
+			behavior = new AI_Aggressive(this, ref_game);		
 			break; 			
 		case BENEVOLENT: 			
-			behavior = new AI_Benevolent(this); 			
+			behavior = new AI_Benevolent(this, ref_game); 			
 			break; 			
 		case RANDOM:			
-			behavior = new AI_Random(this);			
+			behavior = new AI_Random(this, ref_game);			
 			break; 			
 		case CHEATER: 
-			behavior = new AI_Cheater(this);			
+			behavior = new AI_Cheater(this, ref_game);			
 			break; 			
 		default: 
 			break;		
@@ -278,6 +277,7 @@ public class Player {
     public Message_Handler Attack() {
     	
     	// calculate the attack model to pass to rest of function  	
+    	
     	
     	 behavior.Attack(); 		
 		 Message_Handler response = new Message_Handler(true);

@@ -169,12 +169,11 @@ public class Console_View implements Observer {
 			System.out.println("Enter a territory to attack: ");
 			current_player.behavior.am.to_territory = scanner.nextLine();
 			
-			//map from string to territory and then set territory in am inside of player 
-			
 
 			System.out.println("Would you like to play in all out mode(y/n)? ");
 			answer = scanner.nextLine();
 			current_player.behavior.am.all_out = (answer.equalsIgnoreCase("y"));
+			
 			
 			if (!current_player.behavior.am.all_out) {
 				System.out.println("Enter number of dices: ");
@@ -189,8 +188,12 @@ public class Console_View implements Observer {
 		
 		else{
 			// Does AI only attack once? 
-			game_controller.Attack();
-			game_controller.Move_To_Next_Phase();
+			if(current_player.behavior.am.continue_attack){
+				game_controller.Attack();
+			}else{
+				current_player.behavior.am.continue_attack = true; 
+				game_controller.Move_To_Next_Phase();
+			}
 			
 		}
 		
@@ -247,8 +250,12 @@ public class Console_View implements Observer {
 		else{
 			
 			//AI does single move
-			game_controller.Fortification(); 
-			game_controller.Move_To_Next_Phase();
+			if(current_player.behavior.fm.continue_fortify){
+				game_controller.Fortification(); 
+			}else{
+				current_player.behavior.fm.continue_fortify = true; 
+				game_controller.Move_To_Next_Phase();
+			}
 		}
 
 	}

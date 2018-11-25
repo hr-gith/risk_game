@@ -14,12 +14,12 @@ enum State {
  * this class has the logic of a single attack from one territory to another
  */
 public class Attack_Model {
+	
+	
+	
 	public Player attacker;
 	public Player defender;
 	
-	public String from_territory;  //@hadi, can you update this class to use the string name rather than the territory class directly
-	public String to_territory; 
-
 	public Territory from;
 	public Territory to;
 
@@ -36,6 +36,9 @@ public class Attack_Model {
 	public int defender_loss;
 
 	String message;
+	public String to_territory;
+	public String from_territory;
+	public boolean continue_attack = false;
 
 	/**
 	 * constructor of Attack_model without any argument
@@ -61,20 +64,19 @@ public class Attack_Model {
 	 * @param all_out
 	 *            whether attacker chose All_out mode or not
 	 */
-	public Attack_Model(Player attacker, Player defender, Territory from, Territory to, int attacker_nb_dices,
-			boolean all_out) {
+	public void Attack_Model_Update(Player attacker, Player defender, Territory from, Territory to) {
 		current_state = State.NONE;
 		message = "";
 		this.attacker = attacker;
 		this.defender = defender;
 		this.from = from;
 		this.to = to;
-		this.all_out = all_out;
+
 
 		if (all_out) {
 			Set_Max_NB_Dices();
 		} else {
-			this.attacker_nb_dices = attacker_nb_dices;
+			
 			this.defender_nb_dices = Get_Max_NB_Dices(to, false);
 		}
 	}
@@ -147,6 +149,10 @@ public class Attack_Model {
 	 * conquered territory to the attacker
 	 */
 	public void Apply_Result() {
+		
+		
+		
+		
 		from.nb_armies += attacker_loss;
 		to.nb_armies += defender_loss;
 		// check if attacked territory is defeated
@@ -193,5 +199,9 @@ public class Attack_Model {
 		}
 		return result;
 	}
+	
+	
+
+	
 
 }
