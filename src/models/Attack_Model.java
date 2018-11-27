@@ -35,7 +35,7 @@ public class Attack_Model {
 	public int attacker_loss;
 	public int defender_loss;
 
-	String message;
+	public String message;
 	public String to_territory;
 	public String from_territory;
 
@@ -104,7 +104,7 @@ public class Attack_Model {
 		defender_loss = 0;
 		if (attacker_nb_dices != 0 && defender_nb_dices != 0) {
 			attacker_dices = Dice.Roll(attacker_nb_dices);
-			defender_dices = Dice.Roll(defender_nb_dices);
+			defender_dices = Dice.Roll(defender_nb_dices);			
 
 			// compare the highest dices
 			if (attacker_dices.get(0) > defender_dices.get(0))
@@ -119,7 +119,21 @@ public class Attack_Model {
 					attacker_loss += -1;
 			}
 			current_state = State.APPLY_RESULT;
+			Attack_Result_To_String();
 		}
+	}
+	
+	public void Attack_Result_To_String() {
+		message = "Attack Result:\n(Attacker Dices:  ";
+		for (int d : attacker_dices)
+			message += d + " ";
+		message += ") \n- (Defender Dices: ";
+		for (int d : defender_dices)
+			message += d + " ";
+		message += ") \n =====> Attacker loss: ";
+		message +=  (attacker_loss * -1);
+		message += " - Defender loss: ";
+		message +=  (defender_loss * -1);		
 	}
 
 	/**

@@ -222,6 +222,12 @@ public class Game_Model extends Observable {
 	public void Update_State(State_Game new_state, String new_message) {
 		message = new_message;
 		current_state = new_state;
+		try {
+			if (!(current_player.behavior instanceof Human))
+				Thread.sleep(200);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		setChanged();
 		notifyObservers(this);
 	}
@@ -283,7 +289,7 @@ public class Game_Model extends Observable {
 	public void Attack() {
 		
 		// from to defender 
-//		this.attack_plan = new Attack_Model(current_player, defender, from, to, nb_dice, all_out);
+		//this.attack_plan = new Attack_Model(current_player, defender, from, to, nb_dice, all_out);
 		Message_Handler response = current_player.Attack();
 		State_Game new_state = current_state;
 

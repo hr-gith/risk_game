@@ -26,6 +26,7 @@ public class Phase_View extends View {
 	JLabel jLabel1;
 	JLabel jLabel2;
 	JLabel jLabel3;
+	JLabel jLabel4;
 
 	/**
 	 * constructor that create new object for JFrame, JPanel and JLabel
@@ -36,6 +37,7 @@ public class Phase_View extends View {
 		jLabel1 = new JLabel();
 		jLabel2 = new JLabel();
 		jLabel3 = new JLabel();
+		jLabel4 = new JLabel();
 	}
 
 	/**
@@ -62,7 +64,9 @@ public class Phase_View extends View {
 		jLabel3.setBounds(0, 40, 200, 50);
 		jPanel.add(jLabel3);
 
-		
+		jLabel4.setText(text);
+		jLabel4.setBounds(0, 60, 200, 50);
+		jPanel.add(jLabel4);
 		
 	}
 
@@ -86,7 +90,8 @@ public class Phase_View extends View {
 		this.current_state_name = current_state.name();
 
 		this.update_state = ((Game_Model) obs).message;
-
+		this.text = current_player.behavior.am.message;
+		current_player.behavior.am.message = "";
 		Draw_Phase_View_Window();
 
 	}
