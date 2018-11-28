@@ -8,7 +8,7 @@ import java.util.Objects;
  * Player Class is a model 
  * Controls the actions of the player and retains the state of a given player throughout the game
  */
-public class Player {
+public class Player implements java.io.Serializable{
 	
 	public Integer id; 	
 	public String name; 

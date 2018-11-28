@@ -1,6 +1,6 @@
 package models;
 
-public class AI_Aggressive implements Behaviour{
+public class AI_Aggressive implements Behaviour , java.io.Serializable{
 
 	public Player current_player;
 

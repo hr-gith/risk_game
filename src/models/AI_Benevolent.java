@@ -1,6 +1,6 @@
 package models;
 
-public class AI_Benevolent implements Behaviour{
+public class AI_Benevolent implements Behaviour , java.io.Serializable{
 	
 public Player current_player;
 	

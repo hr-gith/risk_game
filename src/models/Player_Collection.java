@@ -6,7 +6,7 @@ import java.util.Collections;
 
 import utilities.Config;
 
-public class Player_Collection {
+public class Player_Collection implements java.io.Serializable{
 	public ArrayList<Player> player_list;
 
 	public Player_Collection() {

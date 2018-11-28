@@ -9,7 +9,7 @@ import java.util.Set;
  * territory
  */
 
-public class Territory {
+public class Territory implements java.io.Serializable{
 	public int id;
 	public String name;
 	public int pos_x;

@@ -7,7 +7,7 @@ import java.util.Random;
  * end of the attack phase, and calculate number of armies based on trade_in
  * rules
  */
-public class Cards {
+public class Cards implements java.io.Serializable{
 
 	// type of cards: INFANTRY, CAVALRY, ARTILLERY
 

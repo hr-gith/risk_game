@@ -1,6 +1,6 @@
 package models;
 
-public class Human implements Behaviour{
+public class Human implements Behaviour , java.io.Serializable{
 
 	
 	public Player current_player;

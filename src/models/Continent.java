@@ -10,7 +10,7 @@ import models.Territory;
  * Continent Class is a model to store and present information about a continent
  * of a map
  */
-public class Continent {
+public class Continent implements java.io.Serializable{
 	public int id;
 	public String name;
 	public int score;

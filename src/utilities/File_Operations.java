@@ -2,9 +2,16 @@ package utilities;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+
+import models.Game_Model;
 
 /**
  * To read from file or write to file
@@ -53,5 +60,48 @@ public class File_Operations {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static boolean Serialize(Object object, String filename) {
+        try
+        {    
+            FileOutputStream file = new FileOutputStream(".\\src\\" +filename); 
+            ObjectOutputStream out = new ObjectOutputStream(file); 
+              
+            out.writeObject(object);               
+            out.close(); 
+            file.close();               
+            System.out.println("Object has been saved.");   
+            return true;
+        }           
+        catch(IOException ex) 
+        { 
+            System.out.println("IOException: "+ ex.getMessage()); 
+            return false;
+        } 
+	}
+	
+	public static Game_Model Deserialize(String filename) {
+		Game_Model obj = null;
+        try
+        {    
+            FileInputStream file = new FileInputStream(".\\src\\" +filename); 
+            ObjectInputStream in = new ObjectInputStream(file);               
+            obj = (Game_Model)in.readObject(); 
+              
+            in.close(); 
+            file.close(); 
+              
+            System.out.println("Game has been loaded."); 
+        }           
+        catch(IOException ex) 
+        { 
+            System.out.println("IOException: "+ ex.getMessage()); 
+        }           
+        catch(ClassNotFoundException ex) 
+        { 
+            System.out.println("ClassNotFoundException: "+ ex.getMessage()); 
+        } 
+        return obj;
 	}
 }

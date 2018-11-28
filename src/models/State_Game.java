@@ -4,7 +4,7 @@ package models;
  * The ENUMERATED states for the game phases
  *
  */
-public enum State_Game {
+public enum State_Game implements java.io.Serializable{
 
 	SETUP, STARTUP, REINFORCEMENT, ATTACKING, FORTIFICATION, POST_ATTACK, OVER, DRAW
 

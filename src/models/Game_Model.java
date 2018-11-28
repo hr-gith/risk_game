@@ -13,9 +13,9 @@ import utilities.Config;
 /**
  * This is the main model class, it goes through phases of the game
  */
-public class Game_Model extends Observable {
+public class Game_Model extends Observable implements java.io.Serializable {
 
-	private static Game_Model game;
+	public static Game_Model game;
 	public Map_Model map;
 	public Attack_Model attack_plan;
 	public Player_Collection players;

@@ -3,7 +3,7 @@ package models;
 import java.util.Random;
 import java.util.Set;
 
-public class AI_Random implements Behaviour{
+public class AI_Random implements Behaviour , java.io.Serializable{
 
 	public Player current_player;
 	private Random rand = new Random(); 

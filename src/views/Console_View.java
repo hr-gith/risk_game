@@ -4,6 +4,7 @@ import controllers.Game_Controller;
 import models.Player;
 import models.State_Game;
 import models.State_Player_Strategy;
+import utilities.File_Operations;
 import models.Game_Model;
 import models.Human;
 
@@ -63,30 +64,39 @@ public class Console_View implements Observer {
 	public void Display_Menu_StartUp_Reinforcements() {
 
 		if (current_player.behavior instanceof Human){
-			
 		
-		System.out.println(
-				"Start_up =>player : " + current_player.name + "- Armies left: " + current_player.reinforcements
-						+ "\n countries :" + current_player.owned_territories.keySet().toString());
-		System.out.println("\nEnter the To territory ");
-		current_player.behavior.rm.to_territory = scanner.nextLine();
-		System.out.println("\nEnter the Number of move armies");
-		current_player.behavior.rm.nb_armies= Integer.valueOf(scanner.nextLine());
-		while (current_player.reinforcements < current_player.behavior.rm.nb_armies) {
-			System.out.println("the number of armies must less than " + current_player.reinforcements);
-			System.out.println("\nEnter the Number of armies");
-			current_player.behavior.rm.nb_armies = Integer.valueOf(scanner.nextLine());
-		}
-		
-		}
-			
-			
-		game_controller.Reinforcement(); 
-			
-	
-	
+			System.out.println(
+					"Start_up =>player : " + current_player.name + "- Armies left: " + current_player.reinforcements
+							+ "\n countries :" + current_player.owned_territories.keySet().toString());
+			System.out.println("\nEnter the To territory ");
+			current_player.behavior.rm.to_territory = scanner.nextLine();
+			System.out.println("\nEnter the Number of move armies");
+			current_player.behavior.rm.nb_armies= Integer.valueOf(scanner.nextLine());
+			while (current_player.reinforcements < current_player.behavior.rm.nb_armies) {
+				System.out.println("the number of armies must less than " + current_player.reinforcements);
+				System.out.println("\nEnter the Number of armies");
+				current_player.behavior.rm.nb_armies = Integer.valueOf(scanner.nextLine());
+			}		
+		}				
+		game_controller.Reinforcement();	
 	}
 
+	public void Display_Save_Game_Menu() {
+		System.out.println("Would you like to save the current game(y/n)? ");
+		String answer = scanner.nextLine();
+		if (answer.equalsIgnoreCase("y")){
+			System.out.println("Give a name for the file to save on: ");
+			answer = scanner.nextLine();
+			File_Operations.Serialize(this.game_controller.game, answer);		
+			
+			//check for continue playing
+			System.out.println("Would you like to continue playing(y/n)?");
+			answer = scanner.nextLine();
+			if (answer.equalsIgnoreCase("n"))
+				System.exit(0);
+		}
+	}
+	
 	/**
 	 * number of moves and the destination country
 	 */
@@ -94,59 +104,56 @@ public class Console_View implements Observer {
 		
 		if (current_player.behavior instanceof Human){
 
-		System.out.println(
-				"Reinforcement =>player : " + current_player.name + "- Armies left: " + current_player.reinforcements
-						+ "\n countries :" + current_player.owned_territories.keySet().toString());
-		System.out.println("Cards Available: \n Infantry: " + current_player.cards.infantry + ", Cavalry: "
-				+ current_player.cards.cavalry + ", Artillery: " + current_player.cards.artillery);
-
-		while (current_player.cards.Is_Set_Available()) {
-
-			String decision;
-			if ((current_player.cards.artillery + current_player.cards.cavalry + current_player.cards.infantry) < 5) {
-				System.out.println("Do you want to play any reinforment cards? (y/n)");
-				decision = scanner.nextLine();
-			} else {
-				decision = "y";
-			}
-
-			if (decision.equals("y") || decision.equals("yes")) {
-				System.out.println(
-						"Which cards do you want to play? (infantry, cavalry, artillery) For example, cavalry, cavalry, artillery");
-				String played_cards = scanner.nextLine();
-				String[] played_cards_array = played_cards.split(",");
-
-				if (current_player.cards.Are_Playable(played_cards_array)) {
-
-					current_player.reinforcements = current_player.reinforcements
-							+ current_player.cards.Get_Card_Reinforcement_Qty();
-
-					System.out.println("Reinforcement =>player : " + current_player.name + "- Armies left: "
-							+ current_player.reinforcements + "\n countries :"
-							+ current_player.owned_territories.keySet().toString());
-					System.out.println("Cards Available: \n Infantry: " + current_player.cards.infantry + ", Cavalry: "
-							+ current_player.cards.cavalry + ", Artillery: " + current_player.cards.artillery);
-
-					game_controller.game.Update_State(current_state, "");
-
+			System.out.println(
+					"Reinforcement =>player : " + current_player.name + "- Armies left: " + current_player.reinforcements
+							+ "\n countries :" + current_player.owned_territories.keySet().toString());
+			System.out.println("Cards Available: \n Infantry: " + current_player.cards.infantry + ", Cavalry: "
+					+ current_player.cards.cavalry + ", Artillery: " + current_player.cards.artillery);
+	
+			while (current_player.cards.Is_Set_Available()) {
+	
+				String decision;
+				if ((current_player.cards.artillery + current_player.cards.cavalry + current_player.cards.infantry) < 5) {
+					System.out.println("Do you want to play any reinforment cards? (y/n)");
+					decision = scanner.nextLine();
+				} else {
+					decision = "y";
 				}
-			} else
-				break;
-		}
-
-		System.out.println("\nEnter the To territory ");
-		current_player.behavior.rm.to_territory = scanner.nextLine();
-		System.out.println("\nEnter the Number of armies to move");
-		current_player.behavior.rm.nb_armies = Integer.valueOf(scanner.nextLine());
-		while (current_player.reinforcements < current_player.behavior.rm.nb_armies) {
-			System.out.println("the number of armies must less than " + current_player.reinforcements);
-			System.out.println("\nEnter the Number of armies");
+	
+				if (decision.equals("y") || decision.equals("yes")) {
+					System.out.println(
+							"Which cards do you want to play? (infantry, cavalry, artillery) For example, cavalry, cavalry, artillery");
+					String played_cards = scanner.nextLine();
+					String[] played_cards_array = played_cards.split(",");
+	
+					if (current_player.cards.Are_Playable(played_cards_array)) {
+	
+						current_player.reinforcements = current_player.reinforcements
+								+ current_player.cards.Get_Card_Reinforcement_Qty();
+	
+						System.out.println("Reinforcement =>player : " + current_player.name + "- Armies left: "
+								+ current_player.reinforcements + "\n countries :"
+								+ current_player.owned_territories.keySet().toString());
+						System.out.println("Cards Available: \n Infantry: " + current_player.cards.infantry + ", Cavalry: "
+								+ current_player.cards.cavalry + ", Artillery: " + current_player.cards.artillery);
+	
+						game_controller.game.Update_State(current_state, "");
+	
+					}
+				} else
+					break;
+			}
+	
+			System.out.println("\nEnter the To territory ");
+			current_player.behavior.rm.to_territory = scanner.nextLine();
+			System.out.println("\nEnter the Number of armies to move");
 			current_player.behavior.rm.nb_armies = Integer.valueOf(scanner.nextLine());
-		}
-
-		
-		}
-		
+			while (current_player.reinforcements < current_player.behavior.rm.nb_armies) {
+				System.out.println("the number of armies must less than " + current_player.reinforcements);
+				System.out.println("\nEnter the Number of armies");
+				current_player.behavior.rm.nb_armies = Integer.valueOf(scanner.nextLine());
+			}	
+		}		
 		game_controller.Reinforcement();
 	}
 
@@ -278,8 +285,8 @@ public class Console_View implements Observer {
 			Display_Menu_StartUp_Reinforcements();
 			break;
 		case REINFORCEMENT:
+			Display_Save_Game_Menu();
 			game_controller.card_view.jPanel.setVisible(true);
-
 			Display_Menu_Reinforcements();
 			break;
 		case ATTACKING:

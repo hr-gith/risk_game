@@ -9,7 +9,7 @@ import java.util.Objects;
  * Map is a data class that maintains the game map structure
  */
 
-public class Map_Model {
+public class Map_Model implements java.io.Serializable{
 	public String name;
 	public String image;
 	public boolean wrap;

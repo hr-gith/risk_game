@@ -2,7 +2,7 @@ package models;
 
 import java.util.HashMap;
 
-public class AI_Cheater implements Behaviour{
+public class AI_Cheater implements Behaviour , java.io.Serializable{
 	
 	public Player current_player;
 	

@@ -27,7 +27,10 @@ public class Game_Controller {
 	public Players_World_Domination_View players_world_domination_view;
 	public Card_View card_view;
 
-	
+	public Game_Controller(Game_Model game) {
+		this.game = game;
+		Set_Views();
+	}
 	
 	/**
 	 * constructor for initiate the game and adding observers to the game
@@ -35,7 +38,10 @@ public class Game_Controller {
 	public Game_Controller(Map_Model map) {
 		game = Game_Model.Get_Game();
 		game.map = map;
+		Set_Views();
+	}
 
+	public void Set_Views() {
 		console_view = new Console_View(this);
 		game.addObserver(console_view);
 
