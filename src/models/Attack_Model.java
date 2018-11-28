@@ -124,13 +124,15 @@ public class Attack_Model {
 	}
 	
 	public void Attack_Result_To_String() {
-		message = "Attack Result:\n(Attacker Dices:  ";
+		message = "Attack Result ("+ this.attacker.name +"-"+ this.from.name 
+				+" AGAINST " +this.defender.name +"-"+ this.to.name  +
+				"):\n(Attacker Dices:  ";
 		for (int d : attacker_dices)
 			message += d + " ";
 		message += ") \n- (Defender Dices: ";
 		for (int d : defender_dices)
 			message += d + " ";
-		message += ") \n =====> Attacker loss: ";
+		message += ") \n ===> Attacker loss: ";
 		message +=  (attacker_loss * -1);
 		message += " - Defender loss: ";
 		message +=  (defender_loss * -1);		

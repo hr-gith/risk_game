@@ -91,7 +91,7 @@ public class Phase_View extends View {
 
 		this.update_state = ((Game_Model) obs).message;
 		this.text = current_player.behavior.am.message;
-		current_player.behavior.am.message = "";
+		//current_player.behavior.am.message = "";
 		Draw_Phase_View_Window();
 
 	}

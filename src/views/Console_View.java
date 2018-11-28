@@ -284,18 +284,19 @@ public class Console_View implements Observer {
 			break;
 		case ATTACKING:
 			game_controller.card_view.jPanel.setVisible(false);
+			current_player.behavior.am.message = "";
 			Display_Menu_Attack();
 
 			break;
 		case FORTIFICATION:
 			game_controller.card_view.jPanel.setVisible(false);
-			System.out.println(current_player.behavior.am.message);
+			System.out.println(current_player.behavior.am.message + '\n');
 			Display_Menu_Fortification();
 			break;
 			
 		case POST_ATTACK: 
 			game_controller.card_view.jPanel.setVisible(false);
-			System.out.println(current_player.behavior.am.message);
+			System.out.println(current_player.behavior.am.message+ '\n');
     		Display_Menu_Post_Attack();
     		break;
     		

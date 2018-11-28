@@ -224,7 +224,7 @@ public class Game_Model extends Observable {
 		current_state = new_state;
 		try {
 			if (!(current_player.behavior instanceof Human))
-				Thread.sleep(200);
+				Thread.sleep(100);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
