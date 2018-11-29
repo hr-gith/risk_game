@@ -15,7 +15,7 @@ import utilities.Config;
  */
 public class Game_Model extends Observable implements java.io.Serializable {
 
-	public static Game_Model game;
+	private static Game_Model game;
 	public Map_Model map;
 	public Attack_Model attack_plan;
 	public Player_Collection players;
@@ -34,6 +34,7 @@ public class Game_Model extends Observable implements java.io.Serializable {
 		current_state = State_Game.SETUP;
 		max_nb_turns = Integer.MAX_VALUE;
 	}
+	
 	
 	public static Game_Model Get_Game() {
 		if (game != null)
@@ -190,6 +191,11 @@ public class Game_Model extends Observable implements java.io.Serializable {
 		return result;
 	}
 
+	
+	public static void Set_Game(Game_Model game_in) {
+		game = game_in;
+	}
+	
 	
 	/**
 	 * Assigns the game territories acrross the players playing the game during the

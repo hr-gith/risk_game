@@ -36,9 +36,9 @@ public class Game_Engine {
 				Scanner scanner = new Scanner(System.in);
 				String filename = scanner.nextLine();
 				//Game_Model game = Game_Model.Get_Game();
-				Game_Model.game = File_Operations.Deserialize(filename);
-				if (Game_Model.game != null){
-					Game_Controller game_ctrl = new Game_Controller(map_generator.map);
+				Game_Model.Set_Game(File_Operations.Deserialize(filename));
+				if (Game_Model.Get_Game() != null){
+					Game_Controller game_ctrl = new Game_Controller(Game_Model.Get_Game());
 					//game_ctrl.map_view = map_generator.map_view;
 					game_ctrl.game.Update_State(game_ctrl.game.current_state, "Continue playing the game "+ filename);
 				}
