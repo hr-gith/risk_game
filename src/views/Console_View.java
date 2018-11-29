@@ -61,8 +61,7 @@ public class Console_View implements Observer {
 	/**
 	 * number of moves and the destination country at startup
 	 */
-	public void Display_Menu_StartUp_Reinforcements() {
-
+	public void Display_Menu_StartUp_Reinforcements() {		
 		if (current_player.behavior instanceof Human){
 		
 			System.out.println(
@@ -82,18 +81,20 @@ public class Console_View implements Observer {
 	}
 
 	public void Display_Save_Game_Menu() {
-		System.out.println("Would you like to save the current game(y/n)? ");
-		String answer = scanner.nextLine();
-		if (answer.equalsIgnoreCase("y")){
-			System.out.println("Give a name for the file to save on: ");
-			answer = scanner.nextLine();
-			File_Operations.Serialize(this.game_controller.game, answer);		
-			
-			//check for continue playing
-			System.out.println("Would you like to continue playing(y/n)?");
-			answer = scanner.nextLine();
-			if (answer.equalsIgnoreCase("n"))
-				System.exit(0);
+		if (current_player.behavior instanceof Human){
+			System.out.println("Would you like to save the current game(y/n)? ");
+			String answer = scanner.nextLine();
+			if (answer.equalsIgnoreCase("y")){
+				System.out.println("Give a name for the file to save on: ");
+				answer = scanner.nextLine();
+				File_Operations.Serialize(this.game_controller.game, answer);		
+				
+				//check for continue playing
+				System.out.println("Would you like to continue playing(y/n)?");
+				answer = scanner.nextLine();
+				if (answer.equalsIgnoreCase("n"))
+					System.exit(0);
+			}
 		}
 	}
 	

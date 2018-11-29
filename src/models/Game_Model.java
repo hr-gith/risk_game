@@ -3,10 +3,14 @@ package models;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
+import java.util.Random;
+import java.util.Set;
+
 import models.Map_Model;
 import utilities.Config;
 
@@ -202,20 +206,28 @@ public class Game_Model extends Observable implements java.io.Serializable {
 	 * setup
 	 */
 	private void Assign_Territories() {
-		HashMap<String, Territory> game_territories = map.Get_Territories();
+		 HashMap<String, Territory> game_territories = map.Get_Territories();	
 
-		int index = 0;
-		Iterator it = game_territories.entrySet().iterator();
-		while (it.hasNext()) {
-			java.util.Map.Entry entry = (Map.Entry) it.next();
-			Territory territory = (Territory) entry.getValue();
-
-			if (index < (game_territories.size())) {// - (game_territories.size() % Number_Of_Players())
-				players.player_list.get((index % players.Number_Of_Players())).Add_Territory(territory);
-				territory.owner_name = players.player_list.get(index % players.Number_Of_Players()).name;
-			}
-			index++;
-		}
+		 HashMap<String, Territory> copy_game_territories =(HashMap<String, Territory>) map.Get_Territories().clone();	
+			Random generator = new Random();
+			
+			boolean finish = !(copy_game_territories.size() > 0);
+			while(!finish) {
+				for (Player p : this.players.player_list) {
+					if (copy_game_territories.size() > 0) {
+						Object[] keys =   copy_game_territories.keySet().toArray();
+						String random_key =(String) keys[generator.nextInt(keys.length)];
+						Territory t = game_territories.get(random_key);
+						t.owner_name = p.name;
+						p.Add_Territory(t);
+						copy_game_territories.remove(random_key);
+					}
+					else {
+						finish = true;
+						break;
+					}
+				}
+			}		
 	}
 	
 
