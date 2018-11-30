@@ -1,5 +1,6 @@
 package models;
 
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
@@ -51,6 +52,7 @@ public class Continent implements java.io.Serializable{
 	public boolean Add_Territory(Territory new_territory) {
 		Objects.requireNonNull(new_territory);
 		new_territory.name = new_territory.name.toLowerCase();
+		new_territory.color = Color.BLUE;
 		if (territories == null || territories.isEmpty()) {
 			territories = new HashMap<>();
 		}

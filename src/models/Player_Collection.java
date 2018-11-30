@@ -1,5 +1,6 @@
 package models;
 
+import java.awt.Color;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,9 +9,11 @@ import utilities.Config;
 
 public class Player_Collection implements java.io.Serializable{
 	public ArrayList<Player> player_list;
-
+	private Color[] colors = { Color.blue, Color.green, Color.red, Color.pink, Color.yellow, Color.orange };
+	private int next_color_index;
 	public Player_Collection() {
 		player_list = new ArrayList<Player>(); 
+		next_color_index = 0;
 	}
 	
 	public Player First() {
@@ -104,7 +107,8 @@ public class Player_Collection implements java.io.Serializable{
 				if (p.name.equalsIgnoreCase(new_player))
 					return false;
 			}
-			player_list.add(new Player(new_player,behaviour, game));
+			player_list.add(new Player(new_player,colors[next_color_index],behaviour, game));
+			next_color_index++;
 			return true;
 
 		}

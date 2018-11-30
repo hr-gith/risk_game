@@ -2,6 +2,8 @@ package models;
 
 import static org.junit.Assert.*;
 
+import java.awt.Color;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,8 +17,8 @@ import utilities.Config;
 public class Attack_ModelTest {
 	Map_Model map =new Map_Model();
 	Game_Model game_model1 = Game_Model.Get_Game();
-	Player attacker = new Player(0,State_Player_Strategy.HUMAN, game_model1);
-	Player defender = new Player(1,State_Player_Strategy.HUMAN, game_model1);
+	Player attacker = new Player(0,Color.BLUE,State_Player_Strategy.HUMAN, game_model1);
+	Player defender = new Player(1,Color.BLUE,State_Player_Strategy.HUMAN, game_model1);
 	Territory from;
 	Territory to;
 

@@ -2,6 +2,7 @@ package models;
 
 import static org.junit.Assert.assertEquals;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -26,7 +27,7 @@ public class Test_Game_Model {
 		for(int i = 0; i<number_of_players; i++){
 		Game_Model game = Game_Model.Get_Game();
 		game.map = new Map_Model();
-		player_list.add(new Player(i,State_Player_Strategy.HUMAN,game));
+		player_list.add(new Player(i,Color.BLUE,State_Player_Strategy.HUMAN,game));
 		
 		}
 	}

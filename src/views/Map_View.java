@@ -57,8 +57,8 @@ public class Map_View extends View {
 	 */
 	@Override
 	public void paintComponent(Graphics g) {
-		Color[] colors = { Color.blue, Color.green, Color.red, Color.pink, Color.yellow, Color.orange };
-		HashMap<String, Color> player_color = new HashMap<>();
+		//Color[] colors = { Color.blue, Color.green, Color.red, Color.pink, Color.yellow, Color.orange };
+		//HashMap<String, Color> player_color = new HashMap<>();
 		int current_color = 0;
 		for (Continent continent : map.continents.values()) {
 
@@ -75,14 +75,15 @@ public class Map_View extends View {
 
 				g.setColor(Color.white);
 				g.fillOval(territory.pos_x - 30, territory.pos_y - 15, 60, 30);
-
-				if (player_color.containsKey(territory.owner_name))
+				
+				g.setColor(territory.color);
+				/*if (player_color.containsKey(territory.owner_name))
 					g.setColor(player_color.get(territory.owner_name));
 				else {
 					player_color.put(territory.owner_name, colors[current_color]);
 					g.setColor(colors[current_color]);
 					current_color++;
-				}
+				}*/
 
 				g.drawOval(territory.pos_x - 30, territory.pos_y - 15, 60, 30);
 

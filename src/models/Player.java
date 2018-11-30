@@ -1,5 +1,6 @@
 package models;
 
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
@@ -12,6 +13,7 @@ public class Player implements java.io.Serializable{
 	
 	public Integer id; 	
 	public String name; 
+	public Color color;
 	public State_Player current_state;
 	public Game_Model ref_game; 
 	public HashMap<String,Territory> owned_territories;
@@ -31,9 +33,10 @@ public class Player implements java.io.Serializable{
 	 * @param String The player's name 
 	 */
 	
-	public Player(Integer id, String name,State_Player_Strategy behaviour, Game_Model game){
+	public Player(Integer id, String name,Color color,State_Player_Strategy behaviour, Game_Model game){
 		this.id = id; 
 		this.name = name;  
+		this.color = color;
 		this.current_state = State_Player.WAITING;
 		this.ref_game = game;
 		this.cards = new Cards(); 
@@ -49,16 +52,16 @@ public class Player implements java.io.Serializable{
 	 * @param name name of the player
 	 * @param game object of this Gmae_Model
 	 */
-	public Player(String name,State_Player_Strategy behaviour, Game_Model game){
-		this(0, name,behaviour, game);
+	public Player(String name,Color color,State_Player_Strategy behaviour, Game_Model game){
+		this(0, name,color,behaviour, game);
 	}
 	
 	/** 
 	 * An overloaded constructor object that automatically assigns a player name corresponding to "Player" + player_id
 	 * @param Integer The player's game id  
 	 */
-	public Player(Integer id, State_Player_Strategy behaviour, Game_Model game){
-		this(id, "p " + id,behaviour, game);  
+	public Player(Integer id,Color color, State_Player_Strategy behaviour, Game_Model game){
+		this(id, "p " + id,color, behaviour, game);  
 	}
 	
 	
@@ -201,7 +204,7 @@ public class Player implements java.io.Serializable{
 		  if (!this.owned_territories.containsKey(new_territory.name.toLowerCase())) {
 			  this.owned_territories.put(new_territory.name.toLowerCase(), new_territory);
 			  new_territory.owner_name = this.name;
-			  			  
+			  new_territory.color = this.color;
 			  return true; 
 		  }		  
 		  return false;

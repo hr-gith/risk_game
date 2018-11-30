@@ -2,6 +2,8 @@ package models;
 
 import static org.junit.Assert.assertEquals;
 
+import java.awt.Color;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,7 +16,7 @@ import models.Territory;
  */
 public class Test_Player {
 	static Game_Model game = Game_Model.Get_Game();
-	static Player testPlayer = new Player(0,State_Player_Strategy.HUMAN,game); 
+	static Player testPlayer = new Player(0,Color.BLUE,State_Player_Strategy.HUMAN,game); 
 	static Integer number_territories = 14; 
 	static int number_armies;  
 	Territory temp_territory; 

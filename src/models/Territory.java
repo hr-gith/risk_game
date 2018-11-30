@@ -1,5 +1,6 @@
 package models;
 
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Set;
@@ -14,6 +15,7 @@ public class Territory implements java.io.Serializable{
 	public String name;
 	public int pos_x;
 	public int pos_y;
+	public Color color;
 	public String continent_name;
 	public String owner_name;
 	public int nb_armies;
