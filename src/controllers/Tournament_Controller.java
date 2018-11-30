@@ -10,6 +10,7 @@ import models.Map_Helper;
 import models.Map_Model;
 import models.Player;
 import models.Player_Collection;
+import models.State_Game;
 import models.State_Player_Strategy;
 import views.Card_View;
 import views.Console_View;
@@ -75,15 +76,28 @@ public class Tournament_Controller {
 				nb_game >= 1 && nb_game <= 5 &&
 				max_nb_turn >= 10 && max_nb_turn <= 50)
 		{
+			String res_str = "\n\n*********************************************************************";
+			res_str += "\n\t";			
+			for (int i = 0; i < this.nb_game; i++) 
+				res_str += ("  Game"+(i+1)+" ");
+
 			for(Map_Model map : maps) {
+				res_str += ("\n"+ map.name+"\t");
 				for (int i = 0; i < this.nb_game; i++) {
 					Game_Controller game_ctrl = new Game_Controller(map);
 					game_ctrl.game.max_nb_turns = this.max_nb_turn;
 					game_ctrl.Start(player_list);
+					if (game_ctrl.game.current_state == State_Game.DRAW)
+						res_str += ("  Draw  ");
+					else
+						res_str += ("  "+ game_ctrl.game.current_player.name+"  ");
 					System.out.println("End of game "+ (i+1)+ " for "+ map.name +" map");
-					Thread.sleep(1000);
+					Thread.sleep(500);
 				}
-			}			
+			}	
+			res_str += "\n*********************************************************************";
+			System.out.println(res_str);
+
 			return true;
 		}
 		else
