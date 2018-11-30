@@ -1,5 +1,9 @@
 package models;
-
+/**
+ * 
+ * @author e_narang
+ *
+ */
 public class AI_Aggressive implements Behaviour , java.io.Serializable{
 
 	public Player current_player;
@@ -15,7 +19,9 @@ public class AI_Aggressive implements Behaviour , java.io.Serializable{
 		this.game = game; 
 
 	}
-	
+	/**
+	 * 
+	 */
 	public void Attack(){
 		
 
@@ -58,7 +64,9 @@ public class AI_Aggressive implements Behaviour , java.io.Serializable{
 			}
 		}
 	}
-	
+	/**
+	 * 
+	 */
 	public void Fortify(){
 	
 		for(String str : current_player.owned_territories.keySet()){
@@ -77,12 +85,15 @@ public class AI_Aggressive implements Behaviour , java.io.Serializable{
 		current_player.behavior.fm.continue_fortify = false; 
 		
 	}
+	/**
+	 * 
+	 */
 	
 	public void Reinforce(){
 		
 		while(game.current_state == State_Game.REINFORCEMENT && current_player.cards.Is_Set_Available()){
 			
-				this.PlayCards();
+				this.Play_Cards();
 			
 		}
 		
@@ -105,16 +116,22 @@ public class AI_Aggressive implements Behaviour , java.io.Serializable{
 		
 		
 	}
+	/**
+	 * 
+	 */
 	
-	public void PostAttack(){
+	public void Post_Attack(){
 		
 		this.pm.nb_armies =  this.current_player.owned_territories.get(this.am.from_territory).nb_armies -1; 
 		
 		
 		
 	}
+	/**
+	 * 
+	 */
 	
-	public void PlayCards(){
+	public void Play_Cards(){
 		String[] tmpCards = new String[3];
 		
 		if ((current_player.cards.cavalry > 0 && current_player.cards.infantry > 0 && current_player.cards.artillery > 0)){

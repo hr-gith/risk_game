@@ -41,11 +41,11 @@ public class Human implements Behaviour , java.io.Serializable{
 		
 	}
 	
-	public void PostAttack(){
+	public void Post_Attack(){
 		
 	}
 	
-	public void PlayCards(){
+	public void Play_Cards(){
 		
 	}
 }

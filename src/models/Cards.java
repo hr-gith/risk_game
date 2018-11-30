@@ -68,7 +68,7 @@ public class Cards implements java.io.Serializable{
 
 			this.Num_Sets_traded_In++;
 
-			CalculateCardReinforcements();
+			Calculate_Card_Reinforcements();
 
 			return true;
 		} else
@@ -78,7 +78,7 @@ public class Cards implements java.io.Serializable{
 	/**
 	 * calculate number of reinforcements for the traded set
 	 */
-	private void CalculateCardReinforcements() {
+	private void Calculate_Card_Reinforcements() {
 
 		// The first set traded in - 4 armies
 		// The second set traded in - 6 armies

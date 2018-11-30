@@ -21,7 +21,7 @@ public class Game_Engine {
 			choice = Display_Menu();
 			switch (choice) {
 			case 1://map editor
-				ready_state = map_generator.start();
+				ready_state = map_generator.Start();
 				break;
 			case 2: //start game
 				if (ready_state) {
