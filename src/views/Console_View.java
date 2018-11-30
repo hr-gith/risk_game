@@ -233,10 +233,10 @@ public class Console_View implements Observer {
 
 			System.out.println("Fortification =>player : " + current_player.name + " has countries :"
 					+ current_player.owned_territories.keySet().toString());
-			System.out.println("Do you want to fortify any units? (yes/no)");
+			System.out.println("Do you want to fortify any units? (y/n)");
 			String answer = scanner.nextLine();
 
-			if (answer.equals("yes")) {
+			if (answer.equalsIgnoreCase("yes")|| answer.equalsIgnoreCase("y") ) {
 				System.out.println("\nEnter the From territory ");
 				current_player.behavior.fm.from_territory = scanner.nextLine();
 				System.out.println("\nEnter the To territory ");
