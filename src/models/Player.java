@@ -343,7 +343,7 @@ public class Player implements java.io.Serializable{
     
     
     public Message_Handler PostAttack() {
-    	behavior.PostAttack(); 
+    	behavior.Post_Attack(); 
     		
 		if (this.Move_Army(behavior.am.from.name, behavior.am.to.name, behavior.pm.nb_armies)) {
 			return new Message_Handler(true);

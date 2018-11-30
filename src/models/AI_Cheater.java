@@ -1,7 +1,11 @@
 package models;
 
 import java.util.HashMap;
-
+/**
+ * 
+ * @author e_narang
+ *
+ */
 public class AI_Cheater implements Behaviour , java.io.Serializable{
 	
 	public Player current_player;
@@ -15,7 +19,9 @@ public class AI_Cheater implements Behaviour , java.io.Serializable{
 
 		
 	}
-	
+	/**
+	 * 
+	 */
 	public void Attack(){
 		
 		HashMap<String,Territory> current_territories = current_player.owned_territories; 
@@ -52,7 +58,9 @@ public class AI_Cheater implements Behaviour , java.io.Serializable{
 		
 		
 	}
-	
+	/**
+	 * 
+	 */
 	public void Fortify(){
 		
 		for(String str : current_player.owned_territories.keySet()){
@@ -69,12 +77,16 @@ public class AI_Cheater implements Behaviour , java.io.Serializable{
 		
 	}
 	
+	/**
+	 * 
+	 */
+	
 	public void Reinforce(){
 		
 		
 		while(game.current_state == State_Game.REINFORCEMENT && current_player.cards.Is_Set_Available()){
 			
-				this.PlayCards();
+				this.Play_Cards();
 			
 		}
 		
@@ -121,10 +133,13 @@ public class AI_Cheater implements Behaviour , java.io.Serializable{
 		
 	}
 	
-	public void PostAttack(){
+	public void Post_Attack(){
 		
 	}
-	public void PlayCards(){
+	/**
+	 * 
+	 */
+	public void Play_Cards(){
 		String[] tmpCards = new String[3];
 		
 		if ((current_player.cards.cavalry > 0 && current_player.cards.infantry > 0 && current_player.cards.artillery > 0)){

@@ -33,7 +33,7 @@ public class Map_Generator_Controller {
 	 * @return boolean
 	 */
 
-	public boolean start() {
+	public boolean Start() {
 		int choice = 0;
 	
 		do {

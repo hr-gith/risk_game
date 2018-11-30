@@ -12,8 +12,8 @@ public interface Behaviour {
 	public void Attack();
 	public void Fortify();
 	public void Reinforce(); 
-	public void PostAttack(); 
-	public void PlayCards(); 
+	public void Post_Attack(); 
+	public void Play_Cards(); 
 		
 }
 	
