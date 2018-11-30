@@ -55,6 +55,11 @@ public class Attack_ModelTest {
 	public void testIs_Valid_Attack() {
 
 		Attack_Model attack_model = new Attack_Model();
+		attack_model.attacker= attacker;
+		attack_model.defender= defender;
+		attack_model.from= from;
+		attack_model.to= to;
+		attack_model.Set_Max_NB_Dices();
 		Assert.assertTrue(attack_model.Is_Valid_Attack());
 	}
 
@@ -66,5 +71,6 @@ public class Attack_ModelTest {
 		Attack_Model attack_model = new Attack_Model();
 		Assert.assertEquals(3, attack_model.Get_Max_NB_Dices(from, true));
 	}
+	
 
 }
