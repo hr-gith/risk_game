@@ -14,12 +14,12 @@ enum State {
  * this class has the logic of a single attack from one territory to another
  */
 public class Attack_Model {
-	
-	
-	
+
+
+
 	public Player attacker;
 	public Player defender;
-	
+
 	public Territory from;
 	public Territory to;
 
@@ -78,7 +78,7 @@ public class Attack_Model {
 		if (all_out) {
 			Set_Max_NB_Dices();
 		} else {
-			
+
 			this.defender_nb_dices = Get_Max_NB_Dices(to, false);
 		}
 	}
@@ -122,7 +122,7 @@ public class Attack_Model {
 			Attack_Result_To_String();
 		}
 	}
-	
+
 	public void Attack_Result_To_String() {
 		message = "Attack Result: \n("+ this.attacker.name +"-"+ this.from.name 
 				+" AGAINST " +this.defender.name +"-"+ this.to.name  +
@@ -149,9 +149,10 @@ public class Attack_Model {
 				&& !from.owner_name.equalsIgnoreCase(to.owner_name)) {
 			// check if from and to are adjacent
 			if (from.adj.containsKey(to.name.toLowerCase())) {
-				if (attacker_nb_dices <= Get_Max_NB_Dices(from, true))
+				if (attacker_nb_dices <= Get_Max_NB_Dices(from, true)) {
 					current_state = State.START;
-				return true;
+					return true;
+				}
 			} else {
 				message = "Error:These territories are not adjacent";
 			}
@@ -167,7 +168,7 @@ public class Attack_Model {
 	 * conquered territory to the attacker
 	 */
 	public void Apply_Result() {	
-		
+
 		from.nb_armies += attacker_loss;
 		to.nb_armies += defender_loss;
 		// check if attacked territory is defeated
@@ -214,9 +215,9 @@ public class Attack_Model {
 		}
 		return result;
 	}
-	
-	
 
-	
+
+
+
 
 }
