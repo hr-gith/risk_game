@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.util.Observable;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+
 import models.Game_Model;
 import models.Player;
 import models.State_Game;
@@ -23,10 +25,10 @@ public class Phase_View extends View {
 	public String text = "";
 
 	JPanel jPanel;
-	JLabel jLabel1;
-	JLabel jLabel2;
-	JLabel jLabel3;
-	JLabel jLabel4;
+	JLabel lb_player_name;
+	JLabel lb_current_state;
+	JLabel lb_state_message;
+	JTextArea text_area;
 
 	/**
 	 * constructor that create new object for JFrame, JPanel and JLabel
@@ -34,10 +36,10 @@ public class Phase_View extends View {
 
 	public Phase_View() {
 		jPanel = new JPanel();
-		jLabel1 = new JLabel();
-		jLabel2 = new JLabel();
-		jLabel3 = new JLabel();
-		jLabel4 = new JLabel();
+		lb_player_name = new JLabel();
+		lb_current_state = new JLabel();
+		lb_state_message = new JLabel();
+		text_area = new JTextArea();
 	}
 
 	/**
@@ -52,21 +54,22 @@ public class Phase_View extends View {
 
 		jPanel.setBackground(Color.pink);
 
-		jLabel1.setText(current_player_name);
-		jLabel1.setBounds(0, 0, 200, 50);
-		jPanel.add(jLabel1);
+		lb_player_name.setText(current_player_name);
+		lb_player_name.setBounds(0, 0, 200, 50);
+		jPanel.add(lb_player_name);
 
-		jLabel2.setText(current_state_name);
-		jLabel2.setBounds(0, 20, 200, 50);
-		jPanel.add(jLabel2);
+		lb_current_state.setText(current_state_name);
+		lb_current_state.setBounds(0, 20, 200, 50);
+		jPanel.add(lb_current_state);
 
-		jLabel3.setText(update_state);
-		jLabel3.setBounds(0, 40, 200, 50);
-		jPanel.add(jLabel3);
+		lb_state_message.setText(update_state);
+		lb_state_message.setBounds(0, 40, 200, 50);
+		jPanel.add(lb_state_message);
 
-		jLabel4.setText(text);
-		jLabel4.setBounds(0, 60, 200, 50);
-		jPanel.add(jLabel4);
+		text_area.setText(text);
+		text_area.setBounds(5, 90, 900, 120);
+		text_area.setBackground(Color.pink);
+		jPanel.add(text_area);
 		
 	}
 

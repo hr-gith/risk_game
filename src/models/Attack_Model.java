@@ -29,8 +29,8 @@ public class Attack_Model {
 	public boolean all_out;
 	State current_state;
 
-	public ArrayList<Integer> attacker_dices;
-	public ArrayList<Integer> defender_dices;
+	public ArrayList<Integer> attacker_dice;
+	public ArrayList<Integer> defender_dice;
 
 	public int attacker_loss;
 	public int defender_loss;
@@ -103,17 +103,17 @@ public class Attack_Model {
 		attacker_loss = 0;
 		defender_loss = 0;
 		if (attacker_nb_dices != 0 && defender_nb_dices != 0) {
-			attacker_dices = Dice.Roll(attacker_nb_dices);
-			defender_dices = Dice.Roll(defender_nb_dices);			
+			attacker_dice = Dice.Roll(attacker_nb_dices);
+			defender_dice = Dice.Roll(defender_nb_dices);			
 
 			// compare the highest dices
-			if (attacker_dices.get(0) > defender_dices.get(0))
+			if (attacker_dice.get(0) > defender_dice.get(0))
 				defender_loss = -1;
 			else
 				attacker_loss = -1;
 
 			if (attacker_nb_dices > 1 && defender_nb_dices > 1) {
-				if (attacker_dices.get(1) > defender_dices.get(1))
+				if (attacker_dice.get(1) > defender_dice.get(1))
 					defender_loss += -1;
 				else
 					attacker_loss += -1;
@@ -124,17 +124,17 @@ public class Attack_Model {
 	}
 	
 	public void Attack_Result_To_String() {
-		message = "Attack Result ("+ this.attacker.name +"-"+ this.from.name 
+		message = "Attack Result: \n("+ this.attacker.name +"-"+ this.from.name 
 				+" AGAINST " +this.defender.name +"-"+ this.to.name  +
-				"):\n(Attacker Dices:  ";
-		for (int d : attacker_dices)
+				"):\n(Attacker Dice:  ";
+		for (int d : attacker_dice)
 			message += d + " ";
-		message += ") \n- (Defender Dices: ";
-		for (int d : defender_dices)
+		message += ") \n- (Defender Dice: ";
+		for (int d : defender_dice)
 			message += d + " ";
-		message += ") \n ===> Attacker loss: ";
+		message += ") \n***********\n Attacker loss: ";
 		message +=  (attacker_loss * -1);
-		message += " - Defender loss: ";
+		message += " \n Defender loss: ";
 		message +=  (defender_loss * -1);		
 	}
 
