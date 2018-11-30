@@ -24,8 +24,8 @@ public class MapTest {
 	@Test
 	public void testIs_Empty() {
 		new_continent = new Continent("new_continent_name", 1);
-		boolean result = map.Add_Continent(new_continent);
-		Assert.assertFalse(result);
+		boolean result = map.Is_Empty();
+		Assert.assertTrue(result);
 	}
 	/**
 	 * test add continent
