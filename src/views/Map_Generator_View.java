@@ -59,6 +59,12 @@ public class Map_Generator_View {
 
 		return result;
 	}
+	
+	public String Display_Get_Map_Name() {
+		System.out.println("\n Enter the map's name:  ");
+		scanner = new Scanner(System.in);
+		return scanner.nextLine().trim();
+	}
 
 	/**
 	 * Creating different object of map

@@ -48,7 +48,9 @@ public class Map_Generator_Controller {
 
 			switch (choice) {
 			case 1: // import from file
-				map = this.io_map_helper.Import_Map(Config.input_file);
+				String map_name = this.map_generator_view.Display_Get_Map_Name();
+				String path = ".\\src\\"+map_name+".map";
+				map = this.io_map_helper.Import_Map(path);//Config.input_file);
 				if (map == null || map.Is_Empty())
 					this.map_generator_view.Display_Message("Map is not valid based on the game rules.");
 				else
