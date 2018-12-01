@@ -53,8 +53,7 @@ public class Attack_ModelTest {
 		attack_model.defender= defender;
 		attack_model.from= from;
 		attack_model.to= to;
-		attack_model.attacker_loss =-1;
-		attack_model.defender_loss =-1;
+		
 		
 		attack_model.Set_Max_NB_Dices();
 	}
@@ -82,10 +81,22 @@ public class Attack_ModelTest {
 	 */
 	@Test
 	public void testApply_Result() {
+		attack_model.attacker_loss =-1;
+		attack_model.defender_loss =-1;
 		attack_model.Apply_Result();
 		Assert.assertEquals(1, to.nb_armies);
 		Assert.assertEquals(4, from.nb_armies);
 	}
 	
+	/**
+	 * this method tests Apply_Result after conquering
+	 */
+	@Test
+	public void testAfter_Conquering() {
+		attack_model.attacker_loss =-1;
+		attack_model.defender_loss =-2;
+		attack_model.Apply_Result();
+		Assert.assertEquals(true, to.owner_name.equalsIgnoreCase(from.owner_name));
+	}
 
 }

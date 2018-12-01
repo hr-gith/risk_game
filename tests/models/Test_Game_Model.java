@@ -15,20 +15,21 @@ import models.Player;
  *
  */
 public class Test_Game_Model {
-
+	Game_Model game_model = Game_Model.Get_Game();
+	Player only_Player = new Player(0,Color.BLUE,State_Player_Strategy.HUMAN,game_model);
 	static Integer number_of_players = 5; 
 	static ArrayList<Player> player_list = new ArrayList<Player>();; 
 	ArrayList<Player> shuffled_player_list; 
 	/**
 	 * this method runs before any test to assign value to each members
 	 */
-	@BeforeClass public static void setUp(){
+	@BeforeClass 
+	public static void setUp(){
 		
 		for(int i = 0; i<number_of_players; i++){
 		Game_Model game = Game_Model.Get_Game();
 		game.map = new Map_Model();
 		player_list.add(new Player(i,Color.BLUE,State_Player_Strategy.HUMAN,game));
-		
 		}
 	}
 	/**
@@ -44,12 +45,10 @@ public class Test_Game_Model {
 			System.out.println(player_list.get(i).id); 
 		}
 		
-		
 	}
 	/**
 	 * method to test randomizing the player list
 	 */
-//	@Ignore
 	@Test
 	public void test_Player_List_Randomize(){
 		
@@ -58,8 +57,6 @@ public class Test_Game_Model {
 		shuffled_player_list =  new ArrayList<Player>(player_list);
 		
 		Collections.shuffle(shuffled_player_list);
-		
-
 		
 	for(int i = 0; i<number_of_players; i++){
 			
@@ -70,5 +67,23 @@ public class Test_Game_Model {
 	assertEquals(false, shuffled_player_list.equals(player_list));
 	
 	}
-	
+	 /**
+	  * method to test if the Game is correctly over when only one alive player remains
+	  */
+	@Test
+	public void Test_Is_Game_Over(){
+		game_model.current_player = only_Player;
+		assertEquals(true, game_model.Is_Game_Over());
+	}
+	 /**
+	  * method to test if the Game is Draw after specific number of Turns
+	  */
+	@Test
+	public void Test_Is_Game_Draw(){
+		
+		game_model.current_player = only_Player;
+		game_model.max_nb_turns = 20;
+		game_model.turns_counter = 20;
+		assertEquals(true, game_model.Is_Game_Draw());
+	}
 }

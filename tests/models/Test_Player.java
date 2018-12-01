@@ -1,6 +1,7 @@
 package models;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 
@@ -28,7 +29,8 @@ public class Test_Player {
 		game.map =  new Map_Model();
 		for(int i = 0; i< number_territories; i++){
 			Territory new_territory= new Territory(i, "Territory" + i, 0, 0, "");
-			testPlayer.Add_Territory(new_territory);		   	
+			testPlayer.Add_Territory(new_territory);
+			
 		}
 		
 		 number_armies = testPlayer.owned_territories.size() / 3; 
@@ -64,9 +66,18 @@ public class Test_Player {
 	public void Test_Set_Number_Territory_Reinforcements() {
 		testPlayer.Set_Number_Territory_Reinforcements();
 		int i = testPlayer.reinforcements;
-		Assert.assertEquals(7, i);
+		assertEquals(7, i);
 	}
 	
+	/**
+	 * test if the player has extra enough army to move
+	 */
+	@Test
+	public void Test_Has_Extra_Army_To_Move(){
+		Territory temp_territory = testPlayer.owned_territories.get("territory1");			
+		temp_territory.nb_armies = 3;
+		assertTrue(testPlayer.Has_Extra_Army_To_Move());
+	}
 
 	
 }
