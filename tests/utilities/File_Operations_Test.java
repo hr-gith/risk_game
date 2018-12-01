@@ -15,7 +15,7 @@ public class File_Operations_Test {
 
 	Game_Model game_model;  
 	Game_Model gm = Game_Model.Get_Game();  
-	String filename = "saveTest1";  
+	String filename = "savedGame1";  
 	
 	/**
 	 * this method runs before all tests to load the game model 
