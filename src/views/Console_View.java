@@ -342,7 +342,6 @@ public class Console_View implements Observer {
 	 */
 	@Override
 	public void update(Observable obs, Object arg1) {
-		System.out.println("first of update in view");
 		Player temp = ((Game_Model) obs).current_player;
 		if (!temp.equals(current_player))
 			is_new_turn = true;
@@ -364,35 +363,4 @@ public class Console_View implements Observer {
 		}
 		Update_Menu();
 	}
-
-	/**
-	 * it shows the Place army on their own countries
-	 *
-	 * @param currentPlayer
-	 * @return boolean yes or no to show if the player wants to place armies in
-	 *         other country
-	 *
-	 *         public Boolean Display_Menu_Replace_army(Player currentPlayer) { if
-	 *         (currentPlayer.owned_territories != null) {
-	 *         System.out.println("Replace Army =>>player : " +
-	 *         currentPlayer.player_name + " has countries :" +
-	 *         currentPlayer.owned_territories.keySet().toString());
-	 *         System.out.println("\nEnter the name of country "); String
-	 *         to_territory = scanner.nextLine(); System.out.println("\nEnter the
-	 *         Number of place armies"); int number_armies =
-	 *         Integer.valueOf(scanner.nextLine());
-	 * 
-	 *         game_controller.Set_Replace_To_Territory(to_territory);
-	 *         game_controller.Set_Replace_Number_Of_Move_Armies(number_armies);
-	 * 
-	 * 
-	 *         System.out.println("\nDo you want to replace armies in another
-	 *         country ?(yes/no)"); String response = scanner.nextLine(); if
-	 *         (response.equalsIgnoreCase("yes")) return Boolean.TRUE; }
-	 * 
-	 *         return Boolean.FALSE;
-	 * 
-	 *         }
-	 */
-
 }

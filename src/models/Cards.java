@@ -79,14 +79,6 @@ public class Cards implements java.io.Serializable {
 	 */
 	private void Calculate_Card_Reinforcements() {
 
-		// The first set traded in - 4 armies
-		// The second set traded in - 6 armies
-		// The third set traded in - 8 armies
-		// The fourth set traded in - 10 armies
-		// The fifth set traded in - 12 armies
-		// The sixth set traded in - 15 armies
-		// from here on for each set : 5++
-
 		switch (this.Num_Sets_traded_In) {
 
 		case 1:

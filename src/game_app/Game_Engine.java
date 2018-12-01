@@ -66,14 +66,6 @@ public class Game_Engine {
 	}
 
 
-//	private static void Setup_Tournament() {
-//		Tournament_Controller tournament = new Tournament_Controller();
-//		//TODO: get data for tournament
-//		
-//		tournament.Start();
-//	}
-
-
 	/**
 	 * method for Displaying main menu for game engine
 	 */

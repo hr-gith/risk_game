@@ -318,12 +318,7 @@ public class Player implements java.io.Serializable {
 					behavior.am.Apply_Result();
 				}
 			}
-			/*
-			 * if (!Has_Extra_Army_To_Move()) {
-			 * ref_game.Update_State(State_Game.FORTIFICATION,
-			 * "You can not attack any more!"); }else { //go to post attack???? if there is
-			 * a conquerer???? }
-			 */
+			
 		} else {
 			response.ok = false;
 			response.message = behavior.am.message;
@@ -378,85 +373,3 @@ public class Player implements java.io.Serializable {
 
 	}
 }
-
-/// **
-// * this method handles the player interaction to be used in reinforcement
-/// phase
-// * @param to_territory territory recieving the armies
-// * @param nb_armies number of armies
-// * @return true if inputs are valid
-// */
-// public Message_Handler Reinforce(String to_territory, int nb_armies) {
-// if (this.Add_Army_To_Territory(to_territory, nb_armies)) {
-// return new Message_Handler(true);
-// }
-// return new Message_Handler(true, "The territory does not belong to you or
-/// your reinforcement is not enough.");
-// /*current_state = State_Player.PLAYING;
-// old_state_game = State_Game.REINFORCEMENT;
-// if (old_state_game != State_Game.STARTUP)
-// Set_Number_Territory_Reinforcements();
-// else
-// return false;
-// return true;*/
-// }
-//
-/// **
-// * this method handles the player interaction to be used in attack phase
-// * @param attack_plan Attack_Model object
-// * @return
-// */
-// public Message_Handler Attack (Attack_Model attack_plan) {
-// Message_Handler response = new Message_Handler(true);
-// if (attack_plan.Is_Valid_Attack()) {
-// if (!attack_plan.all_out) {
-// attack_plan.Decide_Battle();
-// attack_plan.Apply_Result();
-// }
-// else {
-// //all out
-// while (attack_plan.from.nb_armies > 1 && attack_plan.from.owner_name !=
-/// attack_plan.to.owner_name) {
-// attack_plan.Set_Max_NB_Dices();
-// attack_plan.Decide_Battle();
-// attack_plan.Apply_Result();
-// }
-// }
-// /*if (!Has_Extra_Army_To_Move()) {
-// ref_game.Update_State(State_Game.FORTIFICATION, "You can not attack any
-/// more!");
-// }else {
-// //go to post attack???? if there is a conquerer????
-// }*/
-// }
-// else {
-// response.ok = false;
-// response.message = attack_plan.message;
-// }
-// return response;
-// }
-//
-/// **
-// * this method handles the player interaction to be used in Fortification
-/// phase
-// * @param from_territory source territory of fortification
-// * @param to_territory destination of fortification
-// * @param nb_armies number of armies to fortify
-// * @return true if valid, false otherwise
-// */
-// public Message_Handler Fortify(String from_territory, String to_territory,
-/// int nb_armies) {
-//
-//
-// is_conquerer = false;
-// //Test if any units to fortify
-// if (Has_Extra_Army_To_Move()) {
-// if (!Move_Army(from_territory, to_territory, nb_armies))
-// return new Message_Handler(false, "Error: The territories are not connected,
-/// are invalid.");
-// }
-// else {
-// return new Message_Handler(false, "Error: you have not left ample units.");
-// }
-// return new Message_Handler(true);
-// }
