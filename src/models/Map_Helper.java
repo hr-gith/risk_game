@@ -17,7 +17,6 @@ public class Map_Helper {
 	/**
 	 * reads a .map file and converts it to a Map object NOTE: if two territories
 	 * have the same name or the same position, we ignore the second one
-	 * 
 	 * @param path address of a .map file
 	 * @return the generated map
 	 */

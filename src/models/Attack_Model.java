@@ -14,12 +14,10 @@ enum State {
  * this class has the logic of a single attack from one territory to another
  */
 public class Attack_Model {
-	
-	
-	
+
 	public Player attacker;
 	public Player defender;
-	
+
 	public Territory from;
 	public Territory to;
 
@@ -41,7 +39,6 @@ public class Attack_Model {
 
 	public boolean continue_attack = false;
 
-
 	/**
 	 * constructor of Attack_model without any argument
 	 */
@@ -52,7 +49,6 @@ public class Attack_Model {
 
 	/**
 	 * constructor of attack_Model
-	 * 
 	 * @param attacker
 	 *            Player object of attacker
 	 * @param defender
@@ -74,11 +70,10 @@ public class Attack_Model {
 		this.from = from;
 		this.to = to;
 
-
 		if (all_out) {
 			Set_Max_NB_Dices();
 		} else {
-			
+
 			this.defender_nb_dices = Get_Max_NB_Dices(to, false);
 		}
 	}
@@ -93,7 +88,6 @@ public class Attack_Model {
 
 	/**
 	 * decide about one turn battle
-	 * 
 	 * @param attack_nb_dices
 	 * @param defend_nb_dices
 	 * @return a pair of numbers: the first number is the number of armies lost for
@@ -104,7 +98,7 @@ public class Attack_Model {
 		defender_loss = 0;
 		if (attacker_nb_dices != 0 && defender_nb_dices != 0) {
 			attacker_dice = Dice.Roll(attacker_nb_dices);
-			defender_dice = Dice.Roll(defender_nb_dices);			
+			defender_dice = Dice.Roll(defender_nb_dices);
 
 			// compare the highest dices
 			if (attacker_dice.get(0) > defender_dice.get(0))
@@ -122,25 +116,26 @@ public class Attack_Model {
 			Attack_Result_To_String();
 		}
 	}
-	
+
+	/**
+	 * method for returning attack result as string
+	 */
 	public void Attack_Result_To_String() {
-		message = "Attack Result: \n("+ this.attacker.name +"-"+ this.from.name 
-				+" AGAINST " +this.defender.name +"-"+ this.to.name  +
-				"):\n(Attacker Dice:  ";
+		message = "Attack Result: \n(" + this.attacker.name + "-" + this.from.name + " AGAINST " + this.defender.name
+				+ "-" + this.to.name + "):\n(Attacker Dice:  ";
 		for (int d : attacker_dice)
 			message += d + " ";
 		message += ") \n- (Defender Dice: ";
 		for (int d : defender_dice)
 			message += d + " ";
 		message += ") \n***********\n Attacker loss: ";
-		message +=  (attacker_loss * -1);
+		message += (attacker_loss * -1);
 		message += " \n Defender loss: ";
-		message +=  (defender_loss * -1);		
+		message += (defender_loss * -1);
 	}
 
 	/**
 	 * check if the current attack_model is valid or not
-	 * 
 	 * @return true if it is valid, false otherwise
 	 */
 	public boolean Is_Valid_Attack() {
@@ -166,8 +161,8 @@ public class Attack_Model {
 	 * Apply result of a single battle to armies of attacker and defender assign the
 	 * conquered territory to the attacker
 	 */
-	public void Apply_Result() {	
-		
+	public void Apply_Result() {
+
 		from.nb_armies += attacker_loss;
 		to.nb_armies += defender_loss;
 		// check if attacked territory is defeated
@@ -193,7 +188,6 @@ public class Attack_Model {
 
 	/**
 	 * gets max number of dice based on number of armies
-	 * 
 	 * @param territory_in_attack
 	 *            the territory which is in the battle
 	 * @param isAttacker
@@ -214,9 +208,5 @@ public class Attack_Model {
 		}
 		return result;
 	}
-	
-	
-
-	
 
 }
