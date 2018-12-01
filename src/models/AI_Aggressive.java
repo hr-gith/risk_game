@@ -28,7 +28,7 @@ public class AI_Aggressive implements Behaviour, java.io.Serializable {
 		int units = 0;
 		// find territory with most units
 		for (String str : current_player.owned_territories.keySet()) {
-			if (current_player.owned_territories.get(str).nb_armies > units) {
+			if (current_player.owned_territories.get(str).nb_armies >= units) {
 				territory_max = str;
 				units = current_player.owned_territories.get(str).nb_armies;
 			}
