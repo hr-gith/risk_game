@@ -21,9 +21,8 @@ import views.Players_World_Domination_View;
 import views.Tournament_View;
 
 /**
- * 
- * @author e_narang
- *
+ * Tournament controller is a class for starting and controlling tournament
+ * phase
  */
 public class Tournament_Controller {
 	private Set<Map_Model> maps;
@@ -32,7 +31,6 @@ public class Tournament_Controller {
 	public int max_nb_turn;
 	public Game_Model game;
 	public Map_Helper map_helper;
-
 	public Game_View game_view;
 	public Tournament_View tournament_view;
 	public Map_View map_view;
@@ -41,21 +39,21 @@ public class Tournament_Controller {
 	public Card_View card_view;
 
 	/**
-	 * 
+	 * constructor of tournament controller initial game and map and player list and
+	 * map and tournament view
 	 */
 	public Tournament_Controller() {
 		game = Game_Model.Get_Game();
 		maps = new HashSet<Map_Model>();
 		player_list = new ArrayList<AbstractMap.SimpleEntry<String, State_Player_Strategy>>();
 		map_helper = new Map_Helper();
-
 		// set views
 		tournament_view = new Tournament_View(this);
 	}
 
 	/**
-	 * 
-	 * @param map_name
+	 * method for getting maps from tournament view and add
+	 * @param map_name taking map name as a input parameters
 	 * @return boolean
 	 */
 	public boolean Add_Map(String map_name) {
@@ -72,9 +70,9 @@ public class Tournament_Controller {
 	}
 
 	/**
-	 * 
-	 * @param name
-	 * @param strategy
+	 * method for adding player depend on user input from tournament view
+	 * @param name setting name for each player
+	 * @param strategy setting strategy for each player
 	 * @return boolean
 	 */
 	public boolean Add_Player(String name, State_Player_Strategy strategy) {
@@ -85,12 +83,15 @@ public class Tournament_Controller {
 		return false;
 	}
 
+	/**
+	 * method for calling setup tournament method from tournament view
+	 */
 	public void Setup() {
 		this.tournament_view.Setup_Tournament();
 	}
 
 	/**
-	 * 
+	 * method for starting tournament
 	 * @return boolean
 	 * @throws InterruptedException
 	 */
