@@ -42,7 +42,9 @@ public class AI_Cheater implements Behaviour, java.io.Serializable {
 			current_player.owned_territories.get(strSwp).owner_name = current_player.name;
 			current_player.owned_territories.get(strSwp).nb_armies = 1;
 			defender.owned_territories.remove(strSwp);
-
+			if (defender.owned_territories.size()==0) {
+				defender.current_state = State_Player.DEAD;
+			}
 		}
 		this.am.continue_attack = false;
 	}
