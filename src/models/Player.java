@@ -245,6 +245,8 @@ public class Player implements java.io.Serializable {
 			Territory deleted = this.owned_territories.get(territory_name);
 			deleted.owner_name = "";
 			this.owned_territories.remove(territory_name.toLowerCase());
+			if (this.owned_territories.size() == 0) 
+				this.current_state = State_Player.DEAD;
 			return true;
 		}
 		return false;
