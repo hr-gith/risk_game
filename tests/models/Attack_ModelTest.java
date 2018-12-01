@@ -21,6 +21,7 @@ public class Attack_ModelTest {
 	Player defender = new Player(1,Color.BLUE,State_Player_Strategy.HUMAN, game_model1);
 	Territory from;
 	Territory to;
+	Attack_Model attack_model = new Attack_Model();
 
 	/**
 	 * this method sets territories and map before any test
@@ -37,7 +38,7 @@ public class Attack_ModelTest {
 
 		to = new Territory("defendingTerritory", 120, 300, "new_continent_name");
 		new_continent.Add_Territory(to);
-		to.nb_armies = 1;
+		to.nb_armies = 2;
 		from.Add_Neighbour(to);
 
 		Territory t3 = new Territory("attackingTerritory", 120, 300, "new_continent_name");
@@ -46,6 +47,16 @@ public class Attack_ModelTest {
 
 		attacker.Add_Territory(from);
 		defender.Add_Territory(to);
+		
+
+		attack_model.attacker= attacker;
+		attack_model.defender= defender;
+		attack_model.from= from;
+		attack_model.to= to;
+		attack_model.attacker_loss =-1;
+		attack_model.defender_loss =-1;
+		
+		attack_model.Set_Max_NB_Dices();
 	}
 
 	/**
@@ -53,13 +64,7 @@ public class Attack_ModelTest {
 	 */
 	@Test
 	public void testIs_Valid_Attack() {
-
-		Attack_Model attack_model = new Attack_Model();
-		attack_model.attacker= attacker;
-		attack_model.defender= defender;
-		attack_model.from= from;
-		attack_model.to= to;
-		attack_model.Set_Max_NB_Dices();
+		
 		Assert.assertTrue(attack_model.Is_Valid_Attack());
 	}
 
@@ -70,6 +75,16 @@ public class Attack_ModelTest {
 	public void testGet_Max_NB_Dices() {
 		Attack_Model attack_model = new Attack_Model();
 		Assert.assertEquals(3, attack_model.Get_Max_NB_Dices(from, true));
+	}
+	
+	/**
+	 * this method tests Apply_Result to check if corrected number of armies are applied to territories
+	 */
+	@Test
+	public void testApply_Result() {
+		attack_model.Apply_Result();
+		Assert.assertEquals(1, to.nb_armies);
+		Assert.assertEquals(4, from.nb_armies);
 	}
 	
 
