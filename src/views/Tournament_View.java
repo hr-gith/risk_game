@@ -7,7 +7,6 @@ import models.State_Player_Strategy;
 /**
  * this class is responsible for setup tournament and gathering information and
  * pass to the controller
- *
  */
 public class Tournament_View {
 	Scanner scanner;
@@ -64,14 +63,13 @@ public class Tournament_View {
 		} while (new_input.equals("y"));
 
 		// number of games to be played on each map between 1 to 5
-		
 		System.out.println("\n==================================");
 		System.out.println("\n\t GAME");
 		System.out.println("\n==================================");
 
 		do {
 			scanner = new Scanner(System.in);
-			
+
 			System.out.println("\n Enter Number of Game on each Map: ");
 			int game_number = Integer.valueOf(scanner.nextLine());
 
@@ -88,19 +86,18 @@ public class Tournament_View {
 		} while (new_input.equals("y"));
 
 		// Players Strategies
-		
 		System.out.println("\n==================================");
 		System.out.println("\n\t PLAYER ");
 		System.out.println("\n==================================");
-		
+
 		do {
 			scanner = new Scanner(System.in);
 			System.out.println("\n Please Enter Number of Players: ");
-			
+
 			int player_number = Integer.valueOf(scanner.nextLine());
 
 			if (player_number < 2 || player_number > 4) {
-				
+
 				System.out.println("\n\t Please enter between 2 to 4 ");
 				System.out.println("\n\t Try Again");
 				new_input = "y";
@@ -108,11 +105,11 @@ public class Tournament_View {
 			} else {
 
 				for (int i = 0; i < player_number; i++) {
-					
+
 					do {
 						System.out.println("\n Enter Name of Player: ");
 						String name = scanner.nextLine().toLowerCase();
-						
+
 						System.out.println("\n Enter player Strategy: "
 								+ "player's Strategies should be (AGGRESSIVE, BENEVOLENT, RANDOM, CHEATER):");
 						String strategy = scanner.nextLine().trim().toUpperCase();
@@ -150,7 +147,6 @@ public class Tournament_View {
 		} while (new_input.equals("y"));
 
 		// Enter Turn at each Game
-		
 		System.out.println("\n==================================");
 		System.out.println("\n\t PLAY");
 		System.out.println("\n==================================");
@@ -172,16 +168,15 @@ public class Tournament_View {
 
 		} while (new_input.equals("y"));
 
-		//Starting Tournament
-		
+		// Starting Tournament
 		System.out.println("\n==================================");
 		System.out.println("\n\t Starting Tournament");
 		System.out.println("\n==================================");
-		
+
 		try {
 			if (!this.tournament_controler.Start())
 				System.out.println("\n\t Error: Tournament can not be started...");
-				System.out.println("\n==================================");
+			System.out.println("\n==================================");
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

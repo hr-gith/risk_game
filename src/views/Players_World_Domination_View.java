@@ -6,7 +6,6 @@ import java.awt.Toolkit;
 import java.util.Observable;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
 import models.Game_Model;
 
 /**
@@ -19,7 +18,6 @@ public class Players_World_Domination_View extends View {
 	public String total_number_of_armies_Of_player;
 	public String continent_owner;
 	public String percentage_of_world_owner;
-
 	JPanel jPanel;
 	JLabel jLabel1;
 	JLabel jLabel2;

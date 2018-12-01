@@ -18,7 +18,6 @@ public class Map_Generator_View {
 	/**
 	 * Display main menu for map generator
 	 */
-
 	public int Display_Menu() {
 		scanner = new Scanner(System.in);
 		System.out.println("\n==================================");
@@ -36,10 +35,8 @@ public class Map_Generator_View {
 
 	/**
 	 * Display menu for design map by user input
-	 * 
 	 * @return choice
 	 */
-
 	public int Display_Menu_Design_Map() {
 		scanner = new Scanner(System.in);
 		System.out.println("\n==================================");
@@ -60,6 +57,10 @@ public class Map_Generator_View {
 		return result;
 	}
 	
+	/**
+	 * method for getting map name
+	 * @return string
+	 */
 	public String Display_Get_Map_Name() {
 		System.out.println("\n Enter the map's name:  ");
 		scanner = new Scanner(System.in);
@@ -67,16 +68,16 @@ public class Map_Generator_View {
 	}
 
 	/**
-	 * Creating different object of map
+	 * method for display map designer method
+	 * @param game_view
+	 * @param map_view
 	 */
 	public void Display_Map_Designer(Game_View game_view, Map_View map_view) {
 		scanner = new Scanner(System.in);
 		int choice;
-		
 		game_view.Draw_Window();
 		game_view.Add_Panel(map_view.jPanel, 1);
 		map_view.Draw_Map(map);
-
 
 		do {
 			choice = Display_Menu_Design_Map();

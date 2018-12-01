@@ -16,10 +16,10 @@ import models.Game_Model;
 /**
  * To read from file or write to file
  */
-
 public class File_Operations {
+
 	/**
-	 * reads from a file and return its lines
+	 * reads from a file and return its line
 	 * 
 	 * @param path
 	 *            which is the address of file
@@ -45,7 +45,6 @@ public class File_Operations {
 
 	/**
 	 * write list of string in a file if a file exists, it overwrite it
-	 * 
 	 * @param text
 	 *            which presents lines
 	 * @param path
@@ -61,47 +60,50 @@ public class File_Operations {
 			e.printStackTrace();
 		}
 	}
-	
+
+	/**
+	 * method for saving game
+	 * @param object
+	 * @param filename
+	 * @return boolean
+	 */
 	public static boolean Serialize(Object object, String filename) {
-        try
-        {    
-            FileOutputStream file = new FileOutputStream(".\\src\\" +filename); 
-            ObjectOutputStream out = new ObjectOutputStream(file); 
-              
-            out.writeObject(object);               
-            out.close(); 
-            file.close();               
-            System.out.println("Object has been saved.");   
-            return true;
-        }           
-        catch(IOException ex) 
-        { 
-            System.out.println("IOException: "+ ex.getMessage()); 
-            return false;
-        } 
+		try {
+			FileOutputStream file = new FileOutputStream(".\\src\\" + filename);
+			ObjectOutputStream out = new ObjectOutputStream(file);
+
+			out.writeObject(object);
+			out.close();
+			file.close();
+			System.out.println("Object has been saved.");
+			return true;
+		} catch (IOException ex) {
+			System.out.println("IOException: " + ex.getMessage());
+			return false;
+		}
 	}
-	
+
+	/**
+	 * method for loading game
+	 * @param filename
+	 * @return game model
+	 */
 	public static Game_Model Deserialize(String filename) {
 		Game_Model obj = null;
-        try
-        {    
-            FileInputStream file = new FileInputStream(".\\src\\" +filename); 
-            ObjectInputStream in = new ObjectInputStream(file);               
-            obj = (Game_Model)in.readObject(); 
-              
-            in.close(); 
-            file.close(); 
-              
-            System.out.println("Game has been loaded."); 
-        }           
-        catch(IOException ex) 
-        { 
-            System.out.println("IOException: "+ ex.getMessage()); 
-        }           
-        catch(ClassNotFoundException ex) 
-        { 
-            System.out.println("ClassNotFoundException: "+ ex.getMessage()); 
-        } 
-        return obj;
+		try {
+			FileInputStream file = new FileInputStream(".\\src\\" + filename);
+			ObjectInputStream in = new ObjectInputStream(file);
+			obj = (Game_Model) in.readObject();
+
+			in.close();
+			file.close();
+
+			System.out.println("Game has been loaded.");
+		} catch (IOException ex) {
+			System.out.println("IOException: " + ex.getMessage());
+		} catch (ClassNotFoundException ex) {
+			System.out.println("ClassNotFoundException: " + ex.getMessage());
+		}
+		return obj;
 	}
 }

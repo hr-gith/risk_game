@@ -33,7 +33,6 @@ public class Phase_View extends View {
 	/**
 	 * constructor that create new object for JFrame, JPanel and JLabel
 	 */
-
 	public Phase_View() {
 		jPanel = new JPanel();
 		lb_player_name = new JLabel();
@@ -45,7 +44,6 @@ public class Phase_View extends View {
 	/**
 	 * Draw method for showing updated fields in the JFrame window
 	 */
-
 	public void Draw_Phase_View_Window() {
 
 		jPanel.add(this);
@@ -76,7 +74,6 @@ public class Phase_View extends View {
 	/**
 	 * close the JPanel
 	 */
-
 	public void Close() {
 		jPanel.setVisible(false);
 	}
