@@ -17,6 +17,7 @@ import models.Player;
 public class Test_Game_Model {
 	Game_Model game_model = Game_Model.Get_Game();
 	Player only_Player = new Player(0,Color.BLUE,State_Player_Strategy.HUMAN,game_model);
+	Player second_player =  new Player(1,Color.BLUE,State_Player_Strategy.HUMAN,game_model);
 	static Integer number_of_players = 5; 
 	static ArrayList<Player> player_list = new ArrayList<Player>();; 
 	ArrayList<Player> shuffled_player_list; 
@@ -74,6 +75,17 @@ public class Test_Game_Model {
 	public void Test_Is_Game_Over(){
 		game_model.current_player = only_Player;
 		assertEquals(true, game_model.Is_Game_Over());
+	}
+	
+	 /**
+	  * method to test if the Game is correctly over when only one alive player remains
+	  */
+	@Test
+	public void Test_Is_Game_Not_Over(){
+		game_model.current_player = only_Player;
+		player_list.add(only_Player);
+		player_list.add(second_player);
+		assertEquals(false, game_model.Is_Game_Over());
 	}
 	 /**
 	  * method to test if the Game is Draw after specific number of Turns

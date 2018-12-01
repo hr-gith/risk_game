@@ -10,7 +10,7 @@ import controllers.Tournament_ControllerTest;
 	@RunWith(Suite.class)
 	
 	@Suite.SuiteClasses({Test_Player.class, Attack_ModelTest.class,ContinentTest.class, IO_Map_HelperTest.class,
-		MapTest.class, TerritoryTest.class, Test_Game_Model.class, File_Operations_Test.class, World_Domination_ViewTest.class, Tournament_ControllerTest.class} )
+		MapTest.class, TerritoryTest.class, Test_Game_Model.class, File_Operations_Test.class, World_Domination_ViewTest.class, Tournament_ControllerTest.class,Player_Collection_Test.class} )
 /**
  * this is the Suit class for junit tests
  *
