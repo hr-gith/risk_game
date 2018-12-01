@@ -1,5 +1,8 @@
 package models;
 
+/**
+ * fortify class specifying from and to territory
+ */
 public class Fortify_Model {
 	
 	public String from_territory = new String(); 

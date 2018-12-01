@@ -10,7 +10,6 @@ import views.Map_View;
 /**
  * Map generator controller for starting getting map from file or by user design
  */
-
 public class Map_Generator_Controller {
 
 	public Map_Generator_View map_generator_view;
@@ -22,20 +21,17 @@ public class Map_Generator_Controller {
 	public Map_Generator_Controller() {
 		this.map_generator_view = new Map_Generator_View();
 		this.map_view = new Map_View();
-		this.game_view = new Game_View(false); 
+		this.game_view = new Game_View(false);
 		this.map = new Map_Model();
 		this.io_map_helper = new Map_Helper();
 	}
 
 	/**
-	 * start phase of read or designing map
-	 * 
-	 * @return boolean
+	 * method start phase of map
 	 */
-
 	public boolean Start() {
 		int choice = 0;
-	
+
 		do {
 			// generating map from file or by user design
 			choice = this.map_generator_view.Display_Menu();
@@ -59,13 +55,12 @@ public class Map_Generator_Controller {
 			case 2: // design a new map
 				this.map_generator_view.Display_Map_Designer(game_view, map_view);
 				map = map_generator_view.map;
-			
+
 				break;
 			case 3:// Edit map
 				this.map_generator_view.Display_Map_Designer(game_view, map_view);
 				map = map_generator_view.map;
 
-				
 				break;
 			case 4:// Save map in a file
 				if (map != null && io_map_helper.Export_Map(map))
@@ -79,19 +74,19 @@ public class Map_Generator_Controller {
 					this.game_view.Add_Panel(map_view.jPanel, 1);
 					this.map_generator_view.Display_Map(map);
 					this.map_view.Draw_Map(map);
-					this.game_view.Redraw(); 
+					this.game_view.Redraw();
 				}
 				break;
-			case 6://Back to main menu
+			case 6:// Back to main menu
 				this.game_view.Close();
-				break; 			
-			}			
-			
+				break;
+			}
+
 		} while (choice != 6);
 
 		// display finalized map
 		this.map_generator_view.Display_Map(map);
-		if (map.Get_Territories().size() > 2 &&  map.Is_Valid()) {
+		if (map.Get_Territories().size() > 2 && map.Is_Valid()) {
 			map.Set_Continents_Score();
 			return true;
 		} else

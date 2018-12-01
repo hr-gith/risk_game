@@ -2,7 +2,6 @@ package controllers;
 
 import models.Game_Model;
 import models.Map_Model;
-import models.State_Game;
 import models.State_Player_Strategy;
 import views.Card_View;
 import views.Console_View;
@@ -15,7 +14,8 @@ import java.util.AbstractMap;
 import java.util.ArrayList;
 
 /**
- * game controller class for connecting between game model class and view classes 
+ * game controller class for connecting between game model class and view
+ * classes
  */
 public class Game_Controller {
 
@@ -31,7 +31,7 @@ public class Game_Controller {
 		this.game = game;
 		Set_Views();
 	}
-	
+
 	/**
 	 * constructor for initiate the game and adding observers to the game
 	 */
@@ -41,6 +41,9 @@ public class Game_Controller {
 		Set_Views();
 	}
 
+	/**
+	 * Method for connect observer and observables
+	 */
 	public void Set_Views() {
 		console_view = new Console_View(this);
 		game.addObserver(console_view);
@@ -66,51 +69,41 @@ public class Game_Controller {
 	}
 
 	/**
-	 * method for starting game 
+	 * method for starting game
 	 */
 	public void Start() {
-		ArrayList<AbstractMap.SimpleEntry<String,State_Player_Strategy>> players_name = console_view.Display_Menu_Players();
+		ArrayList<AbstractMap.SimpleEntry<String, State_Player_Strategy>> players_name = console_view
+				.Display_Menu_Players();
 		this.Start(players_name);
 	}
-	
-	public void Start(ArrayList<AbstractMap.SimpleEntry<String,State_Player_Strategy>> players_name) {
+
+	public void Start(ArrayList<AbstractMap.SimpleEntry<String, State_Player_Strategy>> players_name) {
 		game.Setup(players_name);
 	}
 
 	/**
-	 * method for calling reinforcement from game model class
-	 * @param territory_name
-	 * @param nb_armies for number of armies for each territory
+	 * method for calling reinforcement from game
 	 */
 	public void Reinforcement() {
 		game.Reinforce();
 	}
 
 	/**
-	 * method for calling fortification from game model
-	 * @param from which territory
-	 * @param to which territory
-	 * @param nb_armies for moving how many armies
+	 * method for calling fortification from game
 	 */
 	public void Fortification() {
 		game.Fortify();
 	}
 
 	/**
-	 * method for calling attack from game model
-	 * @param from which territory
-	 * @param to which territory
-	 * @param nb_armies with how many armies
-	 * @param all_out 
+	 * method for calling attack from game
 	 */
 	public void Attack() {
-
 		game.Attack();
 	}
 
 	/**
-	 * this method calling Post_Attack from Game Model to  move armies from attacking territory to defeated territory
-	 * @param nb_armies how many armies
+	 * this method calling Post_Attack from Game
 	 */
 	public void Post_Attack() {
 		game.Post_Attack();
@@ -124,7 +117,7 @@ public class Game_Controller {
 	}
 
 	/**
-	 * this method for calling ReDraw method for  view classes
+	 * this method for calling ReDraw method for view classes
 	 */
 	public void RedrawViews() {
 
@@ -134,6 +127,5 @@ public class Game_Controller {
 		players_world_domination_view.Redraw();
 
 	}
-	
 
 }

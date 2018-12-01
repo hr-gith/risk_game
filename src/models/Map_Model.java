@@ -64,7 +64,7 @@ public class Map_Model implements java.io.Serializable{
 	    
 	/**
 	 * Checks if map has no continents
-	 * @return
+	 * @return boolean
 	 */
 	public boolean Is_Empty() {
 		  return this.continents.isEmpty();
@@ -84,7 +84,7 @@ public class Map_Model implements java.io.Serializable{
 	/**
 	 * Adds a continent to the map
 	 * @param new_Continent
-	 * @return
+	 * @return boolean
 	 */
 	public boolean Add_Continent(Continent new_continent) {
 		Objects.requireNonNull(new_continent);	

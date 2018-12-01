@@ -1,8 +1,10 @@
 package models;
 
+/**
+ *behavior interface for player methods
+ */
 public interface Behaviour {
-
-
+	
 	public Attack_Model am = new Attack_Model(); 
 	public Fortify_Model fm = new Fortify_Model(); 
 	public Reinforce_Model rm = new Reinforce_Model(); 

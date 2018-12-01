@@ -12,7 +12,10 @@ import utilities.File_Operations;
  * class for calling to start Map generator and Game
  */
 public class Game_Engine {
-
+ /**
+  * main method
+  * @param args
+  */
 	public static void main(String[] args) {
 		Map_Generator_Controller map_generator = new Map_Generator_Controller();
 		int choice = 0;
@@ -72,9 +75,8 @@ public class Game_Engine {
 
 
 	/**
-	 * Display main menu for game engine
+	 * method for Displaying main menu for game engine
 	 */
-
 	public static int Display_Menu() {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("\n==================================");

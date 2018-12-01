@@ -11,16 +11,12 @@ import models.Map_Model;
 
 /**
  * game view class implement observer and extends JPanel from abstract view
- * class
- *
  */
 public class Game_View extends View {
 
 	private Map_Model map;
-
 	JFrame jFrame;
 	JPanel mainPanel;
-
 	Dimension screenSize;
 	private int top_margin;
 	private int side_margin;
@@ -34,13 +30,11 @@ public class Game_View extends View {
 		if(exit_on_close){
 		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		}
+		
 		mainPanel = new JPanel();
 		mainPanel = (JPanel) jFrame.getContentPane();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
-
 	}
-
-
 	
 	/**
 	 * draw JFrame and set size and margin
@@ -50,7 +44,6 @@ public class Game_View extends View {
 		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		side_margin = screenSize.width / 50;
 		top_margin = screenSize.height / 50;
-
 		jFrame.setSize(screenSize.width / 2, screenSize.height / 2);
 		jFrame.setVisible(true);
 	}

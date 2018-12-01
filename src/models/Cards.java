@@ -7,7 +7,7 @@ import java.util.Random;
  * end of the attack phase, and calculate number of armies based on trade_in
  * rules
  */
-public class Cards implements java.io.Serializable{
+public class Cards implements java.io.Serializable {
 
 	// type of cards: INFANTRY, CAVALRY, ARTILLERY
 
@@ -31,7 +31,6 @@ public class Cards implements java.io.Serializable{
 		if ((this.cavalry > 0 && this.infantry > 0 && this.artillery > 0) || this.infantry >= 3 || this.cavalry >= 3
 				|| this.artillery >= 3) {
 			return true;
-
 		} else
 			return false;
 	}
@@ -116,24 +115,23 @@ public class Cards implements java.io.Serializable{
 
 	/**
 	 * gets card_reinforcements
-	 * 
 	 * @return card_reinforcements
 	 */
 	public int Get_Card_Reinforcement_Qty() {
 		return this.card_reinforcements;
 	}
-	
+
 	public void Add_A_Random_Card() {
 		Random random = new Random();
-		int card_index =  random.nextInt(3) + 1;
-		switch(card_index) {
+		int card_index = random.nextInt(3) + 1;
+		switch (card_index) {
 		case 1:
 			this.cavalry++;
 			break;
 		case 2:
 			this.infantry++;
 			break;
-		case 3: 
+		case 3:
 			this.artillery++;
 			break;
 		}

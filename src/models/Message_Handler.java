@@ -10,7 +10,6 @@ public class Message_Handler {
 
 	/**
 	 * constructor
-	 * 
 	 * @param ok
 	 * @param message
 	 */
@@ -21,7 +20,6 @@ public class Message_Handler {
 
 	/**
 	 * constructor
-	 * 
 	 * @param ok
 	 */
 	public Message_Handler(boolean ok) {
@@ -31,7 +29,6 @@ public class Message_Handler {
 
 	/**
 	 * sets message to the passed string
-	 * 
 	 * @param ok
 	 * @param message
 	 */

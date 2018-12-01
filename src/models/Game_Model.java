@@ -24,22 +24,26 @@ public class Game_Model extends Observable implements java.io.Serializable {
 	public Attack_Model attack_plan;
 	public Player_Collection players;
 	public Player current_player;
-
 	public State_Game current_state;
 	public String message;
-	
 	public int max_nb_turns;
 	public int turns_counter;
 
+	/**
+	 * constructor for creating player collection and initial current state and maximum number of turn
+	 */
 	private Game_Model() {
 		this.map = null;
 		message = "";
-		players = new Player_Collection();//ArrayList<Player>();
+		players = new Player_Collection();// ArrayList<Player>();
 		current_state = State_Game.SETUP;
 		max_nb_turns = Integer.MAX_VALUE;
 	}
-	
-	
+
+	/**
+	 * method for getting name for game
+	 * @return new game model
+	 */
 	public static Game_Model Get_Game() {
 		if (game != null)
 			return game;
@@ -48,7 +52,6 @@ public class Game_Model extends Observable implements java.io.Serializable {
 
 	/**
 	 * checking if game is over
-	 * 
 	 * @return boolean
 	 */
 	public Boolean Is_Game_Over() {
@@ -57,8 +60,8 @@ public class Game_Model extends Observable implements java.io.Serializable {
 		this.current_state = State_Game.OVER;
 		this.message = current_player.name + " is the winner";
 		return true;
-	}	
-	
+	}
+
 	public Boolean Is_Game_Draw() {
 		if (turns_counter < this.max_nb_turns)
 			return false;
@@ -66,41 +69,39 @@ public class Game_Model extends Observable implements java.io.Serializable {
 		this.message = "End of the Game: DRAW";
 		return true;
 	}
-	
+
 	/**
 	 * Controls the game logic for the game setup phase
 	 */
-	public boolean Setup(ArrayList<AbstractMap.SimpleEntry<String,State_Player_Strategy>> player_list) {
-		if (!players.Player_List_Setup(player_list, this)) return false;
-		return this.Setup(players);		
+	public boolean Setup(ArrayList<AbstractMap.SimpleEntry<String, State_Player_Strategy>> player_list) {
+		if (!players.Player_List_Setup(player_list, this))
+			return false;
+		return this.Setup(players);
 	}
-	
+
 	/**
 	 * Controls the game logic for the game setup phase
 	 */
 	private boolean Setup(Player_Collection player_list) {
-		if (player_list == null) return false;
-		if (players.Number_Of_Players() < Config.min_nb_players || players.Number_Of_Players() > Config.max_nb_players || map == null
-				|| map.Is_Empty() || (map.Get_Territories().size() < players.Number_Of_Players()))
+		if (player_list == null)
+			return false;
+		if (players.Number_Of_Players() < Config.min_nb_players || players.Number_Of_Players() > Config.max_nb_players
+				|| map == null || map.Is_Empty() || (map.Get_Territories().size() < players.Number_Of_Players()))
 			return false;
 
 		// Set order of players
 		players.Player_List_Randomize();
 		current_player = players.Get_Next_Player(current_player);
 		Assign_Territories();
-
 		// Calculate Reinforcement for each player
 		Startup_Reinforcement();
 		Update_State(State_Game.STARTUP, "");
-
 		return true;
 	}
-
 
 	/**
 	 * set the current player to the next player if there is another active player
 	 * in the game otherwise will return false
-	 * 
 	 * @param next_player
 	 * @return boolean
 	 */
@@ -114,10 +115,9 @@ public class Game_Model extends Observable implements java.io.Serializable {
 		return false;
 	}
 
-
 	/**
-	 * checks if the player can not attack anymore
-	 * if it is end of the attack gives a card to player in case of conquerer
+	 * checks if the player can not attack anymore if it is end of the attack gives
+	 * a card to player in case of conquerer
 	 */
 	public void Can_Attack() {
 		State_Game new_state = current_state;
@@ -128,12 +128,8 @@ public class Game_Model extends Observable implements java.io.Serializable {
 			return;
 		} else
 			new_state = State_Game.ATTACKING;
-
 		Update_State(new_state, message);
-	}	
-	
-
-
+	}
 
 	/**
 	 * method for moving to the next phase
@@ -142,19 +138,17 @@ public class Game_Model extends Observable implements java.io.Serializable {
 		if (current_state == State_Game.ATTACKING) {
 			current_player.Add_Card();
 			Update_State(State_Game.FORTIFICATION, "");
-		}
-		else if (current_state == State_Game.FORTIFICATION) {
-			turns_counter ++;
+		} else if (current_state == State_Game.FORTIFICATION) {
+			turns_counter++;
 			if (!Is_Game_Over() && !Is_Game_Draw()) {
 				Player next_player = players.Get_Next_Player(current_player);
 				current_player = next_player;
 				current_player.Set_Number_Territory_Reinforcements();
 				Update_State(State_Game.REINFORCEMENT, "");
-			}
-			else {
+			} else {
 				Update_State(this.current_state, this.message);
 			}
-		}			
+		}
 	}
 
 	/**
@@ -175,7 +169,6 @@ public class Game_Model extends Observable implements java.io.Serializable {
 	public int Get_Number_StartUp_Reinforcements() {
 		int result = 0;
 		int nb_starting_territories = this.current_player.owned_territories.size();
-
 		switch (players.Number_Of_Players()) {
 		case 2:
 			result = nb_starting_territories + 4; // 40;
@@ -195,45 +188,44 @@ public class Game_Model extends Observable implements java.io.Serializable {
 		return result;
 	}
 
-	
+	/**
+	 * set game with game model as input
+	 * @param game_in
+	 */
 	public static void Set_Game(Game_Model game_in) {
 		game = game_in;
 	}
-	
-	
+
 	/**
-	 * Assigns the game territories acrross the players playing the game during the
+	 * Assigns the game territories across the players playing the game during the
 	 * setup
 	 */
 	private void Assign_Territories() {
-		 HashMap<String, Territory> game_territories = map.Get_Territories();	
+		HashMap<String, Territory> game_territories = map.Get_Territories();
 
-		 HashMap<String, Territory> copy_game_territories =(HashMap<String, Territory>) map.Get_Territories().clone();	
-			Random generator = new Random();
-			
-			boolean finish = !(copy_game_territories.size() > 0);
-			while(!finish) {
-				for (Player p : this.players.player_list) {
-					if (copy_game_territories.size() > 0) {
-						Object[] keys =   copy_game_territories.keySet().toArray();
-						String random_key =(String) keys[generator.nextInt(keys.length)];
-						Territory t = game_territories.get(random_key);
-						t.owner_name = p.name;
-						p.Add_Territory(t);
-						copy_game_territories.remove(random_key);
-					}
-					else {
-						finish = true;
-						break;
-					}
+		HashMap<String, Territory> copy_game_territories = (HashMap<String, Territory>) map.Get_Territories().clone();
+		Random generator = new Random();
+
+		boolean finish = !(copy_game_territories.size() > 0);
+		while (!finish) {
+			for (Player p : this.players.player_list) {
+				if (copy_game_territories.size() > 0) {
+					Object[] keys = copy_game_territories.keySet().toArray();
+					String random_key = (String) keys[generator.nextInt(keys.length)];
+					Territory t = game_territories.get(random_key);
+					t.owner_name = p.name;
+					p.Add_Territory(t);
+					copy_game_territories.remove(random_key);
+				} else {
+					finish = true;
+					break;
 				}
-			}		
+			}
+		}
 	}
-	
 
 	/**
 	 * this method update states of the game
-	 * 
 	 * @param new_state
 	 * @param new_message
 	 */
@@ -249,10 +241,9 @@ public class Game_Model extends Observable implements java.io.Serializable {
 		setChanged();
 		notifyObservers(this);
 	}
-	
+
 	/**
 	 * method for getting number of player armies
-	 * 
 	 * @return String the number of armies owned by each player
 	 */
 	public String Armies_Of_Players_To_String() {
@@ -264,10 +255,9 @@ public class Game_Model extends Observable implements java.io.Serializable {
 		}
 		return sb.toString();
 	}
-	
+
 	/**
 	 * method for getting continent owner if all territories belong to one player
-	 * 
 	 * @return name of continent owner
 	 */
 
@@ -277,7 +267,6 @@ public class Game_Model extends Observable implements java.io.Serializable {
 
 	/**
 	 * method for calculating percentage of world that belong to each player
-	 * 
 	 * @return percentage of the map controlled by every player
 	 */
 	public String Percentage_Of_World_Owner_To_String() {
@@ -302,12 +291,14 @@ public class Game_Model extends Observable implements java.io.Serializable {
 		return sb.toString();
 	}
 
-	
-
+	/**
+	 * implementing attack phase
+	 */
 	public void Attack() {
-		
-		// from to defender 
-		//this.attack_plan = new Attack_Model(current_player, defender, from, to, nb_dice, all_out);
+
+		// from to defender
+		// this.attack_plan = new Attack_Model(current_player, defender, from, to,
+		// nb_dice, all_out);
 		Message_Handler response = current_player.Attack();
 		State_Game new_state = current_state;
 
@@ -327,12 +318,15 @@ public class Game_Model extends Observable implements java.io.Serializable {
 
 		Update_State(new_state, message);
 	}
-	
+
+	/**
+	 * 	implementing reinforce phase
+	 */
 	public void Reinforce() {
-		
+
 		Message_Handler response = current_player.Reinforce();
 		State_Game new_state = current_state;
-		
+
 		if (response.ok) {
 			if (current_state == State_Game.STARTUP) {
 				Player next_player = players.Get_Next_Player_For_Reinforcement(current_player);
@@ -354,7 +348,9 @@ public class Game_Model extends Observable implements java.io.Serializable {
 		Update_State(new_state, response.message);
 	}
 
-	
+	/**
+	 * 	implementing fortify phase
+	 */
 	public void Fortify() {
 
 		Message_Handler response = current_player.Fortify();
@@ -367,114 +363,119 @@ public class Game_Model extends Observable implements java.io.Serializable {
 		}
 		Update_State(new_state, message);
 	}
-	
-	
-	
+
+	/**
+	 * implementing post attack phase
+	 */
 	public void Post_Attack() {
-		
-		Message_Handler response = current_player.PostAttack(); 
+
+		Message_Handler response = current_player.PostAttack();
 		current_player.is_conquerer = false;
 		Can_Attack();
 	}
-	
+
 }
 
-
-
 //
 //
-///**
-// * 
+/// **
+// *
 // * @param territory_name
 // * @param nb_armies
 // */
-//public void Reinforce(String territory_name, int nb_armies) {
-//	Message_Handler response = current_player.Reinforce(territory_name, nb_armies);
-//	State_Game new_state = current_state;
-//	if (response.ok) {
-//		if (current_state == State_Game.STARTUP) {
-//			Player next_player = players.Get_Next_Player_For_Reinforcement(current_player);
-//			if (next_player != null) {
-//				Change_Player(next_player);
-//			} else {
-//				// End of StartUp => game is started
-//				Change_Player(players.First());// get the first player to play the game
-//				new_state = State_Game.REINFORCEMENT;
-//				current_player.Set_Number_Territory_Reinforcements();
-//			}
-//		} else if (current_state == State_Game.REINFORCEMENT) {
-//			if (current_player.reinforcements == 0) {
-//				// end of reinforcement
-//				new_state = State_Game.ATTACKING;
-//			}
-//		}
-//	}
-//	Update_State(new_state, response.message);
-//}
+// public void Reinforce(String territory_name, int nb_armies) {
+// Message_Handler response = current_player.Reinforce(territory_name,
+// nb_armies);
+// State_Game new_state = current_state;
+// if (response.ok) {
+// if (current_state == State_Game.STARTUP) {
+// Player next_player =
+// players.Get_Next_Player_For_Reinforcement(current_player);
+// if (next_player != null) {
+// Change_Player(next_player);
+// } else {
+// // End of StartUp => game is started
+// Change_Player(players.First());// get the first player to play the game
+// new_state = State_Game.REINFORCEMENT;
+// current_player.Set_Number_Territory_Reinforcements();
+// }
+// } else if (current_state == State_Game.REINFORCEMENT) {
+// if (current_player.reinforcements == 0) {
+// // end of reinforcement
+// new_state = State_Game.ATTACKING;
+// }
+// }
+// }
+// Update_State(new_state, response.message);
+// }
 //
-///**
+/// **
 // * the attacked player always plays with maximum number of dices
-// * 
+// *
 // * @param from_name
 // * @param to_name
 // * @param nb_dice
 // * @param nb_armies
 // */
-//public void Attack(String from_name, String to_name, int nb_dice, boolean all_out) {
-//	Territory from = this.map.Get_Territory(from_name);
-//	Territory to = this.map.Get_Territory(to_name);
-//	Player defender = players.Search_Player(to.owner_name);
+// public void Attack(String from_name, String to_name, int nb_dice, boolean
+// all_out) {
+// Territory from = this.map.Get_Territory(from_name);
+// Territory to = this.map.Get_Territory(to_name);
+// Player defender = players.Search_Player(to.owner_name);
 //
-//	this.attack_plan = new Attack_Model(current_player, defender, from, to, nb_dice, all_out);
-//	Message_Handler response = current_player.Attack(this.attack_plan);
-//	State_Game new_state = current_state;
+// this.attack_plan = new Attack_Model(current_player, defender, from, to,
+// nb_dice, all_out);
+// Message_Handler response = current_player.Attack(this.attack_plan);
+// State_Game new_state = current_state;
 //
-//	if (response.ok) {
-//		if (this.Is_Game_Over()) {
-//			new_state = State_Game.OVER;
-//		} else if (current_player.is_conquerer) {
-//			new_state = State_Game.POST_ATTACK;
-//			message = "You've conquered " + attack_plan.to.name + " territoy";
-//		} else {
-//			Can_Attack();
-//			return;
-//		}
-//	} else {
-//		message = "Error: please enter valid data";
-//	}
+// if (response.ok) {
+// if (this.Is_Game_Over()) {
+// new_state = State_Game.OVER;
+// } else if (current_player.is_conquerer) {
+// new_state = State_Game.POST_ATTACK;
+// message = "You've conquered " + attack_plan.to.name + " territoy";
+// } else {
+// Can_Attack();
+// return;
+// }
+// } else {
+// message = "Error: please enter valid data";
+// }
 //
-//	Update_State(new_state, message);
-//}
+// Update_State(new_state, message);
+// }
 //
-///**
+/// **
 // * Reposition units for fortification before finishing turn.
-// * 
+// *
 // * @param from_name
 // * @param to_name
 // * @param nb_armies
 // */
-//public void Fortify(String from_name, String to_name, int nb_of_armies) {
+// public void Fortify(String from_name, String to_name, int nb_of_armies) {
 //
-//	Message_Handler response = current_player.Fortify(from_name, to_name, nb_of_armies);
-//	State_Game new_state = current_state;
+// Message_Handler response = current_player.Fortify(from_name, to_name,
+// nb_of_armies);
+// State_Game new_state = current_state;
 //
-//	if (response.ok) {
-//		// Move_To_Next_Phase();
-//	} else {
-//		message = "Error: please enter valid data";
-//	}
-//	Update_State(new_state, message);
-//}
+// if (response.ok) {
+// // Move_To_Next_Phase();
+// } else {
+// message = "Error: please enter valid data";
+// }
+// Update_State(new_state, message);
+// }
 //
 //
-///**
+/// **
 // * This method move armies from attacking territory to defeated territory
-// * 
+// *
 // * @param nb_armies
-// *            number of armies to be moved, defined by attacking player
+// * number of armies to be moved, defined by attacking player
 // */
-//public void Post_Attack(int nb_armies) {
-//	current_player.Move_Army(attack_plan.from.name, attack_plan.to.name, nb_armies);
-//	current_player.is_conquerer = false;
-//	Can_Attack();
-//}
+// public void Post_Attack(int nb_armies) {
+// current_player.Move_Army(attack_plan.from.name, attack_plan.to.name,
+// nb_armies);
+// current_player.is_conquerer = false;
+// Can_Attack();
+// }

@@ -23,7 +23,6 @@ public class Territory implements java.io.Serializable{
 
 	/**
 	 * Constructor with Id
-	 * 
 	 * @param id
 	 * @param name
 	 * @param pos_x
@@ -65,7 +64,6 @@ public class Territory implements java.io.Serializable{
 
 	/**
 	 * Adds a connection from the territory to another territory
-	 * 
 	 * @param neighbour
 	 * @return boolean
 	 */
@@ -83,7 +81,6 @@ public class Territory implements java.io.Serializable{
 
 	/**
 	 * Deletes a connection between the territory and its neighbor
-	 * 
 	 * @param neighbour_name
 	 * @return boolean
 	 */
@@ -98,7 +95,6 @@ public class Territory implements java.io.Serializable{
 
 	/**
 	 * Deletes all the connections from its neighbours
-	 * 
 	 * @return boolean
 	 */
 	public boolean Delete_Neighbours() {

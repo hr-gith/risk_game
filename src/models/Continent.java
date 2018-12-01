@@ -18,10 +18,10 @@ public class Continent implements java.io.Serializable{
 	public HashMap<String, Territory> territories;
 
 	/**
-	 * constructor
-	 * 
-	 * @param :
-	 *            int Id, String name
+	 * constructor to create new continent 
+	 * @param id
+	 * @param name
+	 * @param score
 	 */
 	public Continent(int id, String name, int score) {
 		this.id = id;
@@ -31,10 +31,9 @@ public class Continent implements java.io.Serializable{
 	}
 
 	/**
-	 * constructor without Id
-	 * 
+	 * constructor to create new continent without id
 	 * @param name
-	 *            of continent
+	 * @param score
 	 */
 	public Continent(String name, int score) {
 		this.id = 1;
@@ -45,7 +44,6 @@ public class Continent implements java.io.Serializable{
 
 	/**
 	 * Adds a new territory to the continent Note: territories are unique in the map
-	 * 
 	 * @param new_territory
 	 * @return boolean
 	 */
@@ -65,7 +63,6 @@ public class Continent implements java.io.Serializable{
 
 	/**
 	 * total number of territories
-	 * 
 	 * @return total number of territories
 	 */
 	public int Number_OF_Territory() {
@@ -76,7 +73,6 @@ public class Continent implements java.io.Serializable{
 
 	/**
 	 * Deletes a territory and its connection from the continent
-	 * 
 	 * @param territory_name
 	 * @return boolean
 	 */
@@ -94,7 +90,6 @@ public class Continent implements java.io.Serializable{
 
 	/**
 	 * Delete all territories and their connections from the continent
-	 * 
 	 * @return boolean
 	 */
 	public boolean Delete_Territories() {

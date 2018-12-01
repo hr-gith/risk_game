@@ -6,7 +6,6 @@ import java.util.Random;
 
 /**
  * this is a model class for Dice
- *
  */
 public class Dice {
 

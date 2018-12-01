@@ -1,8 +1,7 @@
 package models;
 
 /**
- * The ENUMERATED states for the game phases
- *
+ * The ENUMERATED states for the as state of game strategy
  */
 public enum State_Game implements java.io.Serializable{
 
