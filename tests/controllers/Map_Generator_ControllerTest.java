@@ -11,7 +11,7 @@ import org.junit.Test;
 public class Map_Generator_ControllerTest {
 
 	@Test
-	public void testStart() {
+	public void Test_Start() {
 		fail("Not yet implemented");
 	}
 

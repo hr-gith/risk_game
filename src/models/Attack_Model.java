@@ -87,11 +87,7 @@ public class Attack_Model {
 	}
 
 	/**
-	 * decide about one turn battle
-	 * @param attack_nb_dices
-	 * @param defend_nb_dices
-	 * @return a pair of numbers: the first number is the number of armies lost for
-	 *         attacker and the other one is for attacked one
+	 * decide about one turn battle	 
 	 */
 	public void Decide_Battle() {
 		attacker_loss = 0;
@@ -149,10 +145,10 @@ public class Attack_Model {
 					return true;
 				}
 			} else {
-				message = "Error:These territories are not adjacent";
+				message = "These territories are not adjacent";
 			}
 		} else {
-			message = "Error:These territories are not valid territory name or both of them belong to you";
+			message = "These territories are not valid territory name or both of them belong to you";
 		}
 
 		return false;

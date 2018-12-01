@@ -21,7 +21,6 @@ public class Game_Model extends Observable implements java.io.Serializable {
 
 	private static Game_Model game;
 	public Map_Model map;
-	public Attack_Model attack_plan;
 	public Player_Collection players;
 	public Player current_player;
 	public State_Game current_state;
@@ -313,7 +312,7 @@ public class Game_Model extends Observable implements java.io.Serializable {
 				return;
 			}
 		} else {
-			message = "Error: please enter valid data";
+			message = "select a new territory for attack move";
 		}
 
 		Update_State(new_state, message);
