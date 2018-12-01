@@ -32,7 +32,7 @@ public class AI_Random implements Behaviour, java.io.Serializable {
 		int units = 0;
 		// find territory with most units
 		for (String str : current_player.owned_territories.keySet()) {
-			if (current_player.owned_territories.get(str).nb_armies > units) {
+			if (current_player.owned_territories.get(str).nb_armies >= units) {
 				territory_max = str;
 				units = current_player.owned_territories.get(str).nb_armies;
 			}
@@ -78,8 +78,21 @@ public class AI_Random implements Behaviour, java.io.Serializable {
 				}
 			}
 		}
-		this.fm.nb_armies = this.current_player.owned_territories.get(this.territory_max).nb_armies;
+		
+		int units = 0; 
+		for (String str : current_player.owned_territories.keySet()) {
+			if (current_player.owned_territories.get(str).nb_armies >= units) {
+				territory_max = str;
+				units = current_player.owned_territories.get(str).nb_armies;
+			}
+		}
+		
+		
+//		if(this.current_player.owned_territories.get(this.territory_max) != null) {
+		this.fm.nb_armies = this.current_player.owned_territories.get(this.territory_max).nb_armies -1;
 		this.fm.from_territory = this.territory_max;
+//		}
+		
 		current_player.behavior.fm.continue_fortify = false;
 	}
 
