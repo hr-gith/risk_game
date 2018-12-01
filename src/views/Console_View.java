@@ -25,6 +25,7 @@ public class Console_View implements Observer {
 	public State_Game current_state;
 	public String message;
 	private boolean first_time = true;
+	private boolean is_new_turn = true;
 
 	public Console_View(Game_Controller game_ctrl) {
 		game_controller = game_ctrl;
@@ -81,7 +82,8 @@ public class Console_View implements Observer {
 	}
 
 	public void Display_Save_Game_Menu() {
-		if (current_player.behavior instanceof Human){
+		if (current_player.behavior instanceof Human && is_new_turn){
+			is_new_turn = false;
 			System.out.println("Would you like to save the current game(y/n)? ");
 			String answer = scanner.nextLine();
 			if (answer.equalsIgnoreCase("y")){
@@ -327,7 +329,9 @@ public class Console_View implements Observer {
 	@Override
 	public void update(Observable obs, Object arg1) {
 
-		current_player = ((Game_Model) obs).current_player;
+		Player temp = ((Game_Model) obs).current_player;
+		if (!temp.equals(current_player)) is_new_turn = true;
+		current_player = temp;
 		current_state = ((Game_Model) obs).current_state;
 		message = ((Game_Model) obs).message;
 		game_controller.map_view.Draw_Map(game_controller.game.map);
