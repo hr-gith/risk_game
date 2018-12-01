@@ -114,6 +114,7 @@ public class Console_View implements Observer {
 	public void Display_Menu_Reinforcements() {
 
 		if (current_player.behavior instanceof Human) {
+			boolean is_card_active = false;
 
 			System.out.println("Reinforcement =>player : " + current_player.name + "- Armies left: "
 					+ current_player.reinforcements + "\n countries :"
@@ -122,7 +123,7 @@ public class Console_View implements Observer {
 					+ current_player.cards.cavalry + ", Artillery: " + current_player.cards.artillery);
 
 			while (current_player.cards.Is_Set_Available()) {
-
+				is_card_active = true;
 				String decision;
 				if ((current_player.cards.artillery + current_player.cards.cavalry
 						+ current_player.cards.infantry) < 5) {
@@ -150,13 +151,20 @@ public class Console_View implements Observer {
 								+ ", Cavalry: " + current_player.cards.cavalry + ", Artillery: "
 								+ current_player.cards.artillery);
 
-						game_controller.game.Update_State(current_state, "");
+						//game_controller.game.Update_State(current_state, "");
 
 					}
 				} else
 					break;
 			}
+			if (is_card_active) {
+				System.out.println("Reinforcement =>player : " + current_player.name + "- Armies left: "
+						+ current_player.reinforcements + "\n countries :"
+						+ current_player.owned_territories.keySet().toString());
+				System.out.println("Cards Available: \n Infantry: " + current_player.cards.infantry + ", Cavalry: "
+						+ current_player.cards.cavalry + ", Artillery: " + current_player.cards.artillery);
 
+			}
 			System.out.println("\nEnter the To territory ");
 			current_player.behavior.rm.to_territory = scanner.nextLine();
 			System.out.println("\nEnter the Number of armies to move");
@@ -239,7 +247,7 @@ public class Console_View implements Observer {
 	public void Display_Menu_Fortification() {
 
 		if (current_player.behavior instanceof Human) {
-
+			System.out.println("first of fortify in view");
 			if (current_player.Has_Extra_Army_To_Move()) {
 
 			System.out.println("Fortification =>player : " + current_player.name + " has countries :"
@@ -334,7 +342,7 @@ public class Console_View implements Observer {
 	 */
 	@Override
 	public void update(Observable obs, Object arg1) {
-
+		System.out.println("first of update in view");
 		Player temp = ((Game_Model) obs).current_player;
 		if (!temp.equals(current_player))
 			is_new_turn = true;

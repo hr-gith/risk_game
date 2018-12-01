@@ -352,7 +352,6 @@ public class Game_Model extends Observable implements java.io.Serializable {
 	 * 	implementing fortify phase
 	 */
 	public void Fortify() {
-
 		Message_Handler response = current_player.Fortify();
 		State_Game new_state = current_state;
 
@@ -362,6 +361,7 @@ public class Game_Model extends Observable implements java.io.Serializable {
 			message = "Error: please enter valid data";
 		}
 		Update_State(new_state, message);
+
 	}
 
 	/**
@@ -372,6 +372,7 @@ public class Game_Model extends Observable implements java.io.Serializable {
 		Message_Handler response = current_player.PostAttack();
 		current_player.is_conquerer = false;
 		Can_Attack();
+
 	}
 
 }
